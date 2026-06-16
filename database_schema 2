@@ -1,0 +1,146 @@
+# Database Design: Energy Market Intelligence Platform
+
+This document outlines the Star Schema design for the Energy Market Intelligence Platform, optimized for PostgreSQL. It includes a dimensional model to support analytics and forecasting for renewable energy generation, electricity demand, and the IEX market, along with support for hourly data granularities and ML forecast tracking.
+
+## ER Diagram
+
+```mermaid
+erDiagram
+    dim_date ||--o{ fact_weather : "records"
+    dim_date ||--o{ fact_renewable_generation : "records"
+    dim_date ||--o{ fact_electricity_demand : "records"
+    dim_date ||--o{ fact_iex_market : "records"
+    dim_date ||--o{ fact_forecast_results : "targets"
+    
+    dim_state ||--o{ fact_weather : "occurs in"
+    dim_state ||--o{ fact_renewable_generation : "occurs in"
+    dim_state ||--o{ fact_electricity_demand : "occurs in"
+    dim_state ||--o{ capacity_master : "has capacity"
+    dim_state ||--o{ fact_forecast_results : "forecasts for"
+
+    dim_date {
+        date date_id PK
+        int year
+        int month
+        int day
+        int quarter
+        int day_of_week
+        boolean is_weekend
+        boolean is_holiday
+    }
+
+    dim_state {
+        int state_id PK
+        varchar state_name
+        varchar state_code
+        varchar region
+    }
+
+    capacity_master {
+        int capacity_id PK
+        int state_id FK
+        varchar energy_type
+        numeric installed_capacity_mw
+        date effective_from
+        date effective_to
+    }
+
+    fact_weather {
+        bigint weather_id PK
+        date date_id FK
+        timestamp timestamp_utc
+        int state_id FK
+        numeric temperature_c
+        numeric humidity_pct
+        numeric wind_speed_ms
+        numeric solar_radiation_wm2
+        numeric rainfall_mm
+        numeric cloud_cover_pct
+    }
+
+    fact_renewable_generation {
+        bigint generation_id PK
+        date date_id FK
+        timestamp timestamp_utc
+        int state_id FK
+        numeric solar_generation_mw
+        numeric wind_generation_mw
+    }
+
+    fact_electricity_demand {
+        bigint demand_id PK
+        date date_id FK
+        timestamp timestamp_utc
+        int state_id FK
+        numeric demand_mw
+    }
+
+    fact_iex_market {
+        bigint market_id PK
+        date date_id FK
+        timestamp timestamp_utc
+        numeric dam_price_rs_mwh
+        numeric rtm_price_rs_mwh
+        numeric traded_volume_mu
+    }
+    
+    fact_forecast_results {
+        bigint forecast_id PK
+        varchar model_name
+        timestamp forecast_generated_at
+        date target_date_id FK
+        timestamp target_timestamp_utc
+        int state_id FK
+        varchar target_variable
+        numeric forecast_value
+        numeric lower_bound_value
+        numeric upper_bound_value
+    }
+```
+
+---
+
+## Data Dictionary Additions & Updates
+
+### Dimension & Master Tables
+
+#### `capacity_master` (NEW)
+Tracks the installed capacity for renewable energy sources (Solar, Wind) over time per state. Useful for calculating Plant Load Factor (PLF) or capacity utilization.
+
+| Column Name | Data Type | Key | Business Definition |
+| :--- | :--- | :--- | :--- |
+| `capacity_id` | SERIAL | PK | Surrogate key for the capacity record. |
+| `state_id` | INT | FK | Reference to the state dimension. |
+| `energy_type` | VARCHAR(50) | | Type of renewable energy (e.g., 'Solar', 'Wind'). |
+| `installed_capacity_mw` | NUMERIC | | The total installed generation capacity in MW. |
+| `effective_from` | DATE | | Date when this capacity value became effective. |
+| `effective_to` | DATE | | Date when this capacity was superseded (Null if currently active). |
+
+---
+
+### Fact Tables (Updates for Hourly Data)
+
+All original fact tables (`fact_weather`, `fact_renewable_generation`, `fact_electricity_demand`, `fact_iex_market`) have been updated with:
+- **`timestamp_utc` (TIMESTAMP):** Allows storing exact hourly (or 15-minute) metrics. Can be NULL if the data is aggregated at the daily level.
+- **Constraints:** Unique constraints updated to `UNIQUE NULLS NOT DISTINCT` covering `date_id`, `state_id`, and `timestamp_utc`.
+
+#### `fact_forecast_results` (NEW)
+Stores the outputs of ML forecasting models across all domains (generation, demand, market).
+
+| Column Name | Data Type | Key | Business Definition |
+| :--- | :--- | :--- | :--- |
+| `forecast_id` | BIGSERIAL | PK | Surrogate key for the forecast record. |
+| `model_name` | VARCHAR(100) | | Name of the ML model used (e.g., 'XGBoost_Solar_v1'). |
+| `forecast_generated_at` | TIMESTAMP | | The exact time the forecast was generated. |
+| `target_date_id` | DATE | FK | The date being forecasted. |
+| `target_timestamp_utc` | TIMESTAMP | | The specific hour/time being forecasted. |
+| `state_id` | INT | FK | The state being forecasted (Nullable for national metrics like IEX). |
+| `target_variable` | VARCHAR(100) | | The metric being forecasted (e.g., 'solar_generation_mw', 'dam_price'). |
+| `forecast_value` | NUMERIC | | The forecasted numeric value. |
+| `lower_bound_value` | NUMERIC | | Lower confidence bound (optional). |
+| `upper_bound_value` | NUMERIC | | Upper confidence bound (optional). |
+
+### Performance Indexes Added
+To support heavy Power BI reporting and filtering, specific B-Tree indexes have been implemented on:
+- Date, state, and timestamps across all fact tables.
+- Model name and target variable for the `fact_forecast_results` table.

@@ -1,0 +1,34 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Project specific
+__pycache__
+models/*.pkl
+data/raw/*.csv
+data/processed/*.csv
+reports/**/*.csv
+reports/**/*.png
