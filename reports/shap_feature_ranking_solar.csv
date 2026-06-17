@@ -1,0 +1,12 @@
+Feature,Mean_Absolute_SHAP
+cloud_cover_pct,26.320946
+solar_radiation_kwh_m2_day,19.58919
+temperature_c,0.44451788
+humidity_pct,0.06931644
+day_of_year,0.051927034
+rainfall_mm,0.018176157
+year,0.017361764
+week_of_year,0.014882504
+month,0.011247321
+is_weekend,0.011082102
+quarter,0.0

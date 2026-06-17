@@ -1,0 +1,33 @@
+Model,Feature,Importance
+Solar,cloud_cover_pct,0.6965
+Solar,solar_radiation_kwh_m2_day,0.3013
+Solar,temperature_c,0.0005
+Solar,rainfall_mm,0.0004
+Solar,week_of_year,0.0004
+Solar,day_of_year,0.0003
+Solar,humidity_pct,0.0002
+Solar,is_weekend,0.0002
+Solar,month,0.0002
+Solar,year,0.0001
+Solar,quarter,0.0
+Wind,wind_speed_ms,0.9801
+Wind,day_of_year,0.0069
+Wind,humidity_pct,0.0053
+Wind,temperature_c,0.0029
+Wind,cloud_cover_pct,0.0018
+Wind,month,0.0013
+Wind,is_weekend,0.0008
+Wind,rainfall_mm,0.0006
+Wind,week_of_year,0.0004
+Wind,quarter,0.0
+Total Output,solar_radiation_kwh_m2_day,0.5288
+Total Output,cloud_cover_pct,0.3526
+Total Output,wind_speed_ms,0.0667
+Total Output,temperature_c,0.0421
+Total Output,rainfall_mm,0.0074
+Total Output,day_of_year,0.0007
+Total Output,humidity_pct,0.0006
+Total Output,month,0.0005
+Total Output,week_of_year,0.0004
+Total Output,is_weekend,0.0003
+Total Output,quarter,0.0

@@ -1,0 +1,12 @@
+feature,importance
+cloud_cover_pct,0.69651693
+solar_radiation_kwh_m2_day,0.30126253
+temperature_c,0.00046188693
+rainfall_mm,0.00040263304
+week_of_year,0.0003514789
+day_of_year,0.00026875664
+humidity_pct,0.00021743131
+is_weekend,0.0001967315
+month,0.00019314623
+year,0.00012841895
+quarter,0.0

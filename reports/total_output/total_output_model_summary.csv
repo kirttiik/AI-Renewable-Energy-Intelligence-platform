@@ -1,0 +1,7 @@
+Metric,Value
+Train R2,0.9997
+Test R2,0.9962
+Best Feature,solar_radiation_kwh_m2_day
+Model Type,XGBoost
+Training Records,1328
+Testing Records,333
