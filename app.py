@@ -95,6 +95,9 @@ def get_data_sources():
         ]),
         'total_metrics': load_data([
             os.path.join(ROOT, 'reports', 'total_output', 'total_output_metrics.csv')
+        ]),
+        'shap_solar_rank': load_data([
+            os.path.join(ROOT, 'reports', 'shap_feature_ranking_solar.csv')
         ])
     }
 
@@ -121,12 +124,48 @@ with st.sidebar:
         "🌱 Carbon Analytics",
         "⚠️ Weather Risk",
         "💰 Revenue Analytics",
-        "🧠 AI Explainability"
+        "🧠 AI Explainability",
+        "🔬 SHAP Analytics"
     ]
     selection = st.radio("Navigation", sections)
     
     st.markdown("---")
+    global_time_horizon = st.radio(
+        "⏱️ Time Horizon",
+        ["All Time", "Yesterday", "Today", "Tomorrow"],
+        index=0,
+        help="Filters data relative to the most recent date available in the dataset."
+    )
+    
+    st.markdown("---")
     st.markdown("v1.0.0 | Production")
+
+def filter_by_time_horizon(df, horizon):
+    """Filters a DataFrame by date relative to its own max date."""
+    if df is None or df.empty or 'date' not in df.columns:
+        return df
+    
+    # Ensure datetime without overwriting original if we can avoid warnings
+    df = df.copy()
+    if not pd.api.types.is_datetime64_any_dtype(df['date']):
+        df['date'] = pd.to_datetime(df['date'])
+        
+    max_date = df['date'].max()
+    if pd.isna(max_date):
+        return df
+        
+    if horizon == "All Time":
+        return df
+    elif horizon == "Today":
+        target_date = max_date
+    elif horizon == "Yesterday":
+        target_date = max_date - pd.Timedelta(days=1)
+    elif horizon == "Tomorrow":
+        target_date = max_date + pd.Timedelta(days=1)
+    else:
+        return df
+        
+    return df[df['date'].dt.date == target_date.date()]
 
 # ==========================================
 # PAGE ROUTING & RENDER FUNCTIONS
@@ -136,39 +175,52 @@ def render_executive_overview():
     st.title("🏠 Executive Overview")
     st.markdown("High-level consolidation of Generation, Financials, Sustainability, and Risk.")
     
-    kpis = data['exec_kpis']
-    if not kpis.empty:
-        kpi_dict = dict(zip(kpis['KPI'], kpis['Value']))
+    df_exec = filter_by_time_horizon(data['exec_summary'], global_time_horizon)
+    
+    if not df_exec.empty:
+        total_gen = df_exec['total_generation_mw'].sum()
+        total_rev = df_exec['daily_revenue_inr'].sum()
+        co2_avoided = df_exec['co2_avoided_tons'].sum()
+        
+        if len(df_exec) > 0 and 'predicted_total_generation_mw' in df_exec.columns:
+            avg_error = (df_exec['total_generation_mw'] - df_exec['predicted_total_generation_mw']).abs().mean()
+            avg_error_str = f"{avg_error:.2f} MW"
+        else:
+            avg_error_str = "N/A"
+            
+        coal_saved = df_exec['coal_saved_tons'].sum()
+        trees = df_exec['trees_equivalent_million'].sum()
+        crit_days = (df_exec['overall_risk_level'] == 'CRITICAL').sum()
+        high_days = (df_exec['overall_risk_level'] == 'HIGH').sum()
         
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total Generation", f"{safe_number(kpi_dict.get('Total Generation', 0)):,.0f} MW")
-        col2.metric("Total Revenue", f"₹ {safe_number(kpi_dict.get('Total Revenue', 0)):,.0f}")
-        col3.metric("CO₂ Avoided", f"{safe_number(kpi_dict.get('Total CO2 Avoided', 0)):,.0f} Tons")
-        col4.metric("Average Forecast Error", f"{kpi_dict.get('Average Forecast Error', 'N/A')}")
+        col1.metric("Total Generation", f"{safe_number(total_gen):,.0f} MW")
+        col2.metric("Total Revenue", f"₹ {safe_number(total_rev):,.0f}")
+        col3.metric("CO₂ Avoided", f"{safe_number(co2_avoided):,.0f} Tons")
+        col4.metric("Average Forecast Error", avg_error_str)
         
         st.markdown("<br>", unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Coal Saved", f"{safe_number(kpi_dict.get('Total Coal Saved', 0)):,.0f} Tons")
-        col2.metric("Trees Equivalent", f"{safe_number(kpi_dict.get('Total Trees Equivalent', 0)):,.0f} M")
-        col3.metric("Critical Risk Days", f"{safe_number(kpi_dict.get('Critical Alert Days', 0)):,.0f}")
-        col4.metric("High Risk Days", f"{safe_number(kpi_dict.get('High Risk Days', 0)):,.0f}")
+        col1.metric("Coal Saved", f"{safe_number(coal_saved):,.0f} Tons")
+        col2.metric("Trees Equivalent", f"{safe_number(trees):,.0f} M")
+        col3.metric("Critical Risk Days", f"{crit_days}")
+        col4.metric("High Risk Days", f"{high_days}")
     else:
-        st.warning("Executive KPIs dataset is missing.")
+        st.warning("No Executive data available for the selected Time Horizon.")
         
     st.markdown("---")
     st.subheader("Executive Summary Table")
     
-    df_exec = data['exec_summary']
     if not df_exec.empty:
         st.dataframe(df_exec.tail(30).style.highlight_max(axis=0))
     else:
-        st.warning("Executive Summary dataset is missing.")
+        st.warning("Executive Summary dataset is missing or empty for this timeframe.")
 
 def render_generation_analytics():
     st.title("⚡ Generation Analytics")
     st.markdown("Detailed breakdown of Solar, Wind, and Total Energy Generation.")
     
-    df_rev = data['revenue']
+    df_rev = filter_by_time_horizon(data['revenue'], global_time_horizon)
     if not df_rev.empty:
         # Solar vs Wind Generation Trend
         fig = px.line(df_rev, x='date', y=['solar_generation_mw', 'wind_generation_mw'],
@@ -195,7 +247,7 @@ def render_forecasting():
     st.title("🔮 Forecasting")
     st.markdown("AI-driven predictions for energy generation.")
     
-    df_total = data['total_pred']
+    df_total = filter_by_time_horizon(data['total_pred'], global_time_horizon)
     if not df_total.empty:
         st.subheader("Total Output Forecast")
         fig = go.Figure()
@@ -216,13 +268,15 @@ def render_forecasting():
         
     col1, col2 = st.columns(2)
     with col1:
-        if not data['solar_pred'].empty:
+        df_solar = filter_by_time_horizon(data['solar_pred'], global_time_horizon)
+        if not df_solar.empty:
             st.subheader("Solar Forecast Metrics")
-            st.dataframe(data['solar_pred'].head(10))
+            st.dataframe(df_solar.head(10))
     with col2:
-        if not data['wind_pred'].empty:
+        df_wind = filter_by_time_horizon(data['wind_pred'], global_time_horizon)
+        if not df_wind.empty:
             st.subheader("Wind Forecast Metrics")
-            st.dataframe(data['wind_pred'].head(10))
+            st.dataframe(df_wind.head(10))
             
     if not data['forecast_accuracy'].empty:
         st.markdown("---")
@@ -233,7 +287,7 @@ def render_carbon_analytics():
     st.title("🌱 Carbon Analytics")
     st.markdown("Sustainability tracking and environmental impact.")
     
-    df_carb = data['carbon']
+    df_carb = filter_by_time_horizon(data['carbon'], global_time_horizon)
     if not df_carb.empty:
         total_co2 = df_carb['co2_avoided_tons'].sum()
         total_coal = df_carb['coal_saved_tons'].sum()
@@ -253,7 +307,7 @@ def render_weather_risk():
     st.title("⚠️ Weather Risk")
     st.markdown("Analysis of extreme weather events and their operational impact.")
     
-    df_risk = data['weather_risk']
+    df_risk = filter_by_time_horizon(data['weather_risk'], global_time_horizon)
     if not df_risk.empty:
         counts = df_risk['overall_risk_level'].value_counts()
         
@@ -278,7 +332,7 @@ def render_revenue_analytics():
     st.title("💰 Revenue Analytics")
     st.markdown("Financial intelligence translating engineering output into monetary value.")
     
-    df_rev = data['revenue']
+    df_rev = filter_by_time_horizon(data['revenue'], global_time_horizon)
     if not df_rev.empty:
         total_rev = df_rev['daily_revenue_inr'].sum()
         avg_rev = df_rev['daily_revenue_inr'].mean()
@@ -363,6 +417,79 @@ def render_explainability():
         st.subheader("Executive AI Insights")
         st.table(df_insights)
 
+def render_shap_analytics():
+    st.title("🔬 SHAP Analytics")
+    st.markdown("Advanced Model Explainability using SHapley Additive exPlanations.")
+    
+    shap_rank_df = data.get('shap_solar_rank', pd.DataFrame())
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    shap_plot_path = os.path.join(ROOT, 'reports', 'shap_summary_solar.png')
+    
+    if shap_rank_df.empty:
+        st.warning("SHAP feature ranking data not available. Please run the SHAP pipeline.")
+        return
+        
+    # Calculate Contribution Percentage
+    total_shap = shap_rank_df['Mean_Absolute_SHAP'].sum()
+    shap_rank_df['Contribution_Percentage'] = (shap_rank_df['Mean_Absolute_SHAP'] / total_shap) * 100
+    
+    # KPIs
+    top_driver = shap_rank_df.iloc[0]['Feature']
+    second_driver = shap_rank_df.iloc[1]['Feature'] if len(shap_rank_df) > 1 else "N/A"
+    total_features = len(shap_rank_df)
+    
+    # Friendly labels
+    friendly_labels = {
+        'cloud_cover_pct': 'Cloud Cover',
+        'solar_radiation_kwh_m2_day': 'Solar Radiation',
+        'temperature_c': 'Temperature',
+        'humidity_pct': 'Humidity',
+        'rainfall_mm': 'Rainfall',
+        'wind_speed_ms': 'Wind Speed',
+        'month': 'Month',
+        'quarter': 'Quarter',
+        'day_of_year': 'Day of Year',
+        'week_of_year': 'Week of Year',
+        'is_weekend': 'Is Weekend',
+        'year': 'Year'
+    }
+    
+    shap_rank_df['Feature'] = shap_rank_df['Feature'].map(lambda x: friendly_labels.get(x, x))
+    top_driver_friendly = friendly_labels.get(top_driver, top_driver)
+    second_driver_friendly = friendly_labels.get(second_driver, second_driver)
+    
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Top SHAP Driver", top_driver_friendly)
+    col2.metric("Second Most Important Driver", second_driver_friendly)
+    col3.metric("Total SHAP Features", total_features)
+    
+    st.markdown("---")
+    st.subheader("Feature Ranking")
+    
+    # Format for display
+    display_df = shap_rank_df[['Feature', 'Mean_Absolute_SHAP', 'Contribution_Percentage']].copy()
+    display_df['Mean_Absolute_SHAP'] = display_df['Mean_Absolute_SHAP'].round(4)
+    display_df['Contribution_Percentage'] = display_df['Contribution_Percentage'].apply(lambda x: f"{x:.2f}%")
+    
+    st.dataframe(display_df, use_container_width=True)
+    
+    st.markdown("---")
+    st.subheader("SHAP Summary Plot (Solar)")
+    if os.path.exists(shap_plot_path):
+        st.image(shap_plot_path, use_container_width=True)
+    else:
+        st.warning("SHAP summary plot not found.")
+        
+    st.markdown("---")
+    st.subheader("Business Insights")
+    insights = [
+        "Cloud cover is the strongest driver of solar generation variability.",
+        "Solar radiation remains a major positive contributor to generation output.",
+        "Atmospheric conditions explain the majority of forecast variation."
+    ]
+    for insight in insights:
+        st.markdown(f"- {insight}")
+
 # ==========================================
 # ROUTING LOGIC
 # ==========================================
@@ -380,6 +507,8 @@ elif selection == "💰 Revenue Analytics":
     render_revenue_analytics()
 elif selection == "🧠 AI Explainability":
     render_explainability()
+elif selection == "🔬 SHAP Analytics":
+    render_shap_analytics()
 
 # Footer
 st.markdown("---")
