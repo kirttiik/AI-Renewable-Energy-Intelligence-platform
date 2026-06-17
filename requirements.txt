@@ -1,2 +1,9 @@
-# Add your Python dependencies here
+streamlit
+pandas
+numpy
+plotly
+scikit-learn
+xgboost
 shap
+matplotlib
+requests
