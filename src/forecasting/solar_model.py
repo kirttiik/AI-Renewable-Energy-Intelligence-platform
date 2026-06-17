@@ -50,10 +50,17 @@ def load_data() -> pd.DataFrame:
     logger.info("Loading weather and generation datasets...")
     try:
         weather_df = pd.read_csv(WEATHER_PATH)
+        
+        forecast_path = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather_forecast.csv')
+        if os.path.exists(forecast_path):
+            forecast_df = pd.read_csv(forecast_path)
+            weather_df = pd.concat([weather_df, forecast_df], ignore_index=True)
+            weather_df = weather_df.drop_duplicates(subset=['date'], keep='last')
+            
         gen_df = pd.read_csv(GENERATION_PATH)
         
-        # Merge datasets on the date field
-        df = pd.merge(weather_df, gen_df, on='date', how='inner')
+        # Merge datasets on the date field (LEFT JOIN to preserve future forecast dates)
+        df = pd.merge(weather_df, gen_df, on='date', how='left')
         logger.info(f"Successfully merged datasets. Shape: {df.shape}")
         
         return df
@@ -95,8 +102,8 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
         ]
         target = 'solar_generation_mw'
         
-        # Subselect the required columns and handle any potential NaNs
-        final_df = df[['date'] + features + [target]].dropna()
+        # Subselect the required columns and handle NaNs ONLY in features
+        final_df = df[['date'] + features + [target]].dropna(subset=features)
         
         # Ensure chronological order for proper time series splitting
         final_df = final_df.sort_values('date').reset_index(drop=True)
@@ -109,15 +116,20 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
 def train_model(df: pd.DataFrame):
     """
-    Perform an 80/20 chronological time series split and train the machine learning model.
+    Perform an 80/20 chronological time series split on historical data and train the model.
+    Returns the model, test set, test dates, and future data to predict.
     """
     logger.info("Executing 80/20 time series split and training model...")
     try:
-        # Time Series Split (80% Train, 20% Test) - strictly without shuffling
-        split_idx = int(len(df) * 0.8)
+        # Separate historical (has target) from future (no target)
+        historical_df = df.dropna(subset=['solar_generation_mw']).copy()
+        future_df = df[df['solar_generation_mw'].isna()].copy()
         
-        train_df = df.iloc[:split_idx]
-        test_df = df.iloc[split_idx:]
+        # Time Series Split (80% Train, 20% Test)
+        split_idx = int(len(historical_df) * 0.8)
+        
+        train_df = historical_df.iloc[:split_idx]
+        test_df = historical_df.iloc[split_idx:]
         
         # Isolate features and target
         feature_cols = [col for col in df.columns if col not in ['date', 'solar_generation_mw']]
@@ -140,7 +152,7 @@ def train_model(df: pd.DataFrame):
         model.fit(X_train, y_train)
         logger.info("Model training completed successfully.")
         
-        return model, X_test, y_test, test_df['date']
+        return model, X_test, y_test, test_df['date'], future_df, feature_cols
     except Exception as e:
         logger.error(f"Error during model training: {e}")
         raise
@@ -232,17 +244,33 @@ def main() -> None:
         df = load_data()
         df = feature_engineering(df)
         
-        model, X_test, y_test, test_dates = train_model(df)
+        model, X_test, y_test, test_dates, future_df, feature_cols = train_model(df)
         
-        # Generate predictions
-        y_pred = model.predict(X_test)
+        # Generate historical predictions
+        y_pred_hist = model.predict(X_test)
         
         # Evaluate
-        metrics = evaluate_model(y_test, y_pred)
+        metrics = evaluate_model(y_test, y_pred_hist)
         
+        # Future Predictions!
+        if not future_df.empty:
+            future_X = future_df[feature_cols]
+            future_pred = model.predict(future_X)
+            
+            # Combine test dates/preds with future dates/preds for saving
+            all_dates = pd.concat([test_dates, future_df['date']])
+            all_y_true = pd.concat([y_test, pd.Series([np.nan]*len(future_pred))])
+            all_y_pred = np.concatenate([y_pred_hist, future_pred])
+            
+            logger.info(f"Generated {len(future_pred)} future predictions!")
+        else:
+            all_dates = test_dates
+            all_y_true = y_test
+            all_y_pred = y_pred_hist
+            
         # Save artifacts
         save_model(model)
-        save_results(test_dates, y_test, y_pred, metrics)
+        save_results(all_dates, all_y_true, all_y_pred, metrics)
         
         # Extract and save feature importance
         if hasattr(model, 'feature_importances_'):

@@ -6,6 +6,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 PIPELINE_STEPS = [
     "src/ingestion/khavda_weather_ingestion.py",
+    "src/ingestion/open_meteo_ingestion.py",
     "src/ingestion/generate_renewable_generation.py",
     "src/forecasting/solar_model.py",
     "src/forecasting/wind_model.py",

@@ -51,13 +51,19 @@ def load_data() -> pd.DataFrame:
     logger.info("Loading weather and generation data...")
     try:
         weather_df = pd.read_csv(WEATHER_DATA_PATH)
+        forecast_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'raw', 'khavda_weather_forecast.csv')
+        if os.path.exists(forecast_path):
+            forecast_df = pd.read_csv(forecast_path)
+            weather_df = pd.concat([weather_df, forecast_df], ignore_index=True)
+            weather_df = weather_df.drop_duplicates(subset=['date'], keep='last')
+            
         gen_df = pd.read_csv(GENERATION_DATA_PATH)
         
         weather_df['date'] = pd.to_datetime(weather_df['date'])
         gen_df['date'] = pd.to_datetime(gen_df['date'])
         
-        # Merge datasets on date
-        df = pd.merge(weather_df, gen_df, on='date', how='inner')
+        # Merge datasets on date (LEFT JOIN to preserve future forecast dates)
+        df = pd.merge(weather_df, gen_df, on='date', how='left')
         
         logger.info(f"Merged dataset shape: {df.shape}")
         return df
@@ -91,9 +97,9 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     req_cols = features + [target, 'date']
     df = df[req_cols]
     
-    # Remove null values
+    # Remove null values ONLY in features
     initial_len = len(df)
-    df = df.dropna()
+    df = df.dropna(subset=features)
     if len(df) < initial_len:
         logger.info(f"Dropped {initial_len - len(df)} rows containing null values.")
         
@@ -109,10 +115,14 @@ def train_model(df: pd.DataFrame):
     ]
     target = 'total_generation_mw'
     
+    # Split historical vs future
+    historical_df = df.dropna(subset=[target]).copy()
+    future_df = df[df[target].isna()].copy()
+    
     # Chronological Split: 80% Train, 20% Test (Do NOT randomly shuffle)
-    split_idx = int(len(df) * 0.8)
-    train_df = df.iloc[:split_idx]
-    test_df = df.iloc[split_idx:]
+    split_idx = int(len(historical_df) * 0.8)
+    train_df = historical_df.iloc[:split_idx]
+    test_df = historical_df.iloc[split_idx:]
     
     X_train = train_df[features]
     y_train = train_df[target]
@@ -138,7 +148,7 @@ def train_model(df: pd.DataFrame):
     test_df = test_df.copy()
     test_df['predicted_total_generation_mw'] = y_test_pred
     
-    return model, train_df, test_df, features
+    return model, train_df, test_df, future_df, features
 
 
 def evaluate_model(train_df: pd.DataFrame, test_df: pd.DataFrame):
@@ -194,11 +204,11 @@ def save_feature_importance(model, feature_names):
         return 'UNKNOWN'
 
 
-def save_results(test_df: pd.DataFrame, metrics: dict, train_len: int, test_len: int, best_feature: str):
+def save_results(preds_df: pd.DataFrame, metrics: dict, train_len: int, test_len: int, best_feature: str):
     logger.info("Saving predictions and metrics...")
     
     # Save predictions
-    output_df = test_df[['date', 'total_generation_mw', 'predicted_total_generation_mw']].rename(
+    output_df = preds_df[['date', 'total_generation_mw', 'predicted_total_generation_mw']].rename(
         columns={'total_generation_mw': 'actual_total_generation_mw'}
     )
     output_df.to_csv(PREDICTIONS_PATH, index=False)
@@ -251,18 +261,27 @@ def main():
         df = feature_engineering(df)
         
         # Validation checks
-        if df.isnull().values.any():
-            raise ValueError("Data contains null values after feature engineering.")
+        if df[feature_names].isnull().values.any():
+            raise ValueError("Data contains null values in features after feature engineering.")
         if df['date'].duplicated().any():
             raise ValueError("Data contains duplicate dates.")
             
-        model, train_df, test_df, feature_names = train_model(df)
+        model, train_df, test_df, future_df, feature_names = train_model(df)
         metrics = evaluate_model(train_df, test_df)
         
+        # Future Predictions
+        if not future_df.empty:
+            future_X = future_df[feature_names]
+            future_pred = model.predict(future_X)
+            future_df['predicted_total_generation_mw'] = future_pred
+            preds_df = pd.concat([test_df, future_df])
+        else:
+            preds_df = test_df
+            
         save_model(model)
         best_feature = save_feature_importance(model, feature_names)
-        save_results(test_df, metrics, len(train_df), len(test_df), best_feature)
-        create_visualizations(test_df)
+        save_results(preds_df, metrics, len(train_df), len(test_df), best_feature)
+        create_visualizations(preds_df)
         
         logger.info("==================================================")
         logger.info("Total Output Pipeline Completed Successfully")
