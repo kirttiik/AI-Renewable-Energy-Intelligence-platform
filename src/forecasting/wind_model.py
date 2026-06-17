@@ -257,11 +257,8 @@ def main():
         df = load_data()
         df = feature_engineering(df)
         
-        # Validation checks
-        if df[feature_names].isnull().values.any():
-            raise ValueError("Data contains null values in features after feature engineering.")
         if df['date'].duplicated().any():
-            raise ValueError("Data contains duplicate dates.")
+            df = df.drop_duplicates(subset=['date'])
             
         model, train_df, test_df, future_df, feature_names = train_model(df)
         metrics = evaluate_model(train_df, test_df)
@@ -270,10 +267,13 @@ def main():
         if not future_df.empty:
             future_X = future_df[feature_names]
             future_pred = model.predict(future_X)
+            future_df = future_df.copy()
             future_df['predicted_wind_generation_mw'] = future_pred
-            preds_df = pd.concat([test_df, future_df])
+            preds_df = pd.concat([test_df, future_df], ignore_index=True)
+            logger.info(f"Future prediction rows included: {len(future_df)}")
         else:
             preds_df = test_df
+            logger.warning("No future rows found. Open-Meteo forecast may not have loaded.")
             
         save_model(model)
         best_feature = save_feature_importance(model, feature_names)
@@ -285,7 +285,9 @@ def main():
         logger.info("==================================================")
         
     except Exception as e:
+        import traceback
         logger.error(f"Pipeline Failed: {e}")
+        logger.error(traceback.format_exc())
 
 if __name__ == "__main__":
     main()

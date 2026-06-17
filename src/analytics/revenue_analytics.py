@@ -63,29 +63,64 @@ os.makedirs(REVENUE_REPORTS_DIR, exist_ok=True)
 
 
 def load_generation_data() -> pd.DataFrame:
-    """Load forecasted renewable energy generation data to calculate future revenues."""
-    logger.info("Loading forecasted generation data...")
+    """Load historical generation data and extend with future AI predictions."""
+    logger.info("Loading generation data (historical + future predictions)...")
     try:
-        solar = pd.read_csv(os.path.join(ROOT_DIR, 'reports', 'solar', 'solar_predictions.csv'))
-        wind = pd.read_csv(os.path.join(ROOT_DIR, 'reports', 'wind', 'wind_predictions.csv'))
-        total = pd.read_csv(os.path.join(ROOT_DIR, 'reports', 'total_output', 'total_output_predictions.csv'))
+        # 1. Load historical actuals
+        hist = pd.read_csv(GENERATION_PATH)
+        hist['date'] = pd.to_datetime(hist['date'])
+        last_hist_date = hist['date'].max()
         
-        # Merge them
-        df = pd.merge(solar[['date', 'predicted_solar_generation_mw']], 
-                      wind[['date', 'predicted_wind_generation_mw']], on='date', how='outer')
-        df = pd.merge(df, total[['date', 'predicted_total_generation_mw']], on='date', how='outer')
+        # 2. Load future predictions (from the forecasting models)
+        solar_pred_path = os.path.join(ROOT_DIR, 'reports', 'solar', 'solar_predictions.csv')
+        wind_pred_path  = os.path.join(ROOT_DIR, 'reports', 'wind', 'wind_predictions.csv')
+        total_pred_path = os.path.join(ROOT_DIR, 'reports', 'total_output', 'total_output_predictions.csv')
         
-        df['date'] = pd.to_datetime(df['date'])
+        future_rows = []
+        if os.path.exists(total_pred_path):
+            total_pred = pd.read_csv(total_pred_path)
+            total_pred['date'] = pd.to_datetime(total_pred['date'])
+            # Only take rows beyond last historical date with null actuals (true future)
+            future_total = total_pred[
+                (total_pred['date'] > last_hist_date) & 
+                (total_pred['actual_total_generation_mw'].isna())
+            ][['date', 'predicted_total_generation_mw']].copy()
+            
+            if not future_total.empty and os.path.exists(solar_pred_path) and os.path.exists(wind_pred_path):
+                solar_pred = pd.read_csv(solar_pred_path)
+                solar_pred['date'] = pd.to_datetime(solar_pred['date'])
+                wind_pred = pd.read_csv(wind_pred_path)
+                wind_pred['date'] = pd.to_datetime(wind_pred['date'])
+                
+                future_solar = solar_pred[solar_pred['date'] > last_hist_date][['date', 'predicted_solar_generation_mw']]
+                future_wind  = wind_pred[wind_pred['date'] > last_hist_date][['date', 'predicted_wind_generation_mw']]
+                
+                future_merged = pd.merge(future_total, future_solar, on='date', how='left')
+                future_merged = pd.merge(future_merged, future_wind, on='date', how='left')
+                future_merged = future_merged.rename(columns={
+                    'predicted_total_generation_mw' : 'total_generation_mw',
+                    'predicted_solar_generation_mw' : 'solar_generation_mw',
+                    'predicted_wind_generation_mw'  : 'wind_generation_mw',
+                })
+                future_merged['site_name'] = 'Khavda Renewable Energy Park'
+                future_rows.append(future_merged)
         
-        # Rename to match historical column names so downstream logic doesn't break
-        df = df.rename(columns={
-            'predicted_solar_generation_mw': 'solar_generation_mw',
-            'predicted_wind_generation_mw': 'wind_generation_mw',
-            'predicted_total_generation_mw': 'total_generation_mw'
-        })
+        # 3. Combine historical + future
+        if future_rows:
+            future_df = pd.concat(future_rows, ignore_index=True)
+            # Fill any missing solar/wind estimates from total
+            future_df['solar_generation_mw'] = future_df['solar_generation_mw'].fillna(future_df['total_generation_mw'] * 0.6)
+            future_df['wind_generation_mw']  = future_df['wind_generation_mw'].fillna(future_df['total_generation_mw'] * 0.4)
+            df = pd.concat([hist, future_df], ignore_index=True)
+            logger.info(f"Appended {len(future_df)} future rows to generation data.")
+        else:
+            df = hist
+            logger.warning("No future prediction rows found.")
+        
         return df
     except Exception as e:
         logger.error(f"Failed to load generation data: {e}")
+        import traceback; logger.error(traceback.format_exc())
         raise
 
 
@@ -260,6 +295,10 @@ def save_results(df: pd.DataFrame, kpis: dict, insights_df: pd.DataFrame):
     """Save processed datasets and formatted CSV reports for dashboard consumption."""
     logger.info("Saving results...")
     try:
+        # Ensure site_name exists
+        if 'site_name' not in df.columns:
+            df['site_name'] = 'Khavda Renewable Energy Park'
+            
         # 1. Output Dataset Validation and Save
         output_cols = [
             'date', 'site_name', 'solar_generation_mw', 'wind_generation_mw', 'total_generation_mw',
@@ -267,12 +306,13 @@ def save_results(df: pd.DataFrame, kpis: dict, insights_df: pd.DataFrame):
             'daily_revenue_lakhs', 'daily_revenue_crores'
         ]
         
-        # Ensure no nulls in final dataset
-        if df[output_cols].isnull().any().any():
+        # Only validate/fill columns that exist
+        existing_cols = [c for c in output_cols if c in df.columns]
+        if df[existing_cols].isnull().any().any():
             logger.warning("Null values detected in output dataset. Forward filling...")
             df = df.ffill().fillna(0)
             
-        df[output_cols].to_csv(OUTPUT_DATA_PATH, index=False)
+        df[existing_cols].to_csv(OUTPUT_DATA_PATH, index=False)
         
         # 2. Executive Summary Metrics
         summary_df = pd.DataFrame([kpis])

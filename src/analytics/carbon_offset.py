@@ -50,24 +50,41 @@ os.makedirs(CARBON_REPORTS_DIR, exist_ok=True)
 
 
 def load_data() -> pd.DataFrame:
-    """Load forecasted renewable energy generation data."""
-    logger.info("Loading generation dataset...")
+    """Load historical generation data and extend with future AI predictions."""
+    logger.info("Loading generation dataset (historical + future)...")
     try:
-        total = pd.read_csv(os.path.join(ROOT_DIR, 'reports', 'total_output', 'total_output_predictions.csv'))
+        total_pred_path = os.path.join(ROOT_DIR, 'reports', 'total_output', 'total_output_predictions.csv')
+        total_pred = pd.read_csv(total_pred_path)
+        total_pred['date'] = pd.to_datetime(total_pred['date'])
         
-        # Rename predictions to expected format
-        df = total.rename(columns={'predicted_total_generation_mw': 'total_generation_mw'})
-        df['date'] = pd.to_datetime(df['date'])
+        # Load historical actuals from generation CSV
+        hist = pd.read_csv(os.path.join(ROOT_DIR, 'data', 'processed', 'khavda_generation.csv'))
+        hist['date'] = pd.to_datetime(hist['date'])
+        last_hist_date = hist['date'].max()
         
-        # Enforce required columns
-        req_cols = ['date', 'solar_generation_mw', 'wind_generation_mw', 'total_generation_mw', 'site_name']
-        missing = [c for c in req_cols if c not in df.columns]
-        if missing:
-            raise ValueError(f"Dataset is missing required columns: {missing}")
+        # Extract future rows from predictions (null actuals beyond last historical date)
+        future = total_pred[
+            (total_pred['date'] > last_hist_date) &
+            (total_pred['actual_total_generation_mw'].isna())
+        ][['date', 'predicted_total_generation_mw']].copy()
+        future = future.rename(columns={'predicted_total_generation_mw': 'total_generation_mw'})
+        future['site_name'] = 'Khavda Renewable Energy Park'
+        
+        # Combine
+        df = pd.concat([hist, future], ignore_index=True)
+        if future.empty:
+            logger.warning("No future prediction rows found.")
+        else:
+            logger.info(f"Appended {len(future)} future rows for carbon offset calculation.")
+        
+        # Ensure total_generation_mw exists
+        if 'total_generation_mw' not in df.columns:
+            raise ValueError("total_generation_mw column missing from merged dataset")
             
         return df
     except Exception as e:
         logger.error(f"Failed to load generation data: {e}")
+        import traceback; logger.error(traceback.format_exc())
         raise
 
 

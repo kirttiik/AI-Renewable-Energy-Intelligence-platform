@@ -10,24 +10,24 @@ Solar,year,0.0001
 Solar,week_of_year,0.0001
 Solar,is_weekend,0.0001
 Solar,quarter,0.0
-Wind,wind_speed_ms,0.9801
-Wind,day_of_year,0.0069
-Wind,humidity_pct,0.0053
-Wind,temperature_c,0.0029
-Wind,cloud_cover_pct,0.0018
-Wind,month,0.0013
-Wind,is_weekend,0.0008
-Wind,rainfall_mm,0.0006
-Wind,week_of_year,0.0004
+Wind,wind_speed_ms,0.9814
+Wind,day_of_year,0.0054
+Wind,humidity_pct,0.0049
+Wind,temperature_c,0.0032
+Wind,cloud_cover_pct,0.0023
+Wind,is_weekend,0.0012
+Wind,rainfall_mm,0.0007
+Wind,month,0.0007
+Wind,week_of_year,0.0002
 Wind,quarter,0.0
-Total Output,solar_radiation_kwh_m2_day,0.5288
-Total Output,cloud_cover_pct,0.3526
-Total Output,wind_speed_ms,0.0667
-Total Output,temperature_c,0.0421
-Total Output,rainfall_mm,0.0074
-Total Output,day_of_year,0.0007
-Total Output,humidity_pct,0.0006
-Total Output,month,0.0005
-Total Output,week_of_year,0.0004
-Total Output,is_weekend,0.0003
+Total Output,solar_radiation_kwh_m2_day,0.5256
+Total Output,cloud_cover_pct,0.3538
+Total Output,wind_speed_ms,0.0666
+Total Output,temperature_c,0.0423
+Total Output,rainfall_mm,0.0077
+Total Output,day_of_year,0.0017
+Total Output,humidity_pct,0.0009
+Total Output,week_of_year,0.0007
+Total Output,is_weekend,0.0005
+Total Output,month,0.0003
 Total Output,quarter,0.0
