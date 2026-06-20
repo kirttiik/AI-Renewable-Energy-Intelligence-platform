@@ -1,7 +1,7 @@
 Category,Insight
-Forecast Reliability,"The Total Output forecast is heavily driven by solar_radiation_kwh_m2_day (52.56% importance), acting as the primary anchor for overall grid predictability."
-Solar Operations,Solar generation dependency on cloud_cover_pct sits at an overwhelmingly high 68.34%. Any anomaly in cloud_cover_pct will immediately impact daily megawatt yield.
-Wind Operations,Wind aerodynamic predictability is dominated by wind_speed_ms (98.14%). Proactive turbine yaw alignments should be scheduled around wind_speed_ms variance.
-Secondary Risk Factor,"Beyond primary drivers, solar_radiation_kwh_m2_day acts as the most critical secondary variable (42.01% cross-model average), requiring continuous weather monitoring."
+Forecast Reliability,"The Total Output forecast is heavily driven by solar_radiation_kwh_m2_day (56.15% importance), acting as the primary anchor for overall grid predictability."
+Solar Operations,Solar generation dependency on cloud_cover_pct sits at an overwhelmingly high 68.51%. Any anomaly in cloud_cover_pct will immediately impact daily megawatt yield.
+Wind Operations,Wind aerodynamic predictability is dominated by wind_speed_ms (97.92%). Proactive turbine yaw alignments should be scheduled around wind_speed_ms variance.
+Secondary Risk Factor,"Beyond primary drivers, solar_radiation_kwh_m2_day acts as the most critical secondary variable (43.71% cross-model average), requiring continuous weather monitoring."
 Revenue Security,"Because our top features drive >90% of model predictability, isolating our sensor grid maintenance to prioritize these exact metrics will secure maximum INR revenue."
 Sustainability Verification,Stable forecasting accuracy driven by these top variables enables highly reliable ESG reporting and carbon offset monetization baselines.
