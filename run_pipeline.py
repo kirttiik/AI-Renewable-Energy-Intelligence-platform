@@ -5,6 +5,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 PIPELINE_STEPS = [
+    "src/ingestion/iex_scraper.py",
     "src/ingestion/khavda_weather_ingestion.py",
     "src/ingestion/open_meteo_ingestion.py",
     "src/ingestion/generate_renewable_generation.py",
