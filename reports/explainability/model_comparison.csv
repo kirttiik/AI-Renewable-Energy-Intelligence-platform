@@ -1,4 +1,4 @@
 Model,Top Driver,Importance %,Business Meaning,Top_Feature,Importance
-Solar,cloud_cover_pct,69.09%,Solar generation is highly predictable based on irradiance.,cloud_cover_pct,0.6909397
-Wind,wind_speed_ms,97.91%,Wind generation is highly predictable.,wind_speed_ms,0.9790525
-Total Output,solar_radiation_kwh_m2_day,56.86%,Blended operations reduce overall intermittency.,solar_radiation_kwh_m2_day,0.5685562
+Solar,cloud_cover_pct,69.59%,Solar generation is highly predictable based on irradiance.,cloud_cover_pct,0.6959019
+Wind,wind_speed_ms,97.83%,Wind generation is highly predictable.,wind_speed_ms,0.9782972
+Total Output,solar_radiation_kwh_m2_day,55.65%,Blended operations reduce overall intermittency.,solar_radiation_kwh_m2_day,0.5565396

@@ -1,12 +1,12 @@
 KPI,Value,Unit
-Total Generation,221081.73,MW
-Average Daily Generation,120.22,MW
-Total Revenue,994867794.03,INR
-Average Daily Revenue,540983.03,INR
-Total Revenue At Risk,14472453.97,INR
-Total CO2 Avoided,181286.99,Tons
-Total Coal Saved,110541.01,Tons
+Total Generation,221126.43,MW
+Average Daily Generation,120.24,MW
+Total Revenue,995068924.13,INR
+Average Daily Revenue,541092.4,INR
+Total Revenue At Risk,14476407.35,INR
+Total CO2 Avoided,181323.62,Tons
+Total Coal Saved,110563.34,Tons
 Total Trees Equivalent,6.49,Million
 High Risk Days,4,Days
 Critical Alert Days,4,Days
-Average Forecast Error,2.07%,%
+Average Forecast Error,2.15%,%
