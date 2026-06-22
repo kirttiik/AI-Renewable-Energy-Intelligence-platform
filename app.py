@@ -674,7 +674,9 @@ def render_shap_analytics():
 # ===========================================================================
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_iex_data():
-    """Load or generate all IEX analytics data."""
+    """Load or generate all IEX analytics data.
+    Note: Cache busted to load restored optimistic/pessimistic columns.
+    """
     import sys
     ROOT = os.path.dirname(os.path.abspath(__file__))
     sys.path.insert(0, ROOT)
@@ -982,15 +984,20 @@ def render_iex_analytics():
         )
         st.plotly_chart(fig_fut, use_container_width=True)
 
+        # Invalidate cache if needed
+        # @st.cache_data
+        # def load_iex_data():
+        #     # Refresh cache by timestamp
+        
         display_fut = future[[
-            'date','forecast_generation_mw','expected_dam_price',
+            'date','forecast_generation_mw','expected_dam_price_kwh',
             'forecast_revenue_lakhs','optimistic_revenue_inr','pessimistic_revenue_inr'
         ]].copy()
         display_fut['date'] = display_fut['date'].dt.strftime('%Y-%m-%d')
         display_fut['optimistic_revenue_inr']   /= 1e5
         display_fut['pessimistic_revenue_inr']  /= 1e5
         display_fut.columns = [
-            'Date','Forecast Gen (MW)','Expected Price (₹/MWh)',
+            'Date','Forecast Gen (MW)','Expected Price (₹/kWh)',
             'Revenue (₹ L)','Optimistic (₹ L)','Pessimistic (₹ L)'
         ]
         st.dataframe(display_fut, use_container_width=True)
