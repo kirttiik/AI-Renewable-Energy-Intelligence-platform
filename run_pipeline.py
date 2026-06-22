@@ -15,6 +15,7 @@ PIPELINE_STEPS = [
     "src/ingestion/open_meteo_hourly_ingestion.py",   # After models — uses their predictions
     "src/analytics/carbon_offset.py",
     "src/analytics/weather_risk.py",
+    "src/analytics/iex_analytics.py",
     "src/analytics/revenue_analytics.py",
     "src/analytics/model_explainability.py",
     "src/analytics/shap_explainability.py",

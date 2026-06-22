@@ -1,2 +1,2 @@
-avg_dam_price_rs_mwh,max_dam_price_rs_mwh,min_dam_price_rs_mwh,price_volatility_pct,avg_daily_revenue_inr,total_revenue_inr,max_day_revenue_inr,min_day_revenue_inr,highest_price_day,lowest_price_day
-4398.84,12000.0,2385.05,25.73,546389.91,997707978.98,2170740.89,58943.4,2022-04-22,2022-07-16
+avg_dam_price_rs_mwh,avg_dam_price_rs_kwh,avg_rtm_price_rs_mwh,avg_rtm_price_rs_kwh,max_dam_price_rs_mwh,max_dam_price_rs_kwh,min_dam_price_rs_mwh,min_dam_price_rs_kwh,price_volatility_pct,avg_daily_revenue_inr,total_revenue_inr,max_day_revenue_inr,min_day_revenue_inr,highest_price_day,lowest_price_day
+4432.13,4.43,4547.14,4.55,12000.0,12.0,2053.81,2.05,27.58,551082.26,1006276215.65,2255803.67,50818.5,2022-03-11,2024-08-09
