@@ -127,6 +127,7 @@ with st.sidebar:
         "🧠 AI Explainability",
         "🔬 SHAP Analytics",
         "⚡ IEX Analytics",
+        "🌐 Grid Intelligence",
     ]
     selection = st.radio("Navigation", sections)
     
@@ -1134,6 +1135,89 @@ elif selection == "🔬 SHAP Analytics":
     render_shap_analytics()
 elif selection == "⚡ IEX Analytics":
     render_iex_analytics()
+
+# ===========================================================================
+# GRID INTELLIGENCE
+# ===========================================================================
+def render_grid_analytics():
+    st.title("🌐 Grid Intelligence (NLDC Frequency)")
+    st.markdown("Track National Load Despatch Centre (NLDC) daily grid frequency to predict curtailment risks and Deviation Settlement Mechanism (DSM) penalties.")
+
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    grid_path = os.path.join(ROOT, 'data', 'grid', 'nldc_grid_frequency.csv')
+    
+    if not os.path.exists(grid_path):
+        st.warning("Grid frequency data not found. Please run the NLDC scraper pipeline.")
+        return
+        
+    df = pd.read_csv(grid_path)
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    df['date'] = df['datetime'].dt.date
+    
+    # Filter by time horizon
+    df_f = filter_by_time_horizon(df, global_time_horizon, custom_start_date, custom_end_date)
+    
+    if df_f.empty:
+        st.info(f"No grid frequency data available for the selected horizon: {global_time_horizon}")
+        return
+        
+    avg_freq = df_f['frequency_hz'].mean()
+    min_freq = df_f['frequency_hz'].min()
+    max_freq = df_f['frequency_hz'].max()
+    
+    under_freq = len(df_f[df_f['frequency_hz'] < 49.90])
+    over_freq = len(df_f[df_f['frequency_hz'] > 50.05])
+    total_danger = under_freq + over_freq
+    
+    st.markdown("### Frequency KPIs")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Average Frequency", f"{avg_freq:.2f} Hz")
+    c2.metric("Minimum Frequency", f"{min_freq:.2f} Hz", delta=f"{(min_freq - 50.0):.2f} Hz", delta_color="inverse")
+    c3.metric("Maximum Frequency", f"{max_freq:.2f} Hz", delta=f"{(max_freq - 50.0):.2f} Hz", delta_color="inverse")
+    c4.metric("Danger Zone Blocks", f"{total_danger}", delta="High Risk", delta_color="off")
+    
+    st.markdown("---")
+    st.subheader("📈 15-Minute Frequency Profile")
+    
+    fig = go.Figure()
+    
+    # Safe zones shading
+    fig.add_hrect(y0=49.90, y1=50.05, line_width=0, fillcolor="green", opacity=0.1, annotation_text="Safe Zone")
+    
+    # Scatter plot for frequency
+    fig.add_trace(go.Scatter(
+        x=df_f['datetime'], y=df_f['frequency_hz'],
+        mode='lines+markers', name='Frequency (Hz)',
+        line=dict(color='#3498DB', width=2),
+        marker=dict(size=4)
+    ))
+    
+    # Red lines for danger zones
+    fig.add_hline(y=49.90, line_dash="dash", line_color="red", annotation_text="Under-frequency (<49.90)")
+    fig.add_hline(y=50.05, line_dash="dash", line_color="red", annotation_text="Over-frequency (>50.05)")
+    
+    fig.update_layout(
+        xaxis_title='Time',
+        yaxis_title='Frequency (Hz)',
+        yaxis=dict(range=[49.7, 50.3]),
+        height=500,
+        showlegend=False
+    )
+    st.plotly_chart(fig, use_container_width=True)
+    
+    st.markdown("### Deviation Settlement Mechanism (DSM) Log")
+    display_df = df_f[['datetime', 'frequency_hz', 'grid_stress_flag']].copy()
+    display_df.columns = ['Time', 'Frequency (Hz)', 'Grid Stress Flag']
+    
+    # Highlight danger zones in dataframe
+    def color_danger(val):
+        color = 'red' if 'High Risk' in str(val) else 'green'
+        return f'color: {color}'
+        
+    st.dataframe(display_df.style.applymap(color_danger, subset=['Grid Stress Flag']), use_container_width=True)
+
+elif selection == "🌐 Grid Intelligence":
+    render_grid_analytics()
 
 # Footer
 st.markdown("---")
