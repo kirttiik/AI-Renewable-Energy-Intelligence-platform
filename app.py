@@ -341,49 +341,141 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
 # ==========================================
 
 def render_executive_overview():
-    st.title("🏠 Executive Overview")
-    st.markdown("High-level consolidation of Generation, Financials, Sustainability, and Risk.")
+    st.title("📊 Daily Executive Intelligence Summary")
+    st.markdown("Top-level aggregation of Generation Forecasting, Financial Trading, and Grid Compliance.")
     
-    df_exec = filter_by_time_horizon(data['exec_summary'], global_time_horizon, custom_start_date, custom_end_date)
-    
-    if not df_exec.empty:
-        total_gen = df_exec['total_generation_mw'].sum()
-        total_rev = df_exec['daily_revenue_inr'].sum()
-        co2_avoided = df_exec['co2_avoided_tons'].sum()
-        
-        if len(df_exec) > 0 and 'predicted_total_generation_mw' in df_exec.columns:
-            avg_error = (df_exec['total_generation_mw'] - df_exec['predicted_total_generation_mw']).abs().mean()
-            avg_error_str = f"{avg_error:.2f} MW"
-        else:
-            avg_error_str = "N/A"
-            
-        coal_saved = df_exec['coal_saved_tons'].sum()
-        trees = df_exec['trees_equivalent_million'].sum()
-        crit_days = (df_exec['overall_risk_level'] == 'CRITICAL').sum()
-        high_days = (df_exec['overall_risk_level'] == 'HIGH').sum()
-        
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total Generation", f"{safe_number(total_gen):,.0f} MW")
-        col2.metric("Total Revenue", f"₹ {safe_number(total_rev):,.0f}")
-        col3.metric("CO₂ Avoided", f"{safe_number(co2_avoided):,.0f} Tons")
-        col4.metric("Average Forecast Error", avg_error_str)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Coal Saved", f"{safe_number(coal_saved):,.0f} Tons")
-        col2.metric("Trees Equivalent", f"{safe_number(trees):,.0f} M")
-        col3.metric("Critical Risk Days", f"{crit_days}")
-        col4.metric("High Risk Days", f"{high_days}")
-    else:
-        st.warning("No Executive data available for the selected Time Horizon.")
-        
+    # Date picker for the executive report
+    selected_date = st.date_input("Select Reporting Date:", datetime.date.today())
     st.markdown("---")
-    st.subheader("Executive Summary Table")
     
-    if not df_exec.empty:
-        st.dataframe(df_exec.tail(30).style.highlight_max(axis=0))
+    # =====================================================================
+    # DUMMY DATA GENERATION (Simulating backend models)
+    # =====================================================================
+    # Generation & Revenue
+    total_gen_mwh = 12450.50
+    gen_delta_pct = "+2.5%"
+    projected_revenue = 4520500  # ₹ 45.2 Lakhs
+    revenue_delta = "₹ +1.2 L vs Yesterday"
+    
+    # Sustainability
+    solar_mw = 8500
+    wind_mw = 3950.5
+    co2_avoided_tons = (total_gen_mwh * 1000 * 0.82) / 1000  # Based on 0.82 kg/kWh factor
+    coal_saved_tons = (total_gen_mwh * 1000 * 0.5) / 1000    # Based on 0.5 kg/kWh factor
+    
+    # Grid Risk & Commercial
+    grid_status = "Safe Zone" # Toggle to "High Curtailment Risk" to test the UI
+    iex_dam_price = "₹ 4.15 / kWh"
+    iex_rtm_spike = "Detected between 17:00 - 19:00 (Expected ₹ 6.50 / kWh)"
+    nldc_trend = "Stable around 50.00 Hz. Minor dips expected during evening ramp."
+    dsm_penalty_exposure = "₹ 0 (Negligible Risk)"
+    
+    # =====================================================================
+    # 2. THE "BOTTOM LINE" KPIs
+    # =====================================================================
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.metric("Total Forecasted Generation (MWh)", f"{total_gen_mwh:,.0f} MWh", delta=gen_delta_pct)
+        
+    with c2:
+        st.metric("Projected IEX Revenue (₹)", f"₹ {projected_revenue / 100000:,.2f} L", delta=revenue_delta)
+        
+    with c3:
+        # Custom colored metric for risk status
+        st.markdown("**Grid Compliance Status**")
+        if grid_status == "Safe Zone":
+            st.markdown(f"<h2 style='color:#2ECC71; margin-top:-15px;'>{grid_status}</h2>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<h2 style='color:#E74C3C; margin-top:-15px;'>{grid_status}</h2>", unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # =====================================================================
+    # 3. SECTION 1: ML FORECASTING & SUSTAINABILITY
+    # =====================================================================
+    with st.container():
+        st.subheader("⚡ Generation & Sustainability Outlook")
+        
+        col_gen, col_sus = st.columns([1.5, 1])
+        
+        with col_gen:
+            # Plotly Donut Chart for Asset Breakdown
+            fig_assets = go.Figure(data=[go.Pie(
+                labels=['Solar Generation', 'Wind Generation'],
+                values=[solar_mw, wind_mw],
+                hole=.4,
+                marker_colors=['#F1C40F', '#3498DB']
+            )])
+            fig_assets.update_layout(
+                margin=dict(l=0, r=0, t=30, b=0),
+                height=200,
+                showlegend=True
+            )
+            st.plotly_chart(fig_assets, use_container_width=True)
+            
+        with col_sus:
+            st.info("**Environmental Impact (Today)**")
+            st.metric("🌍 CO2 Avoided", f"{co2_avoided_tons:,.0f} Tons")
+            st.metric("🪨 Coal Displaced", f"{coal_saved_tons:,.0f} Tons")
+    
+    st.markdown("---")
+    
+    # =====================================================================
+    # 4. SECTION 2: COMMERCIAL & GRID RISK SUMMARY
+    # =====================================================================
+    with st.container():
+        st.subheader("📈 Market & Regulatory Exposure")
+        
+        col_iex, col_grid = st.columns(2)
+        
+        with col_iex:
+            st.markdown("#### 💰 IEX Financial Markets")
+            st.markdown(f"**Expected DAM Clearing Price:** <span style='color:#3498DB'>{iex_dam_price}</span>", unsafe_allow_html=True)
+            st.markdown(f"**RTM Spike Opportunity:** <span style='color:#E67E22'>{iex_rtm_spike}</span>", unsafe_allow_html=True)
+            st.caption("Recommendation: Withhold 5% of solar dispatch for evening RTM bidding.")
+            
+        with col_grid:
+            st.markdown("#### ⚖️ Grid DSM Compliance")
+            st.markdown(f"**National Grid Frequency Trend:** {nldc_trend}")
+            st.markdown(f"**Estimated DSM Penalty Exposure:** <span style='color:#2ECC71'>{dsm_penalty_exposure}</span>", unsafe_allow_html=True)
+            st.caption("Operator action required only if frequency drops below 49.90 Hz.")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # =====================================================================
+    # 5. EXECUTIVE ACTION PLAN
+    # =====================================================================
+    st.markdown("### 📋 Executive Action Plan")
+    if grid_status == "Safe Zone":
+        st.success(
+            "**Executive Summary:** Generation is optimal today. Recommend holding baseline schedule. "
+            "Monitor 17:00 to 19:00 window to capitalize on RTM price spikes. No immediate curtailment risks detected."
+        )
     else:
-        st.warning("Executive Summary dataset is missing or empty for this timeframe.")
+        st.error(
+            "**Executive Summary:** High grid curtailment risk detected due to abnormal frequency anomalies. "
+            "Recommend immediate schedule revision and diversion of excess generation to battery storage."
+        )
+    
+    st.markdown("---")
+    
+    # =====================================================================
+    # 6. EXPORT FUNCTIONALITY
+    # =====================================================================
+    csv_data = pd.DataFrame({
+        "Date": [selected_date],
+        "Generation_MWh": [total_gen_mwh],
+        "Revenue_INR": [projected_revenue],
+        "Grid_Status": [grid_status]
+    }).to_csv(index=False).encode('utf-8')
+    
+    st.download_button(
+        label="📥 Download Daily Executive Report (CSV)",
+        data=csv_data,
+        file_name=f"Khavda_Executive_Summary_{selected_date}.csv",
+        mime="text/csv",
+    )
 
 def render_generation_analytics():
     st.title("⚡ Generation Analytics")
