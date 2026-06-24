@@ -1234,6 +1234,118 @@ def render_grid_analytics():
         
     st.dataframe(display_df.style.map(style_flags, subset=['Grid Stress Flag']), use_container_width=True, height=400)
 
+    st.markdown("---")
+    st.markdown("## ⚡ Real-Time Grid Crisis Simulator")
+    st.markdown(
+        """
+        **Industrial Control Room Simulation Tool:** 
+        Test how varying operational response times to sudden weather anomalies and grid frequency 
+        excursions impact financial penalties under the Deviation Settlement Mechanism (DSM).
+        """
+    )
+    
+    col_input1, col_input2 = st.columns([2, 1])
+    
+    with col_input1:
+        scenario = st.selectbox(
+            "Select Operational Crisis Scenario:",
+            [
+                "Scenario 1: Sudden Cloud Cover (Under-generation)",
+                "Scenario 2: Midday Solar Peak (Over-generation)",
+                "Scenario 3: Stable Operations (Baseline)"
+            ]
+        )
+    
+    with col_input2:
+        response_time = st.slider(
+            "Operator Response Time (Minutes):", 
+            min_value=0, 
+            max_value=60, 
+            value=15, 
+            step=1
+        )
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    def run_simulation(selected_scenario, minutes_delayed):
+        freq_hz = 50.00
+        sched_mw = 1000
+        actual_mw = 1000
+        action = "Hold Baseline"
+        financial_impact = 0
+        impact_type = "Penalty"
+        
+        PENALTY_MULTIPLIER = 5000 
+        OPPORTUNITY_MULTIPLIER = 3000
+        
+        if "Scenario 1" in selected_scenario:
+            freq_hz = 49.82
+            actual_mw = 800
+            action = "Immediate Schedule Revision / Buy Power on Open Market"
+            deficit = sched_mw - actual_mw
+            financial_impact = deficit * minutes_delayed * PENALTY_MULTIPLIER
+            impact_type = "DSM Penalty Accrued (₹)"
+            
+        elif "Scenario 2" in selected_scenario:
+            freq_hz = 50.15
+            actual_mw = 1200
+            action = "Divert to Battery Storage / Sell on IEX Real-Time Market (RTM)"
+            surplus = actual_mw - sched_mw
+            financial_impact = surplus * minutes_delayed * OPPORTUNITY_MULTIPLIER
+            impact_type = "Avoidable Revenue Loss (₹)"
+            
+        elif "Scenario 3" in selected_scenario:
+            freq_hz = 50.00
+            actual_mw = 995
+            action = "Hold Baseline"
+            financial_impact = 0
+            impact_type = "DSM Penalty Accrued (₹)"
+            
+        efficiency_rating = max(0.0, 100 - ((minutes_delayed / 60) * 100))
+        return freq_hz, sched_mw, actual_mw, action, financial_impact, impact_type, efficiency_rating
+    
+    sim_freq, sim_sched, sim_actual, sim_action, sim_finance, sim_finance_label, sim_efficiency = run_simulation(scenario, response_time)
+    
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        freq_delta = sim_freq - 50.00
+        st.metric(
+            label="Grid Frequency (Hz)", 
+            value=f"{sim_freq:.2f} Hz", 
+            delta=f"{freq_delta:.2f} Hz", 
+            delta_color="inverse" if abs(freq_delta) > 0.05 else "normal"
+        )
+    with c2:
+        mw_gap = sim_actual - sim_sched
+        st.metric(
+            label="Actual vs Scheduled (MW)", 
+            value=f"{sim_actual} MW", 
+            delta=f"{mw_gap} MW Deviation",
+            delta_color="off" if mw_gap == 0 else "normal"
+        )
+    with c3:
+        st.markdown("**System Recommendation:**")
+        if "Scenario 1" in scenario:
+            st.error(f"🚨 {sim_action}")
+        elif "Scenario 2" in scenario:
+            st.warning(f"⚠️ {sim_action}")
+        else:
+            st.success(f"✅ {sim_action}")
+            
+    st.markdown("---")
+    
+    with st.container():
+        st.markdown("### 💸 Financial Impact Analysis")
+        if sim_finance > 0:
+            st.markdown(f"#### {sim_finance_label}: <span style='color:#E74C3C'>**₹ {sim_finance:,.2f}**</span>", unsafe_allow_html=True)
+            st.caption("Notice how delayed response time scales the financial penalty dramatically during crisis events.")
+        else:
+            st.markdown(f"#### {sim_finance_label}: <span style='color:#2ECC71'>**₹ 0.00**</span>", unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(f"**Operator Efficiency Rating: {int(sim_efficiency)}%**")
+        st.progress(sim_efficiency / 100.0)
+
 if selection == "🏠 Executive Overview":
     render_executive_overview()
 elif selection == "⚡ Generation Analytics":
