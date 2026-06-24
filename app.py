@@ -1122,8 +1122,14 @@ def render_iex_analytics():
 # GRID INTELLIGENCE
 # ===========================================================================
 def render_grid_analytics():
-    st.title("🌐 Grid Intelligence (NLDC Frequency)")
-    st.markdown("Track National Load Despatch Centre (NLDC) daily grid frequency to predict curtailment risks and Deviation Settlement Mechanism (DSM) penalties.")
+    st.title("🌐 Grid Intelligence (NLDC Frequency Monitor)")
+    st.markdown(
+        """
+        Track National Load Despatch Centre (NLDC) daily grid frequency to predict 
+        curtailment risks and Deviation Settlement Mechanism (DSM) financial penalties.
+        """
+    )
+    st.markdown("---")
 
     ROOT = os.path.dirname(os.path.abspath(__file__))
     grid_path = os.path.join(ROOT, 'data', 'grid', 'nldc_grid_frequency.csv')
@@ -1147,71 +1153,86 @@ def render_grid_analytics():
     min_freq = df_f['frequency_hz'].min()
     max_freq = df_f['frequency_hz'].max()
     
-    under_freq = len(df_f[df_f['frequency_hz'] < 49.90])
-    over_freq = len(df_f[df_f['frequency_hz'] > 50.05])
-    total_danger = under_freq + over_freq
+    avg_freq = df_f['frequency_hz'].mean()
+    min_freq = df_f['frequency_hz'].min()
+    max_freq = df_f['frequency_hz'].max()
+    danger_blocks = df_f[df_f['grid_stress_flag'] != "Normal"].shape[0]
     
-    st.markdown("### Frequency KPIs")
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Average Frequency", f"{avg_freq:.2f} Hz")
-    c2.metric("Minimum Frequency", f"{min_freq:.2f} Hz", delta=f"{(min_freq - 50.0):.2f} Hz", delta_color="inverse")
-    c3.metric("Maximum Frequency", f"{max_freq:.2f} Hz", delta=f"{(max_freq - 50.0):.2f} Hz", delta_color="inverse")
-    c4.metric("Danger Zone Blocks", f"{total_danger}", delta="High Risk", delta_color="off")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric(label="Average Frequency", value=f"{avg_freq:.3f} Hz")
+    with col2:
+        st.metric(label="Minimum Frequency", value=f"{min_freq:.3f} Hz", delta=f"{min_freq - 50.00:.3f} Hz", delta_color="inverse")
+    with col3:
+        st.metric(label="Maximum Frequency", value=f"{max_freq:.3f} Hz", delta=f"{max_freq - 50.00:.3f} Hz", delta_color="inverse")
+    with col4:
+        st.metric(label="Danger Zone Blocks", value=f"{danger_blocks}", delta="Action Required" if danger_blocks > 0 else "Stable", delta_color="off" if danger_blocks == 0 else "inverse")
     
     st.markdown("---")
-    st.subheader("📈 15-Minute Frequency Profile")
+    st.subheader("📈 15-Minute Frequency Profile & Regulatory Bands")
     
     fig = go.Figure()
     
-    # Safe zones shading
-    fig.add_hrect(
-        y0=49.90, y1=50.05, 
-        line_width=0, 
-        fillcolor="rgba(0, 255, 0, 0.1)", 
-        annotation_text="Safe Zone", 
-        annotation_position="top left"
-    )
-    
-    # Scatter plot for frequency
+    # Plot the real-time frequency timeline
     fig.add_trace(go.Scatter(
-        x=df_f['datetime'], y=df_f['frequency_hz'],
-        mode='lines+markers', name='Frequency (Hz)',
-        line=dict(color='#3498DB', width=2),
+        x=df_f['datetime'], 
+        y=df_f['frequency_hz'],
+        mode='lines+markers',
+        name='Grid Frequency',
+        line=dict(color='#3498DB', width=2.5),
         marker=dict(size=4)
     ))
     
-    # Red lines for danger zones
+    # Add upper regulatory ceiling line (50.05 Hz)
     fig.add_hline(
         y=50.05, line_dash="dash", line_color="red", 
-        annotation_text="Over-frequency (>50.05)", annotation_position="top right"
+        annotation_text="Over-frequency Ceiling (50.05 Hz)", annotation_position="top left"
     )
+    
+    # Add lower regulatory floor line (49.90 Hz)
     fig.add_hline(
         y=49.90, line_dash="dash", line_color="red", 
-        annotation_text="Under-frequency (<49.90)", annotation_position="bottom right"
+        annotation_text="Under-frequency Floor (49.90 Hz)", annotation_position="bottom left"
+    )
+    
+    # Shaded Area for the Safe Operating Zone
+    fig.add_hrect(
+        y0=49.90, y1=50.05, 
+        fillcolor="green", opacity=0.08, 
+        layer="below", line_width=0,
+        annotation_text="CERC Safe Shaded Band",
+        annotation_position="inside top left"
     )
     
     fig.update_layout(
-        xaxis_title='Time',
-        yaxis_title='Frequency (Hz)',
-        yaxis=dict(range=[49.7, 50.3]),
+        xaxis_title='Time of Day (15-Min Blocks)',
+        yaxis_title='Grid Frequency (Hz)',
+        yaxis=dict(range=[49.75, 50.30]),
+        hovermode="x unified",
         height=500,
-        showlegend=False
+        showlegend=False,
+        margin=dict(l=20, r=20, t=20, b=20)
     )
     st.plotly_chart(fig, use_container_width=True)
     
-    st.markdown("### Deviation Settlement Mechanism (DSM) Log")
+    st.markdown("---")
+    st.subheader("📑 Deviation Settlement Mechanism (DSM) Logs")
+    st.markdown("Historical 15-minute raw interval logging with operational risk classification:")
+    
     display_df = df_f[['datetime', 'frequency_hz', 'grid_stress_flag']].copy()
     display_df.columns = ['Time', 'Frequency (Hz)', 'Grid Stress Flag']
     
-    # Highlight danger zones in dataframe
-    def color_danger(val):
-        if 'High Risk' in str(val):
-            return 'color: #E74C3C; font-weight: bold;'
-        elif str(val) == 'Normal':
-            return 'color: #2ECC71;'
-        return ''
+    # Custom color styler function for the dataframe UI
+    def style_flags(val):
+        if str(val) == "Normal":
+            return "color: #2ecc71; font-weight: bold;"
+        elif "Under-frequency" in str(val):
+            return "color: #e74c3c; font-weight: bold;"
+        elif "Over-frequency" in str(val):
+            return "color: #f39c12; font-weight: bold;"
+        return ""
         
-    st.dataframe(display_df.style.map(color_danger, subset=['Grid Stress Flag']), use_container_width=True)
+    st.dataframe(display_df.style.map(style_flags, subset=['Grid Stress Flag']), use_container_width=True, height=400)
 
 if selection == "🏠 Executive Overview":
     render_executive_overview()
