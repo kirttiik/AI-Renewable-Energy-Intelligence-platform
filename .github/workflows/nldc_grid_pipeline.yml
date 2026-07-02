@@ -2,7 +2,7 @@ name: NLDC Grid Intelligence Pipeline
 
 on:
   schedule:
-    # 06:00 AM IST is 00:30 AM UTC
+    # 06:00 AM IST = 00:30 AM UTC
     - cron: '30 0 * * *'
   workflow_dispatch: # Allow manual trigger from GitHub UI
 
@@ -10,39 +10,44 @@ jobs:
   scrape-grid-frequency:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
-        
-      - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v4
         with:
-          python-version: '3.10'
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
           cache: 'pip'
           
       - name: Install System Dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libpq-dev gcc
-          
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libpq-dev gcc
+
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # If playwright is used in other modules during this run, install it
-          playwright install chromium
-          
+
+      - name: Install Playwright (for NLDC scraper)
+        run: |
+          playwright install chromium --with-deps
+
       - name: Run NLDC Grid Frequency Scraper
         env:
-          # Use GitHub Secrets to securely pass the Postgres connection string
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          python src/ingestion/nldc_grid_scraper.py
+        run: python src/ingestion/nldc_grid_scraper.py
           
-      - name: Commit Local CSV Fallbacks (if database unavailable)
+      - name: Commit Local CSV Fallbacks
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/grid/
-          git commit -m "Automated Run: Updated NLDC Grid Frequency Local Fallback Data" || echo "No changes to commit"
+          git diff --staged --quiet || git commit -m "ci: updated NLDC grid frequency data $(date -u '+%Y-%m-%d')"
           git push

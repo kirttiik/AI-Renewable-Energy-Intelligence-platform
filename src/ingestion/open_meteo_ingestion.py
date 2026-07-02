@@ -7,6 +7,7 @@ historical weather data schemas.
 """
 
 import os
+import sys
 import requests
 import pandas as pd
 import logging
@@ -81,8 +82,8 @@ def fetch_future_weather() -> pd.DataFrame:
         final_df = df[required_cols].copy()
         
         # Handle edge cases (missing future values)
-        final_df.fillna(method='ffill', inplace=True)
-        final_df.fillna(0, inplace=True)
+        final_df = final_df.ffill()
+        final_df = final_df.fillna(0)
         
         logger.info(f"Successfully processed {len(final_df)} days of future weather data.")
         return final_df
@@ -108,6 +109,7 @@ def main():
         logger.info("==================================================")
     except Exception as e:
         logger.error(f"Open-Meteo Ingestion Pipeline Failed: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
