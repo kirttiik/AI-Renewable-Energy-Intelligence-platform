@@ -188,9 +188,8 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
     # Custom Range handling
     if horizon == "📅 Custom Range":
         if custom_start and custom_end:
-            start = pd.Timestamp(custom_start)
-            end   = pd.Timestamp(custom_end)
-            return df[(df['date'] >= start) & (df['date'] <= end)]
+            # Compare using .dt.date to safely ignore time components
+            return df[(df['date'].dt.date >= custom_start) & (df['date'].dt.date <= custom_end)]
         return df
 
     # Find the true "Today" (last day of actual historical data)
@@ -716,6 +715,7 @@ def render_carbon_analytics():
         col3.metric("Trees Equivalent", f"{safe_number(total_trees):,.2f} Million")
         
         fig = px.area(df_carb, x='date', y='co2_avoided_tons', title="CO₂ Avoided Over Time", color_discrete_sequence=['forestgreen'])
+        fig.update_traces(mode='lines+markers')
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("Carbon Analytics dataset is missing.")
@@ -1010,13 +1010,13 @@ def render_iex_analytics():
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=iex_f['date'], y=iex_f['dam_price_rs_kwh'],
-            mode='lines', name='DAM Price',
+            mode='lines+markers', name='DAM Price',
             line=dict(color='#FF6B35', width=1.5)
         ))
         if 'rtm_price_rs_kwh' in iex_f.columns:
             fig.add_trace(go.Scatter(
                 x=iex_f['date'], y=iex_f['rtm_price_rs_kwh'],
-                mode='lines', name='RTM Price',
+                mode='lines+markers', name='RTM Price',
                 line=dict(color='#2ECC71', width=1.5, dash='dot')
             ))
         fig.add_trace(go.Scatter(
