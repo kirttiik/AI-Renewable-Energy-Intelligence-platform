@@ -1,4 +1,4 @@
 KPI,Value,Importance_Percentage
-Most Influential Feature,wind_speed_ms,97.82972
-Most Explainable Model,Wind,97.82972
-Dominant Renewable Driver,wind_speed_ms,97.82972
+Most Influential Feature,capacity_factor,99.83122
+Most Explainable Model,Total Output,99.83122
+Dominant Renewable Driver,capacity_factor,99.83122

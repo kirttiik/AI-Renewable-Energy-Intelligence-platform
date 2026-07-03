@@ -1,7 +1,6 @@
 Section,Insight
 Price Seasonality (kWh),DAM prices peak in May (avg ₹5.80/kWh) and reach their lowest in Aug (avg ₹3.43/kWh). Scheduling generation maintenance during trough months minimises revenue loss.
-Revenue Concentration,"The top 3 revenue months account for 9.9% of total annual market revenue. High DAM prices during summer months (April–June) align with Khavda's peak solar irradiance, creating a favourable double-upside for market participation."
-Peak Revenue Event,"The highest single-day market revenue of ₹22.56 Lakhs was recorded on 16 May 2025, when generation reached 188.0 MW at a DAM clearing price of ₹12.00/kWh."
+Revenue Concentration,"The top 3 revenue months account for 12.7% of total annual market revenue. High DAM prices during summer months (April–June) align with Khavda's peak solar irradiance, creating a favourable double-upside for market participation."
+Peak Revenue Event,"The highest single-day market revenue of ₹15.27 Lakhs was recorded on 16 May 2025, when generation reached 127.2 MW at a DAM clearing price of ₹12.00/kWh."
 Market Volatility Risk,"IEX DAM price volatility stands at 27.6%, indicating significant market price risk. Implementing Power Purchase Agreements (PPAs) for 60–70% of generation capacity is recommended to hedge against spot market price swings."
-Future Revenue Outlook,"AI-based forward projections indicate expected market revenue of ₹129.21 Lakhs over the next 13 forecast days, averaging ₹9.94 Lakhs/day. Revenue remains stable given consistent renewable generation under current weather patterns."
 Market Floor Strategy,"With a market price floor of ₹2.05/kWh observed, Khavda's variable generation cost remains well below this threshold, ensuring positive contribution margin under all IEX market clearing scenarios. The average price of ₹4.43/kWh provides a strong margin above typical renewable LCOE of ₹1.80–2.20/kWh."

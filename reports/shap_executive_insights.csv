@@ -1,4 +1,4 @@
 Model,Insight
-Solar,Solar radiation contributes the largest positive impact to generation forecasts.
-Wind,Wind speed is responsible for the majority of forecast variation.
-Total Output,Combined renewable generation is primarily influenced by solar irradiance.
+Solar,Effective irradiance (GHI × cloud factor) is the dominant driver of solar generation. Cell temperature derating (via pvlib Faiman model) explains residual forecast variance.
+Wind,Wind speed is responsible for the majority of forecast variation. Cloud factor indirectly signals atmospheric instability correlated with wind generation.
+Total Output,"Combined renewable generation is primarily influenced by effective irradiance and temperature factor. Performance ratio captures systemic losses (inverter, dust, mismatch)."

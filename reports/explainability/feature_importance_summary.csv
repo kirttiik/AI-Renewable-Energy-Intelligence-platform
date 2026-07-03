@@ -1,33 +1,50 @@
 Model,Feature,Importance
-Solar,cloud_cover_pct,0.6959
-Solar,solar_radiation_kwh_m2_day,0.3019
-Solar,week_of_year,0.0006
-Solar,temperature_c,0.0004
-Solar,rainfall_mm,0.0003
-Solar,day_of_year,0.0002
-Solar,month,0.0002
-Solar,humidity_pct,0.0002
-Solar,is_weekend,0.0001
-Solar,year,0.0001
+Solar,cloud_factor,0.8461
+Solar,cloud_cover_pct,0.0726
+Solar,capacity_factor,0.0636
+Solar,effective_irradiance,0.0176
+Solar,solar_radiation_kwh_m2_day,0.0
+Solar,cell_temperature_c,0.0
+Solar,humidity_pct,0.0
+Solar,month,0.0
+Solar,week_of_year,0.0
+Solar,temperature_c,0.0
+Solar,temperature_factor,0.0
+Solar,day_of_year,0.0
+Solar,year,0.0
+Solar,rainfall_mm,0.0
+Solar,is_weekend,0.0
 Solar,quarter,0.0
-Wind,wind_speed_ms,0.9783
-Wind,day_of_year,0.008
-Wind,humidity_pct,0.0056
-Wind,temperature_c,0.003
-Wind,is_weekend,0.0026
-Wind,cloud_cover_pct,0.0014
-Wind,rainfall_mm,0.0007
-Wind,month,0.0005
+Solar,performance_ratio,0.0
+Solar,ghi_w_m2,0.0
+Wind,wind_speed_ms,0.9689
+Wind,rainfall_mm,0.0156
+Wind,day_of_year,0.0055
+Wind,capacity_factor,0.0047
+Wind,temperature_c,0.0024
+Wind,is_weekend,0.0007
+Wind,cloud_cover_pct,0.0006
+Wind,cloud_factor,0.0006
+Wind,humidity_pct,0.0004
+Wind,month,0.0004
+Wind,effective_irradiance,0.0001
 Wind,week_of_year,0.0
 Wind,quarter,0.0
-Total Output,solar_radiation_kwh_m2_day,0.5565
-Total Output,cloud_cover_pct,0.3292
-Total Output,wind_speed_ms,0.0626
-Total Output,temperature_c,0.0402
-Total Output,rainfall_mm,0.0094
-Total Output,humidity_pct,0.0008
-Total Output,day_of_year,0.0005
-Total Output,week_of_year,0.0004
-Total Output,month,0.0003
-Total Output,is_weekend,0.0001
+Total Output,capacity_factor,0.9983
+Total Output,wind_speed_ms,0.0007
+Total Output,temperature_c,0.0005
+Total Output,solar_radiation_kwh_m2_day,0.0002
+Total Output,humidity_pct,0.0001
+Total Output,effective_irradiance,0.0001
+Total Output,is_weekend,0.0
+Total Output,cloud_cover_pct,0.0
+Total Output,day_of_year,0.0
+Total Output,temperature_factor,0.0
+Total Output,cell_temperature_c,0.0
+Total Output,cloud_factor,0.0
+Total Output,week_of_year,0.0
+Total Output,rainfall_mm,0.0
+Total Output,month,0.0
 Total Output,quarter,0.0
+Total Output,ghi_w_m2,0.0
+Total Output,performance_ratio,0.0
