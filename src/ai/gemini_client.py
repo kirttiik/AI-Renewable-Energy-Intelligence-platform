@@ -17,13 +17,22 @@ import logging
 import os
 import time
 from typing import Optional
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# ── try to load .env ─────────────────────────────────────────────────────────
+# ── try to load .env — always resolve to the project root ────────────────────
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    # Walk up from this file (src/ai/gemini_client.py) → project root
+    _HERE = Path(__file__).resolve()
+    _PROJECT_ROOT = _HERE.parent.parent.parent   # src/ai -> src -> project root
+    _DOTENV_PATH  = _PROJECT_ROOT / ".env"
+    if _DOTENV_PATH.exists():
+        load_dotenv(dotenv_path=str(_DOTENV_PATH), override=True)
+        logger.info("Loaded .env from %s", _DOTENV_PATH)
+    else:
+        load_dotenv(override=True)   # fallback: search cwd
 except ImportError:
     pass
 
