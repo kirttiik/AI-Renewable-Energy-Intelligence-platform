@@ -4,11 +4,13 @@ Built with Streamlit, Pandas, and Plotly.
 """
 
 import os
+import sys
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import datetime
+import numpy as np
 # ==========================================
 # PAGE CONFIGURATION
 # ==========================================
@@ -126,6 +128,8 @@ with st.sidebar:
         "📈 Energy Market Intelligence",
         "🌐 Grid Intelligence",
         "🧠 AI Explainability",
+        "🔬 SHAP Analytics",
+        "🤖 AI Operations Copilot",
         "⚙️ Platform Health",
         "📄 About Platform",
     ]
@@ -1791,6 +1795,18 @@ elif selection == "📈 Energy Market Intelligence":
     render_iex_analytics()
 elif selection == "🌐 Grid Intelligence":
     render_grid_analytics()
+elif selection == "🔬 SHAP Analytics":
+    render_shap_analytics()
+elif selection == "🤖 AI Operations Copilot":
+    try:
+        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+        if ROOT_DIR not in sys.path:
+            sys.path.insert(0, ROOT_DIR)
+        from src.ai.copilot import render_copilot
+        render_copilot()
+    except Exception as _cop_err:
+        st.error(f"⚠️ Copilot module failed to load: {_cop_err}")
+        st.info("Make sure `google-generativeai` is installed: `pip install google-generativeai python-dotenv`")
 elif selection == "⚙️ Platform Health":
     if 'render_platform_health' in globals():
         render_platform_health()

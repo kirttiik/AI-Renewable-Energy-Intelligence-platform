@@ -13,3 +13,5 @@ SQLAlchemy
 psycopg2-binary
 pvlib
 pyyaml
+google-generativeai
+python-dotenv
