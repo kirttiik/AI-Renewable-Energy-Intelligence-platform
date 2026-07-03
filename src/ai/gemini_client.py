@@ -45,7 +45,7 @@ except ImportError:
     logger.error("google-generativeai not installed. Run: pip install google-generativeai")
 
 # ── constants ─────────────────────────────────────────────────────────────────
-MODEL_NAME   = "gemini-1.5-flash"
+MODEL_NAME   = "gemini-2.5-flash"
 MAX_RETRIES  = 3
 RETRY_DELAY  = 2.0   # seconds (doubles each retry)
 TIMEOUT_SECS = 60
