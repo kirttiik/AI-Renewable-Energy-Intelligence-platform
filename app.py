@@ -121,7 +121,10 @@ with st.sidebar:
     
     sections = [
         "🏠 Executive Control Center",
+        "🛰 Digital Twin",
+        "🌍 Portfolio Analytics",
         "⚡ Plant Performance",
+        "🛠 Operations & Maintenance",
         "🔮 Generation Forecast",
         "🌤 Weather Intelligence",
         "🌱 Sustainability Analytics",
@@ -129,6 +132,7 @@ with st.sidebar:
         "🌐 Grid Intelligence",
         "🧠 AI Explainability",
         "🔬 SHAP Analytics",
+        "⚙️ MLOps Hub",
         "🤖 AI Operations Copilot",
         "⚙️ Platform Health",
         "📄 About Platform",
@@ -1797,6 +1801,30 @@ elif selection == "🌐 Grid Intelligence":
     render_grid_analytics()
 elif selection == "🔬 SHAP Analytics":
     render_shap_analytics()
+elif selection == "🛰 Digital Twin":
+    try:
+        from src.analytics.digital_twin import render_digital_twin
+        render_digital_twin()
+    except Exception as e:
+        st.error(f"Failed to load module: {e}")
+elif selection == "🛠 Operations & Maintenance":
+    try:
+        from src.analytics.predictive_maintenance import render_predictive_maintenance
+        render_predictive_maintenance()
+    except Exception as e:
+        st.error(f"Failed to load module: {e}")
+elif selection == "⚙️ MLOps Hub":
+    try:
+        from src.analytics.mlops_engine import render_mlops_hub
+        render_mlops_hub()
+    except Exception as e:
+        st.error(f"Failed to load module: {e}")
+elif selection == "🌍 Portfolio Analytics":
+    try:
+        from src.analytics.portfolio_engine import render_portfolio_analytics
+        render_portfolio_analytics()
+    except Exception as e:
+        st.error(f"Failed to load module: {e}")
 elif selection == "🤖 AI Operations Copilot":
     try:
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

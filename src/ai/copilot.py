@@ -205,6 +205,23 @@ def render_copilot():
                 st.rerun()
 
     st.markdown("---")
+    
+    # ── Proactive AI Advisor (Module 9) ──────────────────────────────────────
+    st.subheader("📢 Proactive AI Advisor")
+    st.markdown("Automatically generate a comprehensive daily brief covering operations, risks, and market opportunities.")
+    if st.button("✨ Generate AI Daily Brief", type="primary", use_container_width=True):
+        prompt = (
+            "Generate a comprehensive Daily Executive Brief. Include:\n"
+            "1. Tomorrow's Risks\n"
+            "2. Market Opportunities\n"
+            "3. Maintenance Suggestions\n"
+            "4. Operational Warnings\n"
+            "Keep it highly professional, structured with bullet points and bold text."
+        )
+        _send(prompt, client)
+        st.rerun()
+
+    st.markdown("---")
 
     # ── Chat history ─────────────────────────────────────────────────────────
     if st.session_state["copilot_messages"]:
