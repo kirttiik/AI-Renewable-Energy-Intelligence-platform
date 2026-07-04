@@ -141,8 +141,18 @@ div[data-testid="metric-container"] [data-testid="stMetricValue"] {
 .ent-empty-state .icon { font-size: 2.5rem; margin-bottom: 8px; }
 
 /* ── Sidebar enhancements ──────────────── */
-/* Reverted to default Streamlit sidebar background per user request */
-
+section[data-testid="stSidebar"] {
+    background: #0f2336 !important;
+}
+section[data-testid="stSidebar"] .stRadio label {
+    color: #BDC3C7 !important;
+    font-size: 0.88rem;
+}
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: #FFFFFF !important;
+}
 
 /* ── Dataframe styling ─────────────────── */
 .stDataFrame { border: 1px solid #E8ECF0; border-radius: 8px; }

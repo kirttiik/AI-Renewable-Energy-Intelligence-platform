@@ -56,7 +56,23 @@ _CSS = """
 .copilot-banner h1 { color: #F1C40F !important; margin: 0; font-size: 1.8rem; }
 .copilot-banner p  { color: #BDC3C7; margin: 4px 0 0 0; font-size: 0.95rem; }
 
-
+.chat-user {
+    background: #1E3D59;
+    color: #ECF0F1;
+    border-radius: 14px 14px 4px 14px;
+    padding: 12px 16px;
+    margin: 8px 0 8px 60px;
+    font-size: 0.95rem;
+}
+.chat-ai {
+    background: #F5F7FA;
+    color: #1E3D59;
+    border-radius: 14px 14px 14px 4px;
+    padding: 14px 18px;
+    margin: 8px 60px 8px 0;
+    border-left: 4px solid #F1C40F;
+    font-size: 0.93rem;
+}
 .chip-available   { background: #2ECC71; color: white; border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; margin-right: 6px; }
 .chip-unavailable { background: #E74C3C; color: white; border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; margin-right: 6px; }
 .chip-info        { background: #3498DB; color: white; border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; margin-right: 6px; }
@@ -101,11 +117,15 @@ def _get_or_build_client() -> GeminiCopilot:
 def _render_messages():
     for msg in st.session_state["copilot_messages"]:
         if msg["role"] == "user":
-            with st.chat_message("user", avatar="👤"):
-                st.markdown(msg["content"])
+            st.markdown(
+                f'<div class="chat-user">👤 <strong>You</strong><br>{msg["content"]}</div>',
+                unsafe_allow_html=True
+            )
         else:
-            with st.chat_message("assistant", avatar="🤖"):
-                st.markdown(msg["content"])
+            st.markdown(
+                f'<div class="chat-ai">🤖 <strong>AI Copilot</strong><br>{msg["content"]}</div>',
+                unsafe_allow_html=True
+            )
 
 
 def _send(question: str, client: GeminiCopilot):
