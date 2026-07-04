@@ -4,17 +4,42 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import datetime
+import os
+import sys
+
+_APP_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _APP_DIR not in sys.path:
+    sys.path.insert(0, _APP_DIR)
+try:
+    from src.ui.design_system import (
+        page_header, help_expander, section_title, style_chart,
+        insight_box, executive_insights_section, page_footer
+    )
+except ImportError:
+    def page_header(icon, title, desc): st.title(f"{icon} {title}")
+    def help_expander(desc, kpis): pass
+    def section_title(text): st.subheader(text)
+    def style_chart(fig, title=""): return fig
+    def insight_box(text, kind="info"): st.info(text)
+    def executive_insights_section(findings, summary, recommendations): pass
+    def page_footer(): pass
 
 def render_mlops_hub():
-    st.title("⚙️ MLOps & Model Monitoring")
-    st.markdown("Track model drift, evaluate prediction accuracy, and orchestrate automated ML retraining workflows.")
-    
-    st.markdown("---")
+    page_header("⚙️", "MLOps & Model Monitoring",
+        "Track model drift, evaluate prediction accuracy, and orchestrate automated ML retraining workflows.")
+    help_expander(
+        "Monitors the continuous performance of the AI generation models and orchestrates the deployment lifecycle.",
+        {
+            "MAE": "Mean Absolute Error. Lower is better. Tracks drift over time.",
+            "Drift Threshold": "The error limit beyond which the model must be retrained to maintain IEX trading compliance.",
+            "Model Registry": "Version control for machine learning models.",
+        }
+    )
     
     # -------------------------------------------------------------------------
     # 1. Model Drift Monitoring (Module 4)
     # -------------------------------------------------------------------------
-    st.subheader("📉 Model Performance Drift")
+    section_title("📉 Model Performance Drift")
     
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Current Solar MAE", "1.62 MW", "+0.04 MW", delta_color="inverse")
@@ -37,19 +62,20 @@ def render_mlops_hub():
     fig.add_hline(y=1.5, line_dash="dot", annotation_text="Drift Threshold (1.5)", annotation_position="top left", line_color="red")
     
     fig.update_layout(title="Prediction Error Trend (Last 30 Days)", height=300, margin=dict(t=30, b=0, l=0, r=0))
+    fig = style_chart(fig)
     st.plotly_chart(fig, use_container_width=True)
     
     if mae_trend[-1] > 1.5:
-        st.warning("⚠️ **Drift Alert:** Solar model MAE has crossed the acceptable threshold (1.5 MW). Retraining recommended.")
+        insight_box("**Drift Alert:** Solar model MAE has crossed the acceptable threshold (1.5 MW). Retraining recommended.", "warning")
     else:
-        st.success("✅ Models are performing within acceptable accuracy thresholds.")
+        insight_box("Models are performing within acceptable accuracy thresholds.", "success")
 
     st.markdown("---")
     
     # -------------------------------------------------------------------------
     # 2. Automated Model Retraining (Module 5)
     # -------------------------------------------------------------------------
-    st.subheader("🔄 Automated Retraining Workflow")
+    section_title("🔄 Automated Retraining Workflow")
     st.markdown("Orchestrate the end-to-end ML training pipeline.")
     
     col_flow, col_action = st.columns([2, 1])
@@ -68,11 +94,11 @@ def render_mlops_hub():
     with col_action:
         st.markdown("<br>", unsafe_allow_html=True)
         if st.button("🚀 Trigger Full Retraining Pipeline", type="primary", use_container_width=True):
-            st.success("Pipeline triggered successfully. (Simulated execution via GitHub Actions / Airflow).")
-            st.info("Check back in ~15 minutes for updated model artifacts.")
+            insight_box("Pipeline triggered successfully. (Simulated execution via GitHub Actions / Airflow).", "success")
+            insight_box("Check back in ~15 minutes for updated model artifacts.", "info")
             
     st.markdown("---")
-    st.subheader("Model Registry")
+    section_title("📦 Model Registry")
     reg_data = {
         "Version": ["v2.4.1 (Active)", "v2.4.0", "v2.3.5", "v2.3.4"],
         "Deployment Date": ["2026-06-20", "2026-06-05", "2026-05-15", "2026-05-01"],
@@ -81,3 +107,17 @@ def render_mlops_hub():
         "Status": ["Deployed", "Archived", "Archived", "Archived"]
     }
     st.dataframe(pd.DataFrame(reg_data), use_container_width=True)
+
+    executive_insights_section(
+        findings=[
+            "The active solar model (v2.4.1) is approaching the 1.5 MW MAE drift threshold.",
+            "Wind model accuracy remains highly stable.",
+            "New training data (14 days) is queued and ready for ingestion.",
+        ],
+        summary="Model accuracy is gradually decaying as expected due to seasonal weather transitions. Retraining is recommended to maintain IEX trading accuracy.",
+        recommendations=[
+            "Trigger the automated retraining pipeline prior to the next trading cycle.",
+            "Evaluate if the next iteration requires hyperparameter tuning to better capture monsoon dynamics.",
+        ]
+    )
+    page_footer()

@@ -25,6 +25,20 @@ from src.ai.csv_loader      import load_all_reports
 from src.ai.context_builder import build_context
 from src.ai.gemini_client   import GeminiCopilot
 
+try:
+    from src.ui.design_system import (
+        page_header, help_expander, section_title, style_chart,
+        insight_box, executive_insights_section, page_footer
+    )
+except ImportError:
+    def page_header(icon, title, desc): st.title(f"{icon} {title}")
+    def help_expander(desc, kpis): pass
+    def section_title(text): st.subheader(text)
+    def style_chart(fig, title=""): return fig
+    def insight_box(text, kind="info"): st.info(text)
+    def executive_insights_section(findings, summary, recommendations): pass
+    def page_footer(): pass
+
 logger = logging.getLogger(__name__)
 
 # ── suggested questions ───────────────────────────────────────────────────────
@@ -145,14 +159,16 @@ def render_copilot():
     _init_session()
 
     # ── Banner ──────────────────────────────────────────────────────────────
-    st.markdown("""
-    <div class="copilot-banner">
-        <h1>🤖 AI Renewable Energy Operations Copilot</h1>
-        <p>Ask questions about renewable generation, weather, forecasting,
-           market intelligence and plant performance.<br>
-           Powered by Google Gemini · Context: Live pipeline reports</p>
-    </div>
-    """, unsafe_allow_html=True)
+    page_header("🤖", "AI Renewable Energy Operations Copilot",
+        "Ask questions about renewable generation, weather, forecasting, market intelligence and plant performance.")
+    help_expander(
+        "Powered by Google Gemini. The Copilot is aware of live pipeline reports and your operational data.",
+        {
+            "Gemini API": "Language model powering the Copilot.",
+            "Reports Loaded": "Number of data sources currently loaded into the context window.",
+            "Proactive AI Advisor": "Generates a structured daily brief automatically.",
+        }
+    )
 
     # ── Build / retrieve client ──────────────────────────────────────────────
     client = _get_or_build_client()
@@ -207,7 +223,7 @@ def render_copilot():
     st.markdown("---")
     
     # ── Proactive AI Advisor (Module 9) ──────────────────────────────────────
-    st.subheader("📢 Proactive AI Advisor")
+    section_title("📢 Proactive AI Advisor")
     st.markdown("Automatically generate a comprehensive daily brief covering operations, risks, and market opportunities.")
     if st.button("✨ Generate AI Daily Brief", type="primary", use_container_width=True):
         prompt = (
@@ -283,3 +299,5 @@ def render_copilot():
             st.session_state["copilot_messages"] = []
             st.success("Context refreshed. Chat history cleared.")
             st.rerun()
+
+    page_footer()
