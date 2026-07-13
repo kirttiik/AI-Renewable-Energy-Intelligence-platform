@@ -169,13 +169,16 @@ def calculate_revenue(gen_df: pd.DataFrame) -> pd.DataFrame:
 def calculate_revenue_risk(rev_df: pd.DataFrame, weather_df: pd.DataFrame) -> pd.DataFrame:
     """
     Apply revenue-at-risk logic based on weather risk levels.
+    Uses generation as the primary base so revenue data extends to today.
+    Weather risk is left-joined onto generation (not the other way around).
     """
     logger.info("Calculating revenue-at-risk...")
     df = rev_df.copy()
     
     if not weather_df.empty:
-        # Merge on date
-        merged = pd.merge(df, weather_df[['date', 'overall_risk_level']], on='date', how='left')
+        # Deduplicate weather before joining -- generation is always the master dataset
+        weather_slim = weather_df[['date', 'overall_risk_level']].drop_duplicates(subset=['date'])
+        merged = pd.merge(df, weather_slim, on='date', how='left')
         
         # Fill missing risk levels with 'LOW' as a baseline assumption
         merged['overall_risk_level'] = merged['overall_risk_level'].fillna('LOW')
