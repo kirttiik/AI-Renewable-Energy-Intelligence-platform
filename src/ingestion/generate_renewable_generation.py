@@ -247,7 +247,6 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
 
     solar_gen = (
         CAPACITY
-        * EFFICIENCY
         * df["performance_ratio"]
         * (df["effective_irradiance"] / max_eff_irr)
         * df["temperature_factor"]
@@ -286,12 +285,12 @@ def calculate_wind_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
     mask_r2 = (v >= V_CI) & (v < V_R)
     wind_gen[mask_r2] = (
         ((v[mask_r2] - V_CI) / (V_R - V_CI)) ** 3
-        * CAPACITY * EFFICIENCY
+        * CAPACITY
     )
 
     # Region 3: rated output
     mask_r3 = (v >= V_R) & (v <= V_CO)
-    wind_gen[mask_r3] = CAPACITY * EFFICIENCY
+    wind_gen[mask_r3] = CAPACITY
 
     # Introduce real-world variances (stochastic noise)
     np.random.seed(101)

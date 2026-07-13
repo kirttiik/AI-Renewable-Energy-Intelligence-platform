@@ -1,9 +1,9 @@
 Executive Insight
 1. Cloud cover reduced peak effective irradiance by up to 99.9%.
-2. PV modules operated above optimal 50°C temperatures on 761 days during the evaluation period.
+2. PV modules operated above optimal 50°C temperatures on 64 days during the evaluation period.
 3. System Performance Ratio remained above 80% during 100.0% of the study period.
-4. Thermal derating (temperature losses) contributed to an average 9.2% reduction in daily theoretical yield.
-5. Cloud attenuation caused an aggregate generation loss of 35.7% annually.
+4. Thermal derating (temperature losses) contributed to an average 6.0% reduction in daily theoretical yield.
+5. Cloud attenuation caused an aggregate generation loss of 35.8% annually.
 6. The physics-informed PV engine reduced day-ahead forecasting Mean Absolute Error (MAE) by over 70% compared to empirical V1.
 7. Integration of `pvlib` advanced metrics natively bridges the gap between atmospheric science and financial modeling.
 "8. Negative generation events have been successfully clamped to zero, avoiding downstream machine learning data corruption."

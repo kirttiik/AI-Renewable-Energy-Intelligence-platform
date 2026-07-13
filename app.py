@@ -549,7 +549,7 @@ def render_plant_performance():
     except Exception:
         pass
 
-    c1.metric("Installed Capacity", "15,000 MW")
+    c1.metric("Installed Capacity", "20,000 MW")
     c2.metric("Latest Generation", _today_gen)
     c3.metric("Capacity Factor", _cap_factor)
     c4.metric("Performance Ratio", _perf_ratio)
