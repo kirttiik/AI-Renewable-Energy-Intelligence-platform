@@ -3,5 +3,5 @@ Train R2,1.0
 Test R2,0.9999
 Best Feature,capacity_factor
 Model Type,XGBoost
-Training Records,1385
-Testing Records,347
+Training Records,1377
+Testing Records,345

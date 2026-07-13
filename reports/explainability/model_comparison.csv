@@ -1,4 +1,4 @@
 Model,Top Driver,Importance %,Business Meaning,Top_Feature,Importance
-Solar,cloud_factor,89.37%,Solar generation is highly predictable based on irradiance.,cloud_factor,0.8937189
-Wind,wind_speed_ms,95.36%,Wind generation is highly predictable.,wind_speed_ms,0.95356107
-Total Output,capacity_factor,99.85%,Blended operations reduce overall intermittency.,capacity_factor,0.9984682
+Solar,capacity_factor,79.60%,Solar generation is highly predictable based on irradiance.,capacity_factor,0.79601395
+Wind,wind_speed_ms,95.52%,Wind generation is highly predictable.,wind_speed_ms,0.95519257
+Total Output,capacity_factor,99.87%,Blended operations reduce overall intermittency.,capacity_factor,0.9986675
