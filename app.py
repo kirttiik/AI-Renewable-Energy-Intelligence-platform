@@ -47,32 +47,27 @@ def load_data(paths):
     return pd.DataFrame()
 
 def get_data_sources():
-    """Resolve paths to datasets, handling the recent folder restructure."""
+    """Resolve paths to all datasets. khavda_generation.csv is the single source of truth."""
     ROOT = os.path.dirname(os.path.abspath(__file__))
-    
+
     return {
+        'generation': load_data([
+            os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
+        ]),
         'exec_summary': load_data([
             os.path.join(ROOT, 'reports', 'executive', 'executive_summary.csv'),
-            os.path.join(ROOT, 'reports', 'executive_summary.csv')
         ]),
         'exec_kpis': load_data([
             os.path.join(ROOT, 'reports', 'executive', 'executive_dashboard_kpis.csv'),
-            os.path.join(ROOT, 'reports', 'executive_dashboard_kpis.csv')
         ]),
         'forecast_accuracy': load_data([
             os.path.join(ROOT, 'reports', 'executive', 'forecast_accuracy_summary.csv'),
-            os.path.join(ROOT, 'reports', 'forecast_accuracy_summary.csv')
         ]),
         'model_comp': load_data([
             os.path.join(ROOT, 'reports', 'explainability', 'model_comparison.csv'),
-            os.path.join(ROOT, 'reports', 'model_comparison.csv')
         ]),
         'explain_kpis': load_data([
             os.path.join(ROOT, 'reports', 'explainability', 'explainability_kpis.csv'),
-            os.path.join(ROOT, 'reports', 'explainability_kpis.csv')
-        ]),
-        'revenue': load_data([
-            os.path.join(ROOT, 'data', 'processed', 'revenue_analytics.csv')
         ]),
         'weather_risk': load_data([
             os.path.join(ROOT, 'data', 'processed', 'weather_risk_analytics.csv')
@@ -82,21 +77,12 @@ def get_data_sources():
         ]),
         'solar_pred': load_data([
             os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv'),
-            os.path.join(ROOT, 'reports', 'solar_predictions.csv')
-        ]),
-        'wind_pred': load_data([
-            os.path.join(ROOT, 'reports', 'wind', 'wind_predictions.csv'),
-            os.path.join(ROOT, 'reports', 'wind_predictions.csv')
-        ]),
-        'total_pred': load_data([
-            os.path.join(ROOT, 'reports', 'total_output', 'total_output_predictions.csv'),
-            os.path.join(ROOT, 'reports', 'total_output_predictions.csv')
         ]),
         'explain_insights': load_data([
             os.path.join(ROOT, 'reports', 'explainability', 'executive_ai_insights.csv')
         ]),
-        'total_metrics': load_data([
-            os.path.join(ROOT, 'reports', 'total_output', 'total_output_metrics.csv')
+        'solar_metrics': load_data([
+            os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv')
         ]),
         'shap_solar_rank': load_data([
             os.path.join(ROOT, 'reports', 'shap_feature_ranking_solar.csv')
@@ -186,10 +172,10 @@ hourly_data = load_hourly_data()
 SINGLE_DAY_HORIZONS = {"Yesterday", "Today", "Tomorrow"}
 
 def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
-    """Filters a DataFrame by date relative to the last actual historical observation."""
+    """Filters a DataFrame by date relative to the last actual solar observation."""
     if df is None or df.empty or 'date' not in df.columns:
         return df
-    
+
     df = df.copy()
     if not pd.api.types.is_datetime64_any_dtype(df['date']):
         df['date'] = pd.to_datetime(df['date'])
@@ -197,30 +183,21 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
     # Custom Range handling
     if horizon == " Custom Range":
         if custom_start and custom_end:
-            # Compare using .dt.date to safely ignore time components
             return df[(df['date'].dt.date >= custom_start) & (df['date'].dt.date <= custom_end)]
         return df
 
-    # Find the true "Today" (last day of actual historical data)
+    # Anchor "today" to the last date with actual solar data
     global_today = pd.to_datetime('today').normalize()
-    
-    if 'actual_total_generation_mw' in df.columns:
-        hist_df = df.dropna(subset=['actual_total_generation_mw'])
-        if not hist_df.empty:
-            global_today = hist_df['date'].max()
-    elif 'actual_solar_generation_mw' in df.columns:
+    if 'actual_solar_generation_mw' in df.columns:
         hist_df = df.dropna(subset=['actual_solar_generation_mw'])
         if not hist_df.empty:
             global_today = hist_df['date'].max()
-    elif 'actual_wind_generation_mw' in df.columns:
-        hist_df = df.dropna(subset=['actual_wind_generation_mw'])
+    elif 'solar_generation_mw' in df.columns:
+        # Use max date of non-zero generation as proxy for today
+        hist_df = df[df['solar_generation_mw'] > 0]
         if not hist_df.empty:
             global_today = hist_df['date'].max()
-    else:
-        df_max = df['date'].max()
-        if pd.notna(df_max) and df_max < global_today:
-            global_today = df_max
-            
+
     if horizon == "All Time":
         return df
     elif horizon == "Today":
@@ -231,7 +208,7 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
         target_date = global_today + pd.Timedelta(days=1)
     else:
         return df
-        
+
     return df[df['date'].dt.date == target_date.date()]
 
 
@@ -521,43 +498,38 @@ def render_plant_performance():
     ROOT = os.path.dirname(os.path.abspath(__file__))
     
     # ---------------------------------------------------------
-    # A. Plant KPIs
+    # A. Plant KPIs — SCADA Grade (live from generation CSV)
     # ---------------------------------------------------------
-    st.subheader(" A. Plant KPIs")
+    st.subheader("A. Plant KPIs — SCADA Live")
+
+    gen_df = data.get('generation', pd.DataFrame())
+    gen_df_f = filter_by_time_horizon(gen_df, global_time_horizon, custom_start_date, custom_end_date)
+    if gen_df_f.empty and not gen_df.empty:
+        gen_df_f = gen_df.tail(1)
+
+    _today_gen = "N/A"; _daily_mwh = "N/A"; _cuf = "N/A"; _pr = "N/A"
+    _soiling = "N/A"; _inv_avail = "N/A"; _yield = "N/A"; _export = "N/A"
+    if not gen_df_f.empty:
+        lr = gen_df_f.iloc[-1]
+        _today_gen  = f"{float(lr.get('solar_generation_mw', 0)):,.1f} MW"
+        _daily_mwh  = f"{float(lr.get('daily_energy_mwh', 0)):,.0f} MWh"
+        _cuf        = f"{float(lr.get('cuf_daily', 0))*100:.2f}%"
+        _pr         = f"{float(lr.get('pr_daily', lr.get('performance_ratio', 0))):.3f}"
+        _soiling    = f"{float(lr.get('soiling_loss_pct', 2)):.2f}%"
+        _inv_avail  = f"{float(lr.get('inverter_availability_pct', 98)):.1f}%"
+        _yield      = f"{float(lr.get('specific_yield_kwh_kwp', 0)):.4f} kWh/kWp"
+        _export     = f"{float(lr.get('grid_export_mwh', 0)):,.0f} MWh"
+
     c1, c2, c3, c4 = st.columns(4)
     c5, c6, c7, c8 = st.columns(4)
-    
-    # Load live generation data for plant KPIs
-    _gen_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'processed', 'khavda_generation.csv')
-    _today_gen = "N/A"
-    _cap_factor = "N/A"
-    _perf_ratio = "N/A"
-    try:
-        if os.path.exists(_gen_path):
-            _gdf = pd.read_csv(_gen_path)
-            _gdf['date'] = pd.to_datetime(_gdf['date'])
-            _gdf_f = filter_by_time_horizon(_gdf, global_time_horizon, custom_start_date, custom_end_date)
-            if _gdf_f.empty:
-                _gdf_f = _gdf.tail(1)
-            if not _gdf_f.empty:
-                _lr = _gdf_f.iloc[-1]
-                _today_gen = f"{_lr.get('total_generation_mw', 0):.1f} MW"
-                _cf = _lr.get('capacity_factor', None)
-                _cap_factor = f"{float(_cf)*100:.1f}%" if _cf is not None else "N/A"
-                _pr = _lr.get('performance_ratio', None)
-                _perf_ratio = f"{float(_pr):.2f}" if _pr is not None else "N/A"
-    except Exception:
-        pass
-
-    c1.metric("Installed Capacity", "20,000 MW")
-    c2.metric("Latest Generation", _today_gen)
-    c3.metric("Capacity Factor", _cap_factor)
-    c4.metric("Performance Ratio", _perf_ratio)
-    
-    c5.metric("Plant Availability", "99.8%")
-    c6.metric("PV Efficiency", "18.5%")
-    c7.metric("Plant Health Score", "94/100")
-    c8.metric("Operating Status", "Optimal")
+    c1.metric("Installed Capacity", "20,000 MW (20 GW)")
+    c2.metric("Peak AC Output", _today_gen)
+    c3.metric("Daily Energy (MWh)", _daily_mwh)
+    c4.metric("Grid Export", _export)
+    c5.metric("CUF (Daily)", _cuf, help="Capacity Utilization Factor = Actual / Rated")
+    c6.metric("Performance Ratio", _pr, help="PR = Actual / Expected at STC irradiance")
+    c7.metric("Soiling Loss", _soiling, help="Estimated dust/soiling energy loss")
+    c8.metric("Inverter Availability", _inv_avail, help="Inverter uptime percentage")
 
     st.markdown("---")
     
@@ -789,77 +761,52 @@ def render_forecasting():
     import datetime as _dt
     now = _dt.datetime.now()
 
-    # Load solar, wind, and total predictions
-    _pred_root = os.path.join(ROOT, 'reports')
-    _solar_pred_path = os.path.join(_pred_root, 'solar', 'solar_predictions.csv')
-    _wind_pred_path  = os.path.join(_pred_root, 'wind', 'wind_predictions.csv')
-    _total_pred_path = os.path.join(_pred_root, 'total_output', 'total_output_predictions.csv')
-
-    df_solar_pred = pd.DataFrame()
-    df_wind_pred  = pd.DataFrame()
-    df_total_pred = pd.DataFrame()
-    try:
-        if os.path.exists(_solar_pred_path):
-            df_solar_pred = pd.read_csv(_solar_pred_path)
-            df_solar_pred['date'] = pd.to_datetime(df_solar_pred['date'])
-        if os.path.exists(_wind_pred_path):
-            df_wind_pred = pd.read_csv(_wind_pred_path)
-            df_wind_pred['date'] = pd.to_datetime(df_wind_pred['date'])
-        if os.path.exists(_total_pred_path):
-            df_total_pred = pd.read_csv(_total_pred_path)
-            df_total_pred['date'] = pd.to_datetime(df_total_pred['date'])
-    except Exception:
-        pass
+    df_solar_pred = data.get('solar_pred', pd.DataFrame())
+    df_gen = data.get('generation', pd.DataFrame())
 
     # Apply time horizon filter
     df_solar_f = filter_by_time_horizon(df_solar_pred, global_time_horizon, custom_start_date, custom_end_date)
-    df_wind_f  = filter_by_time_horizon(df_wind_pred, global_time_horizon, custom_start_date, custom_end_date)
-    df_total_f = filter_by_time_horizon(df_total_pred, global_time_horizon, custom_start_date, custom_end_date)
+    df_gen_f = filter_by_time_horizon(df_gen, global_time_horizon, custom_start_date, custom_end_date)
 
     # Use full dataset if filter returns nothing
     if df_solar_f.empty and not df_solar_pred.empty: df_solar_f = df_solar_pred
-    if df_wind_f.empty  and not df_wind_pred.empty:  df_wind_f  = df_wind_pred
-    if df_total_f.empty and not df_total_pred.empty: df_total_f = df_total_pred
+    if df_gen_f.empty and not df_gen.empty: df_gen_f = df_gen
 
     # 2. The Prediction View
     st.subheader("AI Generation Forecast vs Actuals")
 
-    if not df_total_f.empty:
+    if not df_solar_f.empty or not df_gen_f.empty:
         fig_future = go.Figure()
 
-        # Plot actual generation where available
-        actuals = df_total_f.dropna(subset=['actual_total_generation_mw'])
-        if not actuals.empty:
-            fig_future.add_trace(go.Scatter(
-                x=actuals['date'], y=actuals['actual_total_generation_mw'],
-                mode='lines', name='Actual Total (MW)',
-                line=dict(color='#2ECC71', width=2)
-            ))
+        # Plot actual generation
+        if not df_gen_f.empty and 'solar_generation_mw' in df_gen_f.columns:
+            actuals = df_gen_f.dropna(subset=['solar_generation_mw'])
+            if not actuals.empty:
+                fig_future.add_trace(go.Scatter(
+                    x=actuals['date'], y=actuals['solar_generation_mw'],
+                    mode='lines', name='Actual Generation (MW)',
+                    line=dict(color='#2ECC71', width=2)
+                ))
+                
+        # Plot Physics Baseline
+        if not df_gen_f.empty and 'physics_baseline_mw' in df_gen_f.columns:
+            physics = df_gen_f.dropna(subset=['physics_baseline_mw'])
+            if not physics.empty:
+                fig_future.add_trace(go.Scatter(
+                    x=physics['date'], y=physics['physics_baseline_mw'],
+                    mode='lines', name='Physics Baseline (MW)',
+                    line=dict(color='#3498DB', width=1.5, dash='dash')
+                ))
 
         # Plot ML predictions
-        preds = df_total_f.dropna(subset=['predicted_total_generation_mw'])
-        if not preds.empty:
-            fig_future.add_trace(go.Scatter(
-                x=preds['date'], y=preds['predicted_total_generation_mw'],
-                mode='lines', name='Predicted Total (MW)',
-                line=dict(color='#F1C40F', width=2, dash='dot')
-            ))
-
-        # Solar predictions
         if not df_solar_f.empty and 'predicted_solar_generation_mw' in df_solar_f.columns:
-            fig_future.add_trace(go.Scatter(
-                x=df_solar_f['date'], y=df_solar_f['predicted_solar_generation_mw'],
-                mode='lines', name='Predicted Solar (MW)',
-                line=dict(color='#FF8C00', width=1.5, dash='dash')
-            ))
-
-        # Wind predictions
-        if not df_wind_f.empty and 'predicted_wind_generation_mw' in df_wind_f.columns:
-            fig_future.add_trace(go.Scatter(
-                x=df_wind_f['date'], y=df_wind_f['predicted_wind_generation_mw'],
-                mode='lines', name='Predicted Wind (MW)',
-                line=dict(color='#3498DB', width=1.5, dash='dash')
-            ))
+            preds = df_solar_f.dropna(subset=['predicted_solar_generation_mw'])
+            if not preds.empty:
+                fig_future.add_trace(go.Scatter(
+                    x=preds['date'], y=preds['predicted_solar_generation_mw'],
+                    mode='lines', name='ML Predicted (MW)',
+                    line=dict(color='#FF8C00', width=2, dash='dot')
+                ))
 
         fig_future.update_layout(
             xaxis_title="Date", yaxis_title="Generation (MW)",
@@ -878,12 +825,12 @@ def render_forecasting():
     
     col_scatter, col_hist = st.columns(2)
     
-    # Use real actuals vs predictions from total_output
-    _scatter_df = df_total_f.dropna(subset=['actual_total_generation_mw', 'predicted_total_generation_mw']) if not df_total_f.empty else pd.DataFrame()
+    # Use real actuals vs predictions from solar
+    _scatter_df = df_solar_f.dropna(subset=['actual_solar_generation_mw', 'predicted_solar_generation_mw']) if not df_solar_f.empty else pd.DataFrame()
     
     if not _scatter_df.empty:
-        _act = _scatter_df['actual_total_generation_mw'].values
-        _pred = _scatter_df['predicted_total_generation_mw'].values
+        _act = _scatter_df['actual_solar_generation_mw'].values
+        _pred = _scatter_df['predicted_solar_generation_mw'].values
         _err = _act - _pred
         _min_val = min(_act.min(), _pred.min())
         _max_val = max(_act.max(), _pred.max())
@@ -900,7 +847,7 @@ def render_forecasting():
                 line=dict(color='black', dash='dash'), name='Perfect Fit (y=x)'
             ))
             fig_scatter.update_layout(
-                title="Actual vs Predicted Generation (MW)",
+                title="Actual vs Predicted Solar Generation (MW)",
                 xaxis_title="Actual (MW)", yaxis_title="Predicted (MW)",
                 height=350, margin=dict(l=0, r=0, t=40, b=0), showlegend=False
             )

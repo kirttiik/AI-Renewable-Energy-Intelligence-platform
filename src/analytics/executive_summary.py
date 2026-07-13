@@ -115,7 +115,7 @@ def merge_datasets(datasets: dict) -> pd.DataFrame:
     # Standardize missing columns based on expectations
     expected_cols = [
         'site_name', 'solar_generation_mw', 'predicted_solar_generation_mw', 
-        'daily_revenue_inr', 'revenue_at_risk_inr', 'co2_avoided_tons', 
+        'co2_avoided_tons', 
         'coal_saved_tons', 'trees_equivalent_million', 'overall_risk_level', 
         'risk_alert', 'active_high_risk_factors'
     ]
@@ -225,9 +225,6 @@ def generate_kpis(df: pd.DataFrame, accuracy_df: pd.DataFrame) -> pd.DataFrame:
         
     total_gen = df['solar_generation_mw'].sum()
     avg_gen = df['solar_generation_mw'].mean()
-    total_rev = df.get('daily_revenue_inr', pd.Series([0]*len(df))).sum()
-    avg_rev = df.get('daily_revenue_inr', pd.Series([0]*len(df))).mean()
-    total_rev_risk = df.get('revenue_at_risk_inr', pd.Series([0]*len(df))).sum()
     
     total_co2 = df['co2_avoided_tons'].sum()
     total_coal = df['coal_saved_tons'].sum()
@@ -246,9 +243,6 @@ def generate_kpis(df: pd.DataFrame, accuracy_df: pd.DataFrame) -> pd.DataFrame:
     kpis = [
         {'KPI': 'Total Generation', 'Value': round(total_gen, 2), 'Unit': 'MW'},
         {'KPI': 'Average Daily Generation', 'Value': round(avg_gen, 2), 'Unit': 'MW'},
-        {'KPI': 'Total Revenue', 'Value': round(total_rev, 2), 'Unit': 'INR'},
-        {'KPI': 'Average Daily Revenue', 'Value': round(avg_rev, 2), 'Unit': 'INR'},
-        {'KPI': 'Total Revenue At Risk', 'Value': round(total_rev_risk, 2), 'Unit': 'INR'},
         {'KPI': 'Total CO2 Avoided', 'Value': round(total_co2, 2), 'Unit': 'Tons'},
         {'KPI': 'Total Coal Saved', 'Value': round(total_coal, 2), 'Unit': 'Tons'},
         {'KPI': 'Total Trees Equivalent', 'Value': round(total_trees, 2), 'Unit': 'Million'},
@@ -277,19 +271,11 @@ def generate_narratives(kpi_df: pd.DataFrame) -> pd.DataFrame:
         'Narrative': f"The Khavda Renewable Energy Park has successfully produced {gen_val} MW of renewable energy over the reporting period."
     })
     
-    # Revenue Summary
-    rev_val = kpi_dict.get('Total Revenue', 0) / 10000000  # Convert to Crores
-    narratives.append({
-        'Section': 'Revenue Summary',
-        'Narrative': f"Financial performance remains solid with total revenue tracking at {rev_val:.2f} Crores INR."
-    })
-    
     # Risk Summary
     risk_days = kpi_dict.get('High Risk Days', 0)
-    rev_risk = kpi_dict.get('Total Revenue At Risk', 0) / 10000000
     narratives.append({
         'Section': 'Risk Summary',
-        'Narrative': f"Operations experienced {risk_days} high-risk weather days, resulting in an estimated {rev_risk:.2f} Crores INR of revenue exposed to weather-related risks."
+        'Narrative': f"Operations experienced {risk_days} high-risk weather days, resulting in potential generation losses."
     })
     
     # Sustainability Summary
@@ -333,16 +319,6 @@ def create_visualizations(df: pd.DataFrame):
         plt.savefig(PLOT_GEN_PATH, dpi=300)
         plt.close()
         
-        # Plot 2: Revenue Overview
-        plt.figure(figsize=(12, 5))
-        plt.plot(df['date'], df.get('daily_revenue_inr', pd.Series([0]*len(df))) / 10000000, color='green')
-        plt.title('Executive Overview: Daily Revenue', fontweight='bold')
-        plt.ylabel('Revenue (Crores INR)')
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.savefig(PLOT_REV_PATH, dpi=300)
-        plt.close()
-        
         # Plot 3: Sustainability Overview
         plt.figure(figsize=(12, 5))
         plt.plot(df['date'], df['co2_avoided_tons'], color='forestgreen')
@@ -351,16 +327,6 @@ def create_visualizations(df: pd.DataFrame):
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
         plt.savefig(PLOT_SUSTAINABILITY_PATH, dpi=300)
-        plt.close()
-        
-        # Plot 4: Risk Overview
-        plt.figure(figsize=(12, 5))
-        plt.plot(df['date'], df.get('revenue_at_risk_inr', pd.Series([0]*len(df))) / 100000, color='red')
-        plt.title('Executive Overview: Revenue Exposed to Weather Risk', fontweight='bold')
-        plt.ylabel('Revenue at Risk (Lakhs INR)')
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.savefig(PLOT_RISK_PATH, dpi=300)
         plt.close()
         
     except Exception as e:
@@ -375,7 +341,7 @@ def save_results(df: pd.DataFrame, kpi_df: pd.DataFrame, accuracy_df: pd.DataFra
         # Output Columns
         output_cols = [
             'date', 'site_name', 'solar_generation_mw', 'predicted_solar_generation_mw',
-            'daily_revenue_inr', 'revenue_at_risk_inr', 'co2_avoided_tons', 
+            'co2_avoided_tons', 
             'coal_saved_tons', 'trees_equivalent_million', 'overall_risk_level',
             'risk_alert', 'active_high_risk_factors', 'ai_insight'
         ]
@@ -384,10 +350,8 @@ def save_results(df: pd.DataFrame, kpi_df: pd.DataFrame, accuracy_df: pd.DataFra
         final_cols = [c for c in output_cols if c in df.columns]
         exec_df = df[final_cols].copy()
         
-        # Deduplicate and prevent negative revenue
+        # Deduplicate
         exec_df = exec_df.drop_duplicates(subset=['date'])
-        if 'daily_revenue_inr' in exec_df.columns:
-            exec_df['daily_revenue_inr'] = exec_df['daily_revenue_inr'].clip(lower=0)
             
         exec_df.to_csv(EXEC_SUMMARY_PATH, index=False)
         

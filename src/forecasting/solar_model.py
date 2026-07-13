@@ -171,7 +171,7 @@ def train_model(df: pd.DataFrame):
 
 def evaluate_model(y_true: pd.Series, y_pred: np.ndarray) -> dict:
     """
-    Calculate core evaluation metrics: MAE, RMSE, and R2.
+    Calculate core evaluation metrics: MAE, RMSE, R2, and MAPE.
     """
     logger.info("Evaluating model performance on test set...")
     try:
@@ -179,13 +179,18 @@ def evaluate_model(y_true: pd.Series, y_pred: np.ndarray) -> dict:
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
         r2 = r2_score(y_true, y_pred)
         
+        # Calculate MAPE (handling division by zero by replacing zero with a small number)
+        y_true_safe = np.where(y_true == 0, 1e-9, y_true)
+        mape = np.mean(np.abs((y_true_safe - y_pred) / y_true_safe)) * 100
+        
         metrics = {
             'MAE': mae, 
             'RMSE': rmse, 
-            'R2_Score': r2
+            'R2_Score': r2,
+            'MAPE': mape
         }
         
-        logger.info(f"Model Metrics -> MAE: {mae:.2f} | RMSE: {rmse:.2f} | R2: {r2:.4f}")
+        logger.info(f"Model Metrics -> MAE: {mae:.2f} | RMSE: {rmse:.2f} | R2: {r2:.4f} | MAPE: {mape:.2f}%")
         return metrics
     except Exception as e:
         logger.error(f"Error during model evaluation: {e}")
@@ -211,12 +216,21 @@ def save_results(dates: pd.Series, y_true: pd.Series, y_pred: np.ndarray, metric
     """
     logger.info("Saving predictions, metrics, and visualizations...")
     try:
+        rmse = metrics.get('RMSE', np.std(y_pred) * 0.1)
+        
         # 1. Save Predictions to CSV
         preds_df = pd.DataFrame({
             'date': dates,
             'actual_solar_generation_mw': y_true.values,
             'predicted_solar_generation_mw': y_pred
         })
+        
+        # Add derived MWh and intervals
+        PSH = 5.8
+        preds_df['predicted_daily_energy_mwh'] = (preds_df['predicted_solar_generation_mw'] * PSH).round(2)
+        preds_df['predicted_solar_generation_mw_lower'] = (preds_df['predicted_solar_generation_mw'] - 1.96 * rmse).clip(lower=0)
+        preds_df['predicted_solar_generation_mw_upper'] = (preds_df['predicted_solar_generation_mw'] + 1.96 * rmse)
+        
         preds_path = os.path.join(SOLAR_REPORTS_DIR, 'solar_predictions.csv')
         preds_df.to_csv(preds_path, index=False)
         

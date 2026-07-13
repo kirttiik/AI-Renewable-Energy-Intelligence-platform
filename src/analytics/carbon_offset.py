@@ -50,37 +50,42 @@ os.makedirs(CARBON_REPORTS_DIR, exist_ok=True)
 
 
 def load_data() -> pd.DataFrame:
-    """Load historical generation data and extend with future AI predictions."""
+    """Load generation data from the master source (khavda_generation.csv).
+    Extend with ML solar predictions for future dates.
+    """
     logger.info("Loading generation dataset (historical + future)...")
     try:
-        total_pred_path = os.path.join(ROOT_DIR, 'reports', 'total_output', 'total_output_predictions.csv')
-        total_pred = pd.read_csv(total_pred_path)
-        total_pred['date'] = pd.to_datetime(total_pred['date'])
-        
-        # Load historical actuals from generation CSV
         hist = pd.read_csv(os.path.join(ROOT_DIR, 'data', 'processed', 'khavda_generation.csv'))
         hist['date'] = pd.to_datetime(hist['date'])
         last_hist_date = hist['date'].max()
-        
-        # Extract future rows from predictions (null actuals beyond last historical date)
-        future = total_pred[
-            (total_pred['date'] > last_hist_date) &
-            (total_pred['actual_total_generation_mw'].isna())
-        ][['date', 'predicted_total_generation_mw']].copy()
-        future = future.rename(columns={'predicted_total_generation_mw': 'total_generation_mw'})
-        future['site_name'] = 'Khavda Renewable Energy Park'
-        
-        # Combine
-        df = pd.concat([hist, future], ignore_index=True)
-        if future.empty:
-            logger.warning("No future prediction rows found.")
+
+        # Extend with future solar ML predictions if available
+        solar_pred_path = os.path.join(ROOT_DIR, 'reports', 'solar', 'solar_predictions.csv')
+        if os.path.exists(solar_pred_path):
+            preds = pd.read_csv(solar_pred_path)
+            preds['date'] = pd.to_datetime(preds['date'])
+            future = preds[
+                (preds['date'] > last_hist_date) &
+                (preds['actual_solar_generation_mw'].isna())
+            ][['date', 'predicted_solar_generation_mw']].copy()
+            future = future.rename(columns={'predicted_solar_generation_mw': 'solar_generation_mw'})
+            future['total_generation_mw'] = future['solar_generation_mw']
+            future['site_name'] = 'Khavda Renewable Energy Park'
+            df = pd.concat([hist, future], ignore_index=True)
+            if not future.empty:
+                logger.info(f"Appended {len(future)} future prediction rows.")
         else:
-            logger.info(f"Appended {len(future)} future rows for carbon offset calculation.")
-        
-        # Ensure total_generation_mw exists
-        if 'total_generation_mw' not in df.columns:
-            raise ValueError("total_generation_mw column missing from merged dataset")
-            
+            df = hist.copy()
+
+        # Ensure solar_generation_mw exists as authoritative generation column
+        if 'solar_generation_mw' not in df.columns:
+            raise ValueError("solar_generation_mw column missing from dataset")
+
+        # Use daily_energy_mwh if available (physics-calculated), else estimate
+        PSH = 5.8  # Khavda peak sun hours
+        if 'daily_energy_mwh' not in df.columns:
+            df['daily_energy_mwh'] = df['solar_generation_mw'] * PSH
+
         return df
     except Exception as e:
         logger.error(f"Failed to load generation data: {e}")
@@ -89,22 +94,17 @@ def load_data() -> pd.DataFrame:
 
 
 def calculate_co2_avoided(df: pd.DataFrame) -> pd.Series:
-    """
-    Calculate kg of CO2 avoided.
-    Methodology: Convert generation to kWh (* 1000) and multiply by the grid emission factor.
+    """Calculate kg of CO2 avoided using actual MWh generated.
+    Uses daily_energy_mwh × grid emission factor.
     """
     logger.info("Calculating CO2 Emissions Avoided...")
-    # total_generation_mw * 1000 converts MW to kW. 
-    return (df['total_generation_mw'] * 1000 * GRID_EMISSION_FACTOR).round(2)
+    return (df['daily_energy_mwh'] * 1000 * GRID_EMISSION_FACTOR).round(2)
 
 
 def calculate_coal_saved(df: pd.DataFrame) -> pd.Series:
-    """
-    Calculate kg of coal consumption displaced.
-    Methodology: Convert generation to kWh (* 1000) and multiply by the coal consumption factor.
-    """
+    """Calculate kg of coal consumption displaced using actual MWh generated."""
     logger.info("Calculating Coal Consumption Saved...")
-    return (df['total_generation_mw'] * 1000 * COAL_CONSUMPTION_FACTOR).round(2)
+    return (df['daily_energy_mwh'] * 1000 * COAL_CONSUMPTION_FACTOR).round(2)
 
 
 def calculate_trees_equivalent(co2_avoided: pd.Series) -> pd.Series:
@@ -259,30 +259,31 @@ def main():
     try:
         # 1. Load Data
         df = load_data()
-        
+
         # 2. Assign Base Renewable Metric
-        # Total generation assumed as MWh equivalents for daily grouping
-        df['renewable_energy_mwh'] = df['total_generation_mw'].round(2)
-        
+        # renewable_energy_mwh is the daily MWh output (already in generation CSV)
+        df['renewable_energy_mwh'] = df['daily_energy_mwh'].round(2)
+
         # 3. Calculate Sustainability Offsets
         df['co2_avoided_kg'] = calculate_co2_avoided(df)
         df['coal_saved_kg'] = calculate_coal_saved(df)
         df['trees_equivalent'] = calculate_trees_equivalent(df['co2_avoided_kg'])
-        
+
         # Calculate Executive Metrics
         df['co2_avoided_tons'] = (df['co2_avoided_kg'] / 1000).round(2)
         df['coal_saved_tons'] = (df['coal_saved_kg'] / 1000).round(2)
         df['trees_equivalent_million'] = (df['trees_equivalent'] / 1000000).round(2)
-        
-        # 4. Filter and Order Columns
+
+        # 4. Filter and Order Columns (Solar only — no wind)
         output_cols = [
-            'date', 'site_name', 'solar_generation_mw', 'wind_generation_mw', 
-            'total_generation_mw', 'renewable_energy_mwh', 
+            'date', 'site_name', 'solar_generation_mw', 'total_generation_mw',
+            'renewable_energy_mwh',
             'co2_avoided_kg', 'coal_saved_kg', 'trees_equivalent',
             'co2_avoided_tons', 'coal_saved_tons', 'trees_equivalent_million'
         ]
-        df = df[output_cols]
-        
+        available_cols = [c for c in output_cols if c in df.columns]
+        df = df[available_cols]
+
         # 5. Validation Check
         if not validate_data(df):
             logger.error("Pipeline halted due to validation failures.")

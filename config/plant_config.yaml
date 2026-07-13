@@ -1,25 +1,41 @@
 # =============================================================
-# Khavda Renewable Energy Park — Plant Configuration
+# Khavda Renewable Energy Park — Plant Configuration (SCADA Grade)
 # =============================================================
-# All physical parameters used by the Physics-Informed PV Engine
-# and the Wind Power Curve Model.
-# Update these values when physical plant parameters change.
+# Adani Green Energy Ltd (AGEL) — Khavda, Gujarat, India
+# All parameters calibrated to produce realistic SCADA output:
+#   Target daily generation: 10,000 – 12,000 MWh
+#   Annual CUF: ~27%
 # =============================================================
 
 site:
   name: "Khavda Renewable Energy Park"
-  latitude: 23.83       # Degrees North
-  longitude: 68.77      # Degrees East
-  altitude_m: 27        # Metres above sea level
+  developer: "Adani Green Energy Ltd (AGEL)"
+  latitude: 23.83
+  longitude: 68.77
+  altitude_m: 27
   timezone: "Asia/Kolkata"
+  commissioning_year: 2024
+  state: "Gujarat"
 
 solar:
-  installed_capacity_mw: 14000.0
-  module_efficiency: 0.22             # Monocrystalline PERC — 22%
-  performance_ratio: 0.82             # Accounts for inverter, cable, dust, mismatch losses
-  temperature_coefficient: -0.004     # Per-degree-C above STC (25°C), i.e. -0.4%/°C
-  noct_c: 45                          # Normal Operating Cell Temperature (°C)
-  reference_irradiance_w_m2: 1000.0  # STC reference irradiance
-  reference_temp_c: 25.0              # STC reference temperature
-
-
+  installed_capacity_mw: 20000.0           # 20 GW AC installed capacity
+  dc_capacity_mw: 27000.0                  # DC capacity (DC:AC ratio = 1.35)
+  dc_ac_ratio: 1.35
+  module_efficiency: 0.22
+  performance_ratio: 0.82
+  temperature_coefficient: -0.0035
+  noct_c: 44
+  reference_irradiance_w_m2: 1000.0
+  reference_temp_c: 25.0
+  tilt_degrees: 25.0
+  azimuth_degrees: 180.0
+  peak_sun_hours: 5.8
+  target_cuf_pct: 0.27
+  grid_availability_pct: 0.995
+  auxiliary_consumption_pct: 0.005
+  soiling_base_pct: 0.02
+  soiling_max_pct: 0.12
+  soiling_clean_interval_days: 15
+  inverter_efficiency: 0.98
+  transformer_efficiency: 0.995
+  cable_loss_pct: 0.005
