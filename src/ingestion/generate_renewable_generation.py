@@ -260,68 +260,17 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
     return solar_gen.clip(0, CAPACITY)
 
 
-# ---------------------------------------------------------------------------
-# 5. Wind Power-Curve Model
-# ---------------------------------------------------------------------------
-def calculate_wind_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
-    """
-    Classic 3-region wind turbine power curve:
-      Region 1 (<cut-in)  → 0 MW
-      Region 2 (cut-in … rated) → cubic ramp
-      Region 3 (rated … cut-out) → rated power
-      Region 4 (>cut-out) → 0 MW (safety shutdown)
-    """
-    wind_cfg   = cfg["wind"]
-    CAPACITY   = wind_cfg["installed_capacity_mw"]
-    EFFICIENCY = wind_cfg["efficiency"]
-    V_CI       = wind_cfg["cut_in_speed_ms"]
-    V_R        = wind_cfg["rated_speed_ms"]
-    V_CO       = wind_cfg["cut_out_speed_ms"]
-
-    v = df["wind_speed_ms"].clip(lower=0)
-    wind_gen = pd.Series(0.0, index=df.index)
-
-    # Region 2: cubic ramp
-    mask_r2 = (v >= V_CI) & (v < V_R)
-    wind_gen[mask_r2] = (
-        ((v[mask_r2] - V_CI) / (V_R - V_CI)) ** 3
-        * CAPACITY
-    )
-
-    # Region 3: rated output
-    mask_r3 = (v >= V_R) & (v <= V_CO)
-    wind_gen[mask_r3] = CAPACITY
-
-    # Introduce real-world variances (stochastic noise)
-    np.random.seed(101)
-    n_samples = len(df)
-    
-    # 1. Wake effects / aerodynamic turbulence: varies between 0.90 and 1.0
-    wake_loss = np.random.uniform(0.90, 1.0, n_samples)
-    
-    # 2. Sensor measurement noise: Gaussian noise std dev 2%
-    sensor_noise = np.random.normal(1.0, 0.02, n_samples)
-    
-    wind_gen = wind_gen * wake_loss * sensor_noise
-
-    return wind_gen.clip(0, CAPACITY)
-
-
-# ---------------------------------------------------------------------------
 # 6. Assemble Generation Dataframe
 # ---------------------------------------------------------------------------
 def generate_total_output(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     logger.info("Calculating Solar Generation (pvlib-informed)…")
     df["solar_generation_mw"] = calculate_solar_generation(df, cfg)
 
-    logger.info("Calculating Wind Generation (power-curve)…")
-    df["wind_generation_mw"] = calculate_wind_generation(df, cfg)
-
-    logger.info("Calculating Total Generation…")
-    df["total_generation_mw"] = df["solar_generation_mw"] + df["wind_generation_mw"]
+    # Wind and Total Output removed/simplified to just Solar
+    df["total_generation_mw"] = df["solar_generation_mw"]
 
     # Capacity Factor = Actual / Installed
-    total_installed = cfg["solar"]["installed_capacity_mw"] + cfg["wind"]["installed_capacity_mw"]
+    total_installed = cfg["solar"]["installed_capacity_mw"]
     df["capacity_factor"] = (df["total_generation_mw"] / total_installed).clip(0, 1)
 
     return df
@@ -336,9 +285,8 @@ def validate_generation_data(df: pd.DataFrame, cfg: dict) -> bool:
     """
     logger.info("Running validation checks…")
     solar_cap = cfg["solar"]["installed_capacity_mw"]
-    wind_cap  = cfg["wind"]["installed_capacity_mw"]
 
-    gen_cols = ["solar_generation_mw", "wind_generation_mw", "total_generation_mw"]
+    gen_cols = ["solar_generation_mw", "total_generation_mw"]
     pv_cols  = [
         "effective_irradiance", "cell_temperature_c",
         "temperature_factor", "cloud_factor", "performance_ratio", "capacity_factor",
@@ -359,9 +307,6 @@ def validate_generation_data(df: pd.DataFrame, cfg: dict) -> bool:
     # Capacity ceilings
     if (df["solar_generation_mw"] > solar_cap).any():
         logger.error("Validation Failed: Solar exceeds installed capacity.")
-        return False
-    if (df["wind_generation_mw"] > wind_cap).any():
-        logger.error("Validation Failed: Wind exceeds installed capacity.")
         return False
 
     # Cloud factor ∈ [0, 1]
@@ -388,7 +333,7 @@ def save_generation_data(df: pd.DataFrame) -> None:
     """
     output_cols = [
         "date", "site_name",
-        "solar_generation_mw", "wind_generation_mw", "total_generation_mw",
+        "solar_generation_mw", "total_generation_mw",
         # PV engineered features (consumed by ML feature_engineering)
         "ghi_w_m2", "effective_irradiance", "cloud_factor",
         "cell_temperature_c", "temperature_factor",

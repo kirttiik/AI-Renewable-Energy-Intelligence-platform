@@ -28,7 +28,6 @@ logging.basicConfig(
 # ---------------------------------------------------------------------------
 PIPELINE_STEPS = [
     # ── Data Ingestion (Critical) ──────────────────────────────────────────
-    ("src/ingestion/iex_scraper.py",                    False),  # IEX may be down — non-critical
     ("src/ingestion/khavda_weather_ingestion.py",       True),   # NASA POWER — core input
     ("src/ingestion/open_meteo_ingestion.py",           True),   # Future forecast — core input
 
@@ -37,8 +36,6 @@ PIPELINE_STEPS = [
 
     # ── ML Forecasting (Critical) ──────────────────────────────────────────
     ("src/forecasting/solar_model.py",                  True),
-    ("src/forecasting/wind_model.py",                   True),
-    ("src/forecasting/total_output_model.py",           True),
     ("src/analytics/forecast_confidence.py",            False),
 
     # ── Hourly Forecast Ingestion (after models) ───────────────────────────
@@ -48,7 +45,6 @@ PIPELINE_STEPS = [
     ("src/analytics/pv_engine_analytics.py",            False),
     ("src/analytics/carbon_offset.py",                  False),
     ("src/analytics/weather_risk.py",                   False),
-    ("src/analytics/iex_analytics.py",                  False),
     ("src/analytics/model_explainability.py",            False),
     ("src/analytics/shap_explainability.py",             False),
     ("src/analytics/executive_summary.py",               False),

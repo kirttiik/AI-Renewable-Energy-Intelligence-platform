@@ -22,9 +22,4 @@ solar:
   reference_irradiance_w_m2: 1000.0  # STC reference irradiance
   reference_temp_c: 25.0              # STC reference temperature
 
-wind:
-  installed_capacity_mw: 6000.0
-  cut_in_speed_ms: 3.0    # Minimum wind speed to generate power (m/s)
-  rated_speed_ms: 12.0    # Wind speed at which turbine reaches rated power (m/s)
-  cut_out_speed_ms: 25.0  # Safety shutdown wind speed (m/s)
-  efficiency: 0.35         # Overall drivetrain + generator efficiency
+

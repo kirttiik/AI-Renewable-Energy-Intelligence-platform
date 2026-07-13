@@ -1,50 +1,19 @@
 Model,Feature,Importance,Business Explanation,Engineering Explanation,Operational Recommendation
-Solar,capacity_factor,0.9267,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
-Solar,cloud_cover_pct,0.0246,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cloud_factor,0.0142,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
-Solar,effective_irradiance,0.0134,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
-Solar,solar_radiation_kwh_m2_day,0.006,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,humidity_pct,0.0048,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,temperature_c,0.0031,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cell_temperature_c,0.003,Indicates thermal degradation of efficiency.,Increased heat causes voltage drop due to thermal excitation of charge carriers.,Monitor for extreme heat anomalies and dispatch cooling protocols if available.
-Solar,day_of_year,0.0009,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,temperature_factor,0.0009,Measures overall thermal efficiency penalty.,Multiplier quantifying deviation from STC (Standard Test Conditions) efficiency.,Review module-level derating if factor falls below manufacturer specifications.
-Solar,week_of_year,0.0007,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,year,0.0006,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,capacity_factor,0.9972,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
+Solar,is_weekend,0.0018,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,month,0.0005,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,rainfall_mm,0.0004,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,is_weekend,0.0002,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,effective_irradiance,0.0001,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
+Solar,day_of_year,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cloud_cover_pct,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,humidity_pct,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,temperature_c,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,solar_radiation_kwh_m2_day,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cell_temperature_c,0.0,Indicates thermal degradation of efficiency.,Increased heat causes voltage drop due to thermal excitation of charge carriers.,Monitor for extreme heat anomalies and dispatch cooling protocols if available.
+Solar,rainfall_mm,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cloud_factor,0.0,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
+Solar,temperature_factor,0.0,Measures overall thermal efficiency penalty.,Multiplier quantifying deviation from STC (Standard Test Conditions) efficiency.,Review module-level derating if factor falls below manufacturer specifications.
+Solar,year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,week_of_year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,quarter,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,performance_ratio,0.0,Reflects overall system health and losses.,Ratio of actual plant AC output to theoretical DC output at STC.,Initiate full diagnostic sweep if PR drops below 75% for 3+ consecutive days.
 Solar,ghi_w_m2,0.0,Total sunlight available at the site.,Sum of direct and diffuse solar radiation incident on a horizontal surface.,Use for long-term site viability tracking and panel degradation baseline.
-Wind,wind_speed_ms,0.9596,Core fuel for wind energy generation.,Kinetic energy of wind scales with the cube of wind speed up to rated capacity.,Ensure pitch systems are calibrated for optimal aerodynamic capture.
-Wind,rainfall_mm,0.0277,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,day_of_year,0.004,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,temperature_c,0.003,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,capacity_factor,0.0026,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
-Wind,cloud_cover_pct,0.0011,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,humidity_pct,0.0006,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,effective_irradiance,0.0004,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
-Wind,is_weekend,0.0004,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,week_of_year,0.0003,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,month,0.0002,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Wind,cloud_factor,0.0001,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
-Wind,quarter,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,capacity_factor,0.9987,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
-Total Output,cloud_cover_pct,0.0003,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,temperature_c,0.0002,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,wind_speed_ms,0.0002,Core fuel for wind energy generation.,Kinetic energy of wind scales with the cube of wind speed up to rated capacity.,Ensure pitch systems are calibrated for optimal aerodynamic capture.
-Total Output,is_weekend,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,day_of_year,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,effective_irradiance,0.0001,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
-Total Output,solar_radiation_kwh_m2_day,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,cloud_factor,0.0,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
-Total Output,cell_temperature_c,0.0,Indicates thermal degradation of efficiency.,Increased heat causes voltage drop due to thermal excitation of charge carriers.,Monitor for extreme heat anomalies and dispatch cooling protocols if available.
-Total Output,humidity_pct,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,month,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,week_of_year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,rainfall_mm,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,temperature_factor,0.0,Measures overall thermal efficiency penalty.,Multiplier quantifying deviation from STC (Standard Test Conditions) efficiency.,Review module-level derating if factor falls below manufacturer specifications.
-Total Output,quarter,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Total Output,ghi_w_m2,0.0,Total sunlight available at the site.,Sum of direct and diffuse solar radiation incident on a horizontal surface.,Use for long-term site viability tracking and panel degradation baseline.
-Total Output,performance_ratio,0.0,Reflects overall system health and losses.,Ratio of actual plant AC output to theoretical DC output at STC.,Initiate full diagnostic sweep if PR drops below 75% for 3+ consecutive days.

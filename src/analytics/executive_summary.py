@@ -30,11 +30,10 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 PROCESSED_DATA_DIR = os.path.join(ROOT_DIR, 'data', 'processed')
 CARBON_OFFSET_PATH = os.path.join(PROCESSED_DATA_DIR, 'carbon_offset_analytics.csv')
 WEATHER_RISK_PATH = os.path.join(PROCESSED_DATA_DIR, 'weather_risk_analytics.csv')
-REVENUE_PATH = os.path.join(PROCESSED_DATA_DIR, 'revenue_analytics.csv')
 
 REPORTS_DIR = os.path.join(ROOT_DIR, 'reports')
 # Note: Reflecting the recent directory restructuring
-TOTAL_OUTPUT_PREDICTIONS_PATH = os.path.join(REPORTS_DIR, 'total_output', 'total_output_predictions.csv')
+SOLAR_PREDICTIONS_PATH = os.path.join(REPORTS_DIR, 'solar', 'solar_predictions.csv')
 
 # Output Paths (Using a dedicated executive subdirectory)
 EXEC_REPORTS_DIR = os.path.join(REPORTS_DIR, 'executive')
@@ -61,8 +60,7 @@ def load_datasets() -> dict:
     paths = {
         'carbon_offset': CARBON_OFFSET_PATH,
         'weather_risk': WEATHER_RISK_PATH,
-        'revenue': REVENUE_PATH,
-        'predictions': TOTAL_OUTPUT_PREDICTIONS_PATH
+                'predictions': SOLAR_PREDICTIONS_PATH
     }
     
     for name, path in paths.items():
@@ -86,9 +84,7 @@ def merge_datasets(datasets: dict) -> pd.DataFrame:
     logger.info("Merging datasets into executive summary...")
     
     # We need a base dataframe to merge against. Revenue or Weather usually has full coverage.
-    if 'revenue' in datasets:
-        base_df = datasets['revenue'].copy()
-    elif 'weather_risk' in datasets:
+    if 'weather_risk' in datasets:
         base_df = datasets['weather_risk'].copy()
     else:
         logger.error("No base dataset found to initiate merge.")
@@ -110,15 +106,15 @@ def merge_datasets(datasets: dict) -> pd.DataFrame:
     if 'predictions' in datasets:
         pred_df = datasets['predictions'].copy()
         # Rename actual column if it exists in predictions to avoid conflicts
-        if 'actual_total_generation_mw' in pred_df.columns:
-            pred_df = pred_df.rename(columns={'actual_total_generation_mw': 'actual_test_generation_mw'})
+        if 'actual_solar_generation_mw' in pred_df.columns:
+            pred_df = pred_df.rename(columns={'actual_solar_generation_mw': 'actual_test_generation_mw'})
             
         cols_to_use = ['date'] + [col for col in pred_df.columns if col not in merged_df.columns]
         merged_df = pd.merge(merged_df, pred_df[cols_to_use], on='date', how='outer')
         
     # Standardize missing columns based on expectations
     expected_cols = [
-        'site_name', 'total_generation_mw', 'predicted_total_generation_mw', 
+        'site_name', 'solar_generation_mw', 'predicted_solar_generation_mw', 
         'daily_revenue_inr', 'revenue_at_risk_inr', 'co2_avoided_tons', 
         'coal_saved_tons', 'trees_equivalent_million', 'overall_risk_level', 
         'risk_alert', 'active_high_risk_factors'
@@ -167,7 +163,7 @@ def generate_ai_insights(df: pd.DataFrame) -> pd.DataFrame:
             return "Severe weather conditions pose high risk to generation and revenue."
         elif overall_risk == 'LOW':
             # Check generation strength
-            if row.get('predicted_total_generation_mw', 0) > row.get('total_generation_mw', 0):
+            if row.get('predicted_solar_generation_mw', 0) > row.get('solar_generation_mw', 0):
                 return "Forecast indicates strong renewable output expected. Weather risks remain low."
             else:
                 return "Favorable weather conditions. Revenue outlook remains favorable."
@@ -185,14 +181,14 @@ def calculate_forecast_accuracy(df: pd.DataFrame) -> pd.DataFrame:
     logger.info("Calculating forecast accuracy...")
     
     # We only calculate accuracy where we have both actuals and predictions
-    # Note: total_generation_mw from revenue/generation, predicted_total_generation_mw from predictions
+    # Note: solar_generation_mw from revenue/generation, predicted_solar_generation_mw from predictions
     
-    mask = (df['total_generation_mw'] > 0) & (df['predicted_total_generation_mw'] > 0)
+    mask = (df['solar_generation_mw'] > 0) & (df['predicted_solar_generation_mw'] > 0)
     valid_df = df[mask]
     
     if len(valid_df) > 0:
-        y_true = valid_df['total_generation_mw']
-        y_pred = valid_df['predicted_total_generation_mw']
+        y_true = valid_df['solar_generation_mw']
+        y_pred = valid_df['predicted_solar_generation_mw']
         
         mae = mean_absolute_error(y_true, y_pred)
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
@@ -227,11 +223,11 @@ def generate_kpis(df: pd.DataFrame, accuracy_df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return pd.DataFrame()
         
-    total_gen = df['total_generation_mw'].sum()
-    avg_gen = df['total_generation_mw'].mean()
-    total_rev = df['daily_revenue_inr'].sum()
-    avg_rev = df['daily_revenue_inr'].mean()
-    total_rev_risk = df['revenue_at_risk_inr'].sum()
+    total_gen = df['solar_generation_mw'].sum()
+    avg_gen = df['solar_generation_mw'].mean()
+    total_rev = df.get('daily_revenue_inr', pd.Series([0]*len(df))).sum()
+    avg_rev = df.get('daily_revenue_inr', pd.Series([0]*len(df))).mean()
+    total_rev_risk = df.get('revenue_at_risk_inr', pd.Series([0]*len(df))).sum()
     
     total_co2 = df['co2_avoided_tons'].sum()
     total_coal = df['coal_saved_tons'].sum()
@@ -326,9 +322,9 @@ def create_visualizations(df: pd.DataFrame):
     try:
         # Plot 1: Generation Overview
         plt.figure(figsize=(12, 5))
-        plt.plot(df['date'], df['total_generation_mw'], label='Actual', color='blue', alpha=0.7)
-        if 'predicted_total_generation_mw' in df.columns and not df['predicted_total_generation_mw'].isnull().all():
-            plt.plot(df['date'], df['predicted_total_generation_mw'], label='Forecast', color='orange', alpha=0.7, linestyle='--')
+        plt.plot(df['date'], df['solar_generation_mw'], label='Actual', color='blue', alpha=0.7)
+        if 'predicted_solar_generation_mw' in df.columns and not df['predicted_solar_generation_mw'].isnull().all():
+            plt.plot(df['date'], df['predicted_solar_generation_mw'], label='Forecast', color='orange', alpha=0.7, linestyle='--')
         plt.title('Executive Overview: Total Generation vs Forecast', fontweight='bold')
         plt.ylabel('Generation (MW)')
         plt.legend()
@@ -339,7 +335,7 @@ def create_visualizations(df: pd.DataFrame):
         
         # Plot 2: Revenue Overview
         plt.figure(figsize=(12, 5))
-        plt.plot(df['date'], df['daily_revenue_inr'] / 10000000, color='green')
+        plt.plot(df['date'], df.get('daily_revenue_inr', pd.Series([0]*len(df))) / 10000000, color='green')
         plt.title('Executive Overview: Daily Revenue', fontweight='bold')
         plt.ylabel('Revenue (Crores INR)')
         plt.grid(True, alpha=0.3)
@@ -359,7 +355,7 @@ def create_visualizations(df: pd.DataFrame):
         
         # Plot 4: Risk Overview
         plt.figure(figsize=(12, 5))
-        plt.plot(df['date'], df['revenue_at_risk_inr'] / 100000, color='red')
+        plt.plot(df['date'], df.get('revenue_at_risk_inr', pd.Series([0]*len(df))) / 100000, color='red')
         plt.title('Executive Overview: Revenue Exposed to Weather Risk', fontweight='bold')
         plt.ylabel('Revenue at Risk (Lakhs INR)')
         plt.grid(True, alpha=0.3)
@@ -378,7 +374,7 @@ def save_results(df: pd.DataFrame, kpi_df: pd.DataFrame, accuracy_df: pd.DataFra
     try:
         # Output Columns
         output_cols = [
-            'date', 'site_name', 'total_generation_mw', 'predicted_total_generation_mw',
+            'date', 'site_name', 'solar_generation_mw', 'predicted_solar_generation_mw',
             'daily_revenue_inr', 'revenue_at_risk_inr', 'co2_avoided_tons', 
             'coal_saved_tons', 'trees_equivalent_million', 'overall_risk_level',
             'risk_alert', 'active_high_risk_factors', 'ai_insight'
