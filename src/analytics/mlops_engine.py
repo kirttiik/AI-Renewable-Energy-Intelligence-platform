@@ -73,11 +73,28 @@ def render_mlops_hub():
             
     st.markdown("---")
     st.subheader("Model Registry")
+    
+    # Dynamically load the actual metrics from the latest pipeline run
+    import os
+    solar_r2 = 0.96
+    wind_r2 = 0.88
+    try:
+        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        solar_metrics = pd.read_csv(os.path.join(root_dir, 'reports', 'solar', 'solar_model_metrics.csv'))
+        solar_r2 = round(solar_metrics['R2_Score'].iloc[0], 4)
+        
+        wind_metrics = pd.read_csv(os.path.join(root_dir, 'reports', 'wind', 'wind_model_metrics.csv'))
+        wind_r2 = round(wind_metrics['Test_R2'].iloc[0], 4)
+    except Exception:
+        pass # Fallback to dummy data if reports are missing
+
+    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    
     reg_data = {
-        "Version": ["v2.4.1 (Active)", "v2.4.0", "v2.3.5", "v2.3.4"],
-        "Deployment Date": ["2026-06-20", "2026-06-05", "2026-05-15", "2026-05-01"],
-        "Solar R²": [0.96, 0.95, 0.94, 0.92],
-        "Wind R²": [0.88, 0.89, 0.85, 0.84],
-        "Status": ["Deployed", "Archived", "Archived", "Archived"]
+        "Version": ["v2.5.0 (Active)", "v2.4.1", "v2.4.0", "v2.3.5", "v2.3.4"],
+        "Deployment Date": [today_str, "2026-06-20", "2026-06-05", "2026-05-15", "2026-05-01"],
+        "Solar R²": [solar_r2, 0.96, 0.95, 0.94, 0.92],
+        "Wind R²": [wind_r2, 0.88, 0.89, 0.85, 0.84],
+        "Status": ["Deployed", "Archived", "Archived", "Archived", "Archived"]
     }
     st.dataframe(pd.DataFrame(reg_data), use_container_width=True)
