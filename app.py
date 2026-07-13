@@ -983,7 +983,7 @@ def render_weather_intelligence():
         st.warning("Weather forecast file not found. Displaying default estimates. Run the pipeline to update.")
 
     df_forecast = pd.DataFrame({
-        "Date": dates, "Temperature (C)": temps, "Cloud Cover (%)": clouds, 
+        "Date": dates, "Temperature (°C)": temps, "Cloud Cover (%)": clouds, 
         "Wind Speed (m/s)": wind, "Rainfall (mm)": rain
     })
     
