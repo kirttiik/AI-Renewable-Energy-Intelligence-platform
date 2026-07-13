@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 def render_predictive_maintenance():
-    st.title("🛠 Predictive Maintenance & Scenarios")
+    st.title(" Predictive Maintenance & Scenarios")
     st.markdown("Forecast asset degradation, prioritize maintenance schedules, and simulate extreme operational scenarios.")
     
     st.markdown("---")
@@ -11,7 +11,7 @@ def render_predictive_maintenance():
     # -------------------------------------------------------------------------
     # 1. Predictive Maintenance (Module 2)
     # -------------------------------------------------------------------------
-    st.subheader("🔧 Predictive Maintenance Queue")
+    st.subheader(" Predictive Maintenance Queue")
     
     data = {
         "Asset Group": ["Inverter Block A", "PV Module Array C", "Inverter Block B", "Transformer T-02", "Tracker System X"],
@@ -29,16 +29,16 @@ def render_predictive_maintenance():
     st.dataframe(df_maint.style.applymap(color_priority, subset=['Maintenance Priority']), use_container_width=True)
     
     c1, c2, c3 = st.columns(3)
-    c1.warning("⚠️ **Alert:** Inverter Block A showing severe temperature stress.")
-    c2.info("💡 **Recommendation:** Delay tracker maintenance until high-wind period passes.")
-    c3.success("✅ **Status:** Transformer temperatures are within normal limits.")
+    c1.warning(" **Alert:** Inverter Block A showing severe temperature stress.")
+    c2.info(" **Recommendation:** Delay tracker maintenance until high-wind period passes.")
+    c3.success(" **Status:** Transformer temperatures are within normal limits.")
 
     st.markdown("---")
     
     # -------------------------------------------------------------------------
     # 2. Advanced Scenario Planning (Module 8)
     # -------------------------------------------------------------------------
-    st.subheader("🌩 Advanced Scenario Simulator")
+    st.subheader(" Advanced Scenario Simulator")
     st.markdown("Simulate the impact of predefined extreme conditions on plant performance.")
     
     scenario = st.radio("Select Simulation Scenario:", 

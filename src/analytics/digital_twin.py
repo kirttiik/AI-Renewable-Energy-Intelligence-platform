@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 def render_digital_twin():
-    st.title("🛰 Renewable Energy Digital Twin")
+    st.title(" Renewable Energy Digital Twin")
     st.markdown("Live physics simulation, asset health monitoring, and automated root cause analysis.")
     
     st.markdown("---")
@@ -13,7 +13,7 @@ def render_digital_twin():
     # -------------------------------------------------------------------------
     # 1. Physics Simulation (Module 1)
     # -------------------------------------------------------------------------
-    st.subheader("⚙️ Live Physics Simulation")
+    st.subheader(" Live Physics Simulation")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Expected Generation (MW)", "12,450.5", delta="-120.3", delta_color="inverse")
     c2.metric("Performance Ratio", "82.4%", delta="+0.3%")
@@ -40,7 +40,7 @@ def render_digital_twin():
     col_ahi, col_rca = st.columns([1, 1])
     
     with col_ahi:
-        st.subheader("🏥 Asset Health Index")
+        st.subheader(" Asset Health Index")
         st.markdown("Composite score evaluating efficiency, degradation, and stability.")
         
         health_score = 88
@@ -69,7 +69,7 @@ def render_digital_twin():
     # 3. Root Cause Analysis (Module 6)
     # -------------------------------------------------------------------------
     with col_rca:
-        st.subheader("🔍 Root Cause Analysis")
+        st.subheader(" Root Cause Analysis")
         st.markdown("Attribution of generation variance from theoretical maximum.")
         
         # Waterfall chart for RCA

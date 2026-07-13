@@ -61,7 +61,7 @@ def run_script(script_path: str, is_critical: bool) -> bool:
     Returns True on success, False on failure.
     Raises SystemExit if the step is critical and fails.
     """
-    logging.info(f"🚀 Running {'[CRITICAL]' if is_critical else '[optional]'} {script_path} ...")
+    logging.info(f" Running {'[CRITICAL]' if is_critical else '[optional]'} {script_path} ...")
     result = subprocess.run(
         [sys.executable, script_path],
         capture_output=True,
@@ -72,7 +72,7 @@ def run_script(script_path: str, is_critical: bool) -> bool:
         logging.info(result.stdout.strip())
 
     if result.returncode != 0:
-        logging.error(f"❌ Failed: {script_path}")
+        logging.error(f" Failed: {script_path}")
         logging.error(result.stderr.strip() if result.stderr else "(no stderr captured)")
 
         if is_critical:
@@ -84,7 +84,7 @@ def run_script(script_path: str, is_critical: bool) -> bool:
 
         return False
 
-    logging.info(f"✅ Completed: {script_path}")
+    logging.info(f" Completed: {script_path}")
     return True
 
 
@@ -107,5 +107,5 @@ if __name__ == "__main__":
             + "\n".join(f"  - {s}" for s in failed_steps)
         )
     else:
-        logging.info("🎉 All pipeline steps completed successfully!")
+        logging.info(" All pipeline steps completed successfully!")
     logging.info("=" * 60)

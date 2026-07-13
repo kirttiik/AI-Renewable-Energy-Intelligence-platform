@@ -161,7 +161,7 @@ class GeminiCopilot:
         prepended to the first message, then the chat history carries memory.
         """
         if not self._ready:
-            return f"⚠️ AI Assistant temporarily unavailable: {self._init_error}"
+            return f" AI Assistant temporarily unavailable: {self._init_error}"
 
         # Build the full user message
         # On the first turn, include the full operational context
@@ -189,7 +189,7 @@ class GeminiCopilot:
                 else:
                     logger.error("All Gemini retries exhausted.")
                     return (
-                        "⚠️ **AI Assistant temporarily unavailable.**\n\n"
+                        " **AI Assistant temporarily unavailable.**\n\n"
                         f"Error: {exc}\n\n"
                         "Please check your API key and network connection."
                     )

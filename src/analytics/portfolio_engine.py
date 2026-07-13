@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 def render_portfolio_analytics():
-    st.title("🌍 Portfolio Analytics")
+    st.title(" Portfolio Analytics")
     st.markdown("Aggregated generation, financial, and health metrics across all managed renewable energy assets.")
     
     st.markdown("---")
@@ -56,7 +56,7 @@ def render_portfolio_analytics():
         st.dataframe(df_port.style.applymap(color_health, subset=['Health Score']), use_container_width=True, height=350)
         
     st.markdown("---")
-    st.subheader("🌍 Geographic Asset Map")
+    st.subheader(" Geographic Asset Map")
     st.info("Mapping integration requires GPS coordinate setup. Currently displaying simulated asset locations.")
     
     # Dummy coordinates for the plants

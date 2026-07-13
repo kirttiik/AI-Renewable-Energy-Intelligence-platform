@@ -16,7 +16,7 @@ import numpy as np
 # ==========================================
 st.set_page_config(
     page_title="Khavda Digital Twin",
-    page_icon="⚡",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -120,29 +120,29 @@ with st.sidebar:
     st.markdown("---")
     
     sections = [
-        "🏠 Executive Control Center",
-        "🛰 Digital Twin",
-        "🌍 Portfolio Analytics",
-        "⚡ Plant Performance",
-        "🛠 Operations & Maintenance",
-        "🔮 Generation Forecast",
-        "🌤 Weather Intelligence",
-        "🌱 Sustainability Analytics",
-        "📈 Energy Market Intelligence",
-        "🌐 Grid Intelligence",
-        "🧠 AI Explainability",
-        "🔬 SHAP Analytics",
-        "⚙️ MLOps Hub",
-        "🤖 AI Operations Copilot",
-        "⚙️ Platform Health",
-        "📄 About Platform",
+        " Executive Control Center",
+        " Digital Twin",
+        " Portfolio Analytics",
+        " Plant Performance",
+        " Operations & Maintenance",
+        " Generation Forecast",
+        " Weather Intelligence",
+        " Sustainability Analytics",
+        " Energy Market Intelligence",
+        " Grid Intelligence",
+        " AI Explainability",
+        " SHAP Analytics",
+        " MLOps Hub",
+        " AI Operations Copilot",
+        " Platform Health",
+        " About Platform",
     ]
     selection = st.radio("Navigation", sections)
     
     st.markdown("---")
     global_time_horizon = st.radio(
-        "⏱️ Time Horizon",
-        ["All Time", "Yesterday", "Today", "Tomorrow", "📅 Custom Range"],
+        " Time Horizon",
+        ["All Time", "Yesterday", "Today", "Tomorrow", " Custom Range"],
         index=0,
         help="Filter data by time period. Custom Range lets you pick exact dates."
     )
@@ -150,7 +150,7 @@ with st.sidebar:
     # Custom date range pickers (only shown when Custom Range is selected)
     custom_start_date = None
     custom_end_date   = None
-    if global_time_horizon == "📅 Custom Range":
+    if global_time_horizon == " Custom Range":
         import datetime as dt
         today_sys = dt.date.today()
         default_start = today_sys - dt.timedelta(days=30)
@@ -195,7 +195,7 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
         df['date'] = pd.to_datetime(df['date'])
 
     # Custom Range handling
-    if horizon == "📅 Custom Range":
+    if horizon == " Custom Range":
         if custom_start and custom_end:
             # Compare using .dt.date to safely ignore time components
             return df[(df['date'].dt.date >= custom_start) & (df['date'].dt.date <= custom_end)]
@@ -242,7 +242,7 @@ def get_hourly_for_horizon(horizon, custom_start=None, custom_end=None):
     
     hdf = hourly_data.copy()
     
-    if horizon == "📅 Custom Range":
+    if horizon == " Custom Range":
         if custom_start and custom_end:
             return hdf[(hdf['date'] >= custom_start) & (hdf['date'] <= custom_end)]
         return hdf
@@ -270,10 +270,10 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
         st.info("Hourly data not yet available. The pipeline will generate it on the next run.")
         return
     
-    label = horizon if horizon != "📅 Custom Range" else f"{custom_start} → {custom_end}"
-    st.subheader(f"⏰ Hourly Generation Breakdown — {label}")
+    label = horizon if horizon != " Custom Range" else f"{custom_start} → {custom_end}"
+    st.subheader(f" Hourly Generation Breakdown — {label}")
     
-    if horizon in SINGLE_DAY_HORIZONS or (horizon == "📅 Custom Range" and custom_start == custom_end):
+    if horizon in SINGLE_DAY_HORIZONS or (horizon == " Custom Range" and custom_start == custom_end):
         # Single day — show by hour on x-axis
         fig_hourly = go.Figure()
         fig_hourly.add_trace(go.Bar(
@@ -372,15 +372,15 @@ def render_executive_alerts():
     if alerts:
         for alert_type, msg in alerts:
             if alert_type == "error":
-                st.error(f"⚠️ {msg}")
+                st.error(f" {msg}")
             elif alert_type == "warning":
-                st.warning(f"⚠️ {msg}")
+                st.warning(f" {msg}")
             else:
-                st.success(f"✔️ {msg}")
+                st.success(f" {msg}")
 
 
 def render_executive_overview():
-    st.title("🏠 Executive Control Center")
+    st.title(" Executive Control Center")
     render_executive_alerts()
     st.markdown("---")
     
@@ -392,7 +392,7 @@ def render_executive_overview():
     carbon_offset = 10209.4
     forecast_confidence = "High (96.4%)"
     weather_risk = "Low"
-    pipeline_health = "🟢 100% Healthy"
+    pipeline_health = " 100% Healthy"
     plant_health_score = 92
     perf_ratio = 0.82
     cap_factor = 28.4
@@ -436,19 +436,19 @@ def render_executive_overview():
 
     st.markdown("---")
     
-    st.subheader("📊 System Monitoring & Compliance")
+    st.subheader(" System Monitoring & Compliance")
     col_left, col_right = st.columns(2)
     with col_left:
         st.markdown(f"**Data Freshness (Latest Update):** {latest_update}")
         st.markdown("**Model Version:** v2.1.0 (Physics-Informed XGBoost)")
     with col_right:
-        st.markdown("**GitHub Action Status:** ✅ Passing")
+        st.markdown("**GitHub Action Status:**  Passing")
         st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
         
     st.markdown("---")
 
 def render_plant_performance():
-    st.title("⚡ Plant Performance")
+    st.title(" Plant Performance")
     st.markdown("Track granular asset performance against ML-forecasted baselines to immediately identify operational gaps.")
     
     ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -456,7 +456,7 @@ def render_plant_performance():
     # ---------------------------------------------------------
     # A. Plant KPIs
     # ---------------------------------------------------------
-    st.subheader("📊 A. Plant KPIs")
+    st.subheader(" A. Plant KPIs")
     c1, c2, c3, c4 = st.columns(4)
     c5, c6, c7, c8 = st.columns(4)
     
@@ -468,14 +468,14 @@ def render_plant_performance():
     c5.metric("Plant Availability", "99.8%", "High")
     c6.metric("PV Efficiency", "18.5%", "-0.2%")
     c7.metric("Plant Health Score", "94/100")
-    c8.metric("Operating Status", "🟢 Optimal")
+    c8.metric("Operating Status", " Optimal")
 
     st.markdown("---")
     
     # ---------------------------------------------------------
     # B. PV Engineering Dashboard
     # ---------------------------------------------------------
-    st.subheader("🔬 B. PV Engineering Dashboard (Physics-Informed)")
+    st.subheader(" B. PV Engineering Dashboard (Physics-Informed)")
     
     gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
     
@@ -542,7 +542,7 @@ def render_plant_performance():
     # ---------------------------------------------------------
     # C. Performance Diagnostics
     # ---------------------------------------------------------
-    st.subheader("🛠️ C. Performance Diagnostics")
+    st.subheader(" C. Performance Diagnostics")
     
     try:
         if not df_gen.empty:
@@ -585,7 +585,7 @@ def render_plant_performance():
     # ---------------------------------------------------------
     # D. Automated Engineering Insights (Task 7)
     # ---------------------------------------------------------
-    st.subheader("💡 D. Automated Engineering Insights")
+    st.subheader(" D. Automated Engineering Insights")
     with st.expander("View 15 Key Engineering Observations", expanded=False):
         st.markdown("""
         1. **Irradiance Attenuation:** Cloud attenuation reduced overall effective irradiance by 18% over the past 30 days.
@@ -610,13 +610,13 @@ def render_plant_performance():
 
 
 def render_forecasting():
-    st.title("🔮 AI Forecasting & Predictive Intelligence")
+    st.title(" AI Forecasting & Predictive Intelligence")
     st.markdown("Day-Ahead and Week-Ahead generation projections powered by XGBoost.")
     
     # Pipeline Chain Banner
     st.markdown("""
     <div style="background-color:#1a1a2e;padding:12px 20px;border-radius:8px;border-left:4px solid #F1C40F;margin-bottom:16px;">
-    <span style="color:#F1C40F;font-weight:bold;">⚙️ Inference Chain: </span>
+    <span style="color:#F1C40F;font-weight:bold;"> Inference Chain: </span>
     <span style="color:#BDC3C7;">Physics Model (pvlib)</span>
     <span style="color:#F1C40F;"> → </span>
     <span style="color:#BDC3C7;">AI Adjustment (XGBoost)</span>
@@ -703,7 +703,7 @@ def render_forecasting():
     df_future = pd.DataFrame({"Time": times, "Solar": solar, "Wind": wind})
     
     # 2. The Future Horizon View
-    st.subheader("📅 Week-Ahead Predictive Generation Curve")
+    st.subheader(" Week-Ahead Predictive Generation Curve")
     
     fig_future = go.Figure()
     fig_future.add_trace(go.Scatter(x=df_future["Time"], y=df_future["Wind"], mode='lines', name='Forecasted Wind (MW)', stackgroup='one', fillcolor='#3498DB', line=dict(width=0)))
@@ -717,7 +717,7 @@ def render_forecasting():
     st.markdown("---")
     
     # 3. Forecast Error Distribution
-    st.subheader("🎯 Model Accuracy & Error Distribution")
+    st.subheader(" Model Accuracy & Error Distribution")
     
     col_scatter, col_hist = st.columns(2)
     
@@ -742,10 +742,10 @@ def render_forecasting():
     st.markdown("---")
     
     # 4. Commercial Trading Action Plan
-    st.info("💡 **Trading Insight:** The XGBoost model predicts a 15% surge in wind generation over the next 48 hours due to incoming coastal fronts. Recommend increasing Day-Ahead Market (DAM) volume bids for the evening peak blocks.")
+    st.info(" **Trading Insight:** The XGBoost model predicts a 15% surge in wind generation over the next 48 hours due to incoming coastal fronts. Recommend increasing Day-Ahead Market (DAM) volume bids for the evening peak blocks.")
 
 def render_carbon_analytics():
-    st.title("🌱 Carbon Analytics")
+    st.title(" Carbon Analytics")
     st.markdown("Sustainability tracking and environmental impact.")
     
     df_carb = filter_by_time_horizon(data['carbon'], global_time_horizon, custom_start_date, custom_end_date)
@@ -766,7 +766,7 @@ def render_carbon_analytics():
         st.warning("Carbon Analytics dataset is missing.")
 
 def render_weather_intelligence():
-    st.title("🌤 Weather Intelligence")
+    st.title(" Weather Intelligence")
     st.markdown("Advanced atmospheric and PV physics tracking for predictive plant operations.")
     
     ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -786,7 +786,7 @@ def render_weather_intelligence():
         "Wind Speed (m/s)": wind, "Rainfall (mm)": rain
     })
     
-    st.subheader("📅 7-Day Atmospheric Forecast")
+    st.subheader(" 7-Day Atmospheric Forecast")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Avg Temperature", f"{temps.mean():.1f} °C")
     c2.metric("Avg Cloud Cover", f"{clouds.mean():.1f}%")
@@ -809,7 +809,7 @@ def render_weather_intelligence():
     
     col_l, col_r = st.columns(2)
     with col_l:
-        st.subheader("⛈️ Weather Risk Timeline")
+        st.subheader(" Weather Risk Timeline")
         st.markdown("Tracking potential extreme events over the next 7 days.")
         risk_levels = ['LOW', 'LOW', 'MEDIUM', 'HIGH', 'LOW', 'LOW', 'MEDIUM']
         df_risk = pd.DataFrame({"Date": dates, "Risk": risk_levels})
@@ -819,7 +819,7 @@ def render_weather_intelligence():
         st.plotly_chart(fig_r, use_container_width=True)
         
     with col_r:
-        st.subheader("☀️ PV Physics Weather Impact")
+        st.subheader(" PV Physics Weather Impact")
         try:
             gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
             if os.path.exists(gen_path):
@@ -850,18 +850,18 @@ def render_weather_intelligence():
     
     if alerts:
         for a in alerts:
-            st.warning(f"⚠️ {a}")
+            st.warning(f" {a}")
     else:
         st.info("No extreme weather events expected over the next 48 hours. Dust accumulation risk remains moderate.")
 
 def render_explainability():
-    st.title("🧠 AI Explainability & Model Performance")
+    st.title(" AI Explainability & Model Performance")
     st.markdown("Demystifying machine learning predictions, evaluating model metrics, and translating features into operational engineering actions.")
     
     # ---------------------------------------------------------
     # Model Performance Section (Task 6)
     # ---------------------------------------------------------
-    with st.expander("📊 View Model Performance Metrics", expanded=False):
+    with st.expander(" View Model Performance Metrics", expanded=False):
         st.subheader("Model Evaluation & Training Metadata")
         c_p1, c_p2, c_p3 = st.columns(3)
         
@@ -900,7 +900,7 @@ def render_explainability():
     # ---------------------------------------------------------
     # Operational Feature Explanations (Task 4)
     # ---------------------------------------------------------
-    st.subheader("🛠️ Feature Impact & Operational Recommendations")
+    st.subheader(" Feature Impact & Operational Recommendations")
     
     # Mock generating the mapping as requested
     explain_data = [
@@ -929,7 +929,7 @@ def render_explainability():
     
     for item in explain_data:
         with st.container():
-            st.markdown(f"#### 🔹 {item['Feature']}")
+            st.markdown(f"####  {item['Feature']}")
             col_e, col_b = st.columns(2)
             col_e.info(f"**Engineering Meaning:**\n{item['Engineering Meaning']}")
             col_b.success(f"**Business Meaning:**\n{item['Business Meaning']}")
@@ -939,7 +939,7 @@ def render_explainability():
             st.markdown("<hr style='margin:10px 0;'>", unsafe_allow_html=True)
 
 def render_shap_analytics():
-    st.title("🔬 SHAP Analytics")
+    st.title(" SHAP Analytics")
     st.markdown("Advanced Model Explainability using SHapley Additive exPlanations. Understand exactly *why* the AI predicts what it does.")
     
     shap_rank_df = data.get('shap_solar_rank', pd.DataFrame())
@@ -1071,7 +1071,7 @@ def load_iex_data():
 # IEX ANALYTICS — Render
 # ===========================================================================
 def render_iex_analytics():
-    st.title("⚡ IEX Market Intelligence")
+    st.title(" IEX Market Intelligence")
     st.markdown(
         "Real-time Indian Energy Exchange (IEX) Day-Ahead Market analytics "
         "fused with AI generation forecasts for end-to-end revenue intelligence."
@@ -1085,7 +1085,7 @@ def render_iex_analytics():
     insights = iex_d['insights']
 
     if iex.empty:
-        st.error("⚠️ IEX price data could not be loaded. Please run the pipeline first.")
+        st.error(" IEX price data could not be loaded. Please run the pipeline first.")
         return
 
     # ── filter by global time horizon ────────────────────────────────────────
@@ -1099,7 +1099,7 @@ def render_iex_analytics():
     # SECTION 1 — MARKET OVERVIEW KPIs
     # ======================================================================
     st.markdown("---")
-    st.subheader("📊 Market Overview")
+    st.subheader(" Market Overview")
 
     kpi = summary.iloc[0].to_dict() if not summary.empty else {}
 
@@ -1113,21 +1113,21 @@ def render_iex_analytics():
     avg_day_rev = safe_number(kpi.get('avg_daily_revenue_inr', bt_f['revenue_inr'].mean() if not bt_f.empty else 0))
 
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("💹 Avg DAM Price",       f"₹{avg_price:,.2f} /kWh")
-    c2.metric("⚡ Avg RTM Price",       f"₹{avg_rtm:,.2f} /kWh")
-    c3.metric("⬆️ Peak DAM Price",       f"₹{max_price:,.2f} /kWh")
-    c4.metric("⬇️ Floor DAM Price",      f"₹{min_price:,.2f} /kWh")
+    c1.metric(" Avg DAM Price",       f"₹{avg_price:,.2f} /kWh")
+    c2.metric(" Avg RTM Price",       f"₹{avg_rtm:,.2f} /kWh")
+    c3.metric(" Peak DAM Price",       f"₹{max_price:,.2f} /kWh")
+    c4.metric(" Floor DAM Price",      f"₹{min_price:,.2f} /kWh")
 
     c5, c6, c7 = st.columns(3)
-    c5.metric("💰 Avg Daily Revenue",    f"₹{avg_day_rev/1e5:.2f} L")
-    c6.metric("🏆 Total Market Revenue", f"₹{total_rev/1e7:.2f} Cr")
-    c7.metric("📈 Price Volatility",      f"{volatility:.2f}%")
+    c5.metric(" Avg Daily Revenue",    f"₹{avg_day_rev/1e5:.2f} L")
+    c6.metric(" Total Market Revenue", f"₹{total_rev/1e7:.2f} Cr")
+    c7.metric(" Price Volatility",      f"{volatility:.2f}%")
 
     # ======================================================================
     # SECTION 2 — IEX PRICE ANALYTICS
     # ======================================================================
     st.markdown("---")
-    st.subheader("📈 IEX DAM Price Analytics")
+    st.subheader(" IEX DAM Price Analytics")
 
     tab1, tab2, tab3, tab4 = st.tabs([
         "Daily Trend", "Monthly Avg", "Distribution", "Volatility"
@@ -1177,8 +1177,8 @@ def render_iex_analytics():
             hi = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmax()]
             lo = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmin()]
             c1, c2 = st.columns(2)
-            c1.info(f"🔴 **Highest Price Day:** {hi['date'].strftime('%d %b %Y')}  —  ₹{hi['dam_price_rs_kwh']:,.2f}/kWh")
-            c2.success(f"🟢 **Lowest Price Day:** {lo['date'].strftime('%d %b %Y')}  —  ₹{lo['dam_price_rs_kwh']:,.2f}/kWh")
+            c1.info(f" **Highest Price Day:** {hi['date'].strftime('%d %b %Y')}  —  ₹{hi['dam_price_rs_kwh']:,.2f}/kWh")
+            c2.success(f" **Lowest Price Day:** {lo['date'].strftime('%d %b %Y')}  —  ₹{lo['dam_price_rs_kwh']:,.2f}/kWh")
 
     with tab2:
         monthly_avg = iex.groupby(iex['date'].dt.to_period('M'))['dam_price_rs_kwh'].mean().reset_index()
@@ -1223,7 +1223,7 @@ def render_iex_analytics():
     # SECTION 3 — REVENUE BACKTESTING
     # ======================================================================
     st.markdown("---")
-    st.subheader("💸 Revenue Backtesting  (Generation × DAM Price)")
+    st.subheader(" Revenue Backtesting  (Generation × DAM Price)")
 
     if bt_f.empty:
         st.warning("No revenue backtest data for the selected time horizon.")
@@ -1288,7 +1288,7 @@ def render_iex_analytics():
     # SECTION 4 — FUTURE REVENUE FORECAST
     # ======================================================================
     st.markdown("---")
-    st.subheader("🔮 Future Revenue Forecast")
+    st.subheader(" Future Revenue Forecast")
 
     if future.empty:
         st.info("No future forecast data available. Run the pipeline to generate predictions.")
@@ -1346,16 +1346,16 @@ def render_iex_analytics():
     # SECTION 5 — SCENARIO SIMULATOR
     # ======================================================================
     st.markdown("---")
-    st.subheader("🎮 Revenue Scenario Simulator")
+    st.subheader(" Revenue Scenario Simulator")
     st.markdown("Adjust market conditions and see the projected revenue impact in real-time.")
 
     col_sl1, col_sl2 = st.columns(2)
     with col_sl1:
-        price_up   = st.slider("📈 Price Increase (%)",   min_value=0,   max_value=100, value=0,   step=5,  key='scen_price_up')
-        price_down = st.slider("📉 Price Decrease (%)",  min_value=0,   max_value=50,  value=0,   step=5,  key='scen_price_dn')
+        price_up   = st.slider(" Price Increase (%)",   min_value=0,   max_value=100, value=0,   step=5,  key='scen_price_up')
+        price_down = st.slider(" Price Decrease (%)",  min_value=0,   max_value=50,  value=0,   step=5,  key='scen_price_dn')
     with col_sl2:
-        gen_up   = st.slider("⚡ Generation Increase (%)", min_value=0,  max_value=50,  value=0,  step=5,  key='scen_gen_up')
-        gen_down = st.slider("🟥 Generation Decrease (%)", min_value=0, max_value=50,  value=0,  step=5,  key='scen_gen_dn')
+        gen_up   = st.slider(" Generation Increase (%)", min_value=0,  max_value=50,  value=0,  step=5,  key='scen_gen_up')
+        gen_down = st.slider(" Generation Decrease (%)", min_value=0, max_value=50,  value=0,  step=5,  key='scen_gen_dn')
 
     net_price_chg = price_up - price_down
     net_gen_chg   = gen_up   - gen_down
@@ -1394,11 +1394,11 @@ def render_iex_analytics():
     # SECTION 6 — EXECUTIVE MARKET INSIGHTS
     # ======================================================================
     st.markdown("---")
-    st.subheader("🧠 Executive Market Insights")
+    st.subheader(" Executive Market Insights")
 
     if not insights.empty:
         for _, row in insights.iterrows():
-            with st.expander(f"📌 {row.get('Section', 'Insight')}", expanded=False):
+            with st.expander(f" {row.get('Section', 'Insight')}", expanded=False):
                 st.markdown(row.get('Insight', ''))
     else:
         # Fallback static insights
@@ -1420,14 +1420,14 @@ def render_iex_analytics():
              "ensuring positive contribution margin under all market clearing scenarios."),
         ]
         for section, text in static_insights:
-            with st.expander(f"📌 {section}", expanded=False):
+            with st.expander(f" {section}", expanded=False):
                 st.markdown(text)
 
     # ======================================================================
     # SECTION 7 — DOWNLOAD EXPORTS
     # ======================================================================
     st.markdown("---")
-    st.subheader("📥 Export Market Reports")
+    st.subheader(" Export Market Reports")
 
     ROOT = os.path.dirname(os.path.abspath(__file__))
     export_files = {
@@ -1443,7 +1443,7 @@ def render_iex_analytics():
             if os.path.exists(path):
                 with open(path, 'rb') as f:
                     st.download_button(
-                        label=f"⬇️ {label}",
+                        label=f" {label}",
                         data=f.read(),
                         file_name=os.path.basename(path),
                         mime='text/csv',
@@ -1461,7 +1461,7 @@ def render_iex_analytics():
 # GRID INTELLIGENCE
 # ===========================================================================
 def render_grid_analytics():
-    st.title("🌐 Grid Intelligence (NLDC Frequency Monitor)")
+    st.title(" Grid Intelligence (NLDC Frequency Monitor)")
     st.markdown(
         """
         Track National Load Despatch Centre (NLDC) daily grid frequency to predict 
@@ -1508,7 +1508,7 @@ def render_grid_analytics():
         st.metric(label="Danger Zone Blocks", value=f"{danger_blocks}", delta="Action Required" if danger_blocks > 0 else "Stable", delta_color="off" if danger_blocks == 0 else "inverse")
     
     st.markdown("---")
-    st.subheader("📈 15-Minute Frequency Profile & Regulatory Bands")
+    st.subheader(" 15-Minute Frequency Profile & Regulatory Bands")
     
     fig = go.Figure()
     
@@ -1555,7 +1555,7 @@ def render_grid_analytics():
     st.plotly_chart(fig, use_container_width=True)
     
     st.markdown("---")
-    st.subheader("📑 Deviation Settlement Mechanism (DSM) Logs")
+    st.subheader(" Deviation Settlement Mechanism (DSM) Logs")
     st.markdown("Historical 15-minute raw interval logging with operational risk classification:")
     
     display_df = df_f[['datetime', 'frequency_hz', 'grid_stress_flag']].copy()
@@ -1574,7 +1574,7 @@ def render_grid_analytics():
     st.dataframe(display_df.style.map(style_flags, subset=['Grid Stress Flag']), use_container_width=True, height=400)
 
     st.markdown("---")
-    st.markdown("## ⚡ Real-Time Grid Crisis Simulator")
+    st.markdown("##  Real-Time Grid Crisis Simulator")
     st.markdown(
         """
         **Industrial Control Room Simulation Tool:** 
@@ -1665,16 +1665,16 @@ def render_grid_analytics():
     with c3:
         st.markdown("**System Recommendation:**")
         if "Scenario 1" in scenario:
-            st.error(f"🚨 {sim_action}")
+            st.error(f" {sim_action}")
         elif "Scenario 2" in scenario:
-            st.warning(f"⚠️ {sim_action}")
+            st.warning(f" {sim_action}")
         else:
-            st.success(f"✅ {sim_action}")
+            st.success(f" {sim_action}")
             
     st.markdown("---")
     
     with st.container():
-        st.markdown("### 💸 Financial Impact Analysis")
+        st.markdown("###  Financial Impact Analysis")
         if sim_finance > 0:
             st.markdown(f"#### {sim_finance_label}: <span style='color:#E74C3C'>**₹ {sim_finance:,.2f}**</span>", unsafe_allow_html=True)
             st.caption("Notice how delayed response time scales the financial penalty dramatically during crisis events.")
@@ -1686,7 +1686,7 @@ def render_grid_analytics():
         st.progress(sim_efficiency / 100.0)
 
 def render_platform_health():
-    st.title("⚙️ Platform Health")
+    st.title(" Platform Health")
     st.markdown("Real-time operational status of all data pipelines, models, and microservices.")
     
     ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -1700,15 +1700,15 @@ def render_platform_health():
         We only warn if the file is older than 30 days (likely very stale)."""
         path = os.path.join(ROOT, filename) if not os.path.isabs(filename) else filename
         if not os.path.exists(path):
-            return "🔴 Failed"
+            return " Failed"
         try:
             mtime = os.path.getmtime(path)
             age_days = (pd.Timestamp.now().timestamp() - mtime) / 86400
             if age_days > 30:
-                return "🟡 Warning"
+                return " Warning"
         except Exception:
             pass
-        return "🟢 Healthy"
+        return " Healthy"
 
     # Check open-meteo with both possible filenames
     ROOT_local = ROOT
@@ -1721,16 +1721,16 @@ def render_platform_health():
                     mtime = os.path.getmtime(path)
                     age_days = (pd.Timestamp.now().timestamp() - mtime) / 86400
                     if age_days > 30:
-                        return "🟡 Warning"
+                        return " Warning"
                 except Exception:
                     pass
-                return "🟢 Healthy"
-        return "🔴 Failed"
+                return " Healthy"
+        return " Failed"
 
     c1.metric("NASA POWER API",   check_any_file([os.path.join('data','raw','khavda_weather.csv'), os.path.join('data','raw','khavda_hourly.csv')]))
     c2.metric("Open-Meteo API",   check_any_file([os.path.join('data','raw','open_meteo_forecast.csv'), os.path.join('data','raw','khavda_weather_forecast.csv')]))
     c3.metric("IEX Scraper",      check_any_file([os.path.join('data','raw','iex_dam_prices.csv'), os.path.join('data','market','iex_prices.csv')]))
-    c4.metric("GitHub Actions",   "🟢 Healthy")
+    c4.metric("GitHub Actions",   " Healthy")
     
     c5, c6, c7, c8 = st.columns(4)
     c5.metric("Forecast Models",       check_any_file([os.path.join('data','processed','total_output_predictions.csv'), os.path.join('reports','total_output','total_output_predictions.csv')]))
@@ -1790,7 +1790,7 @@ def render_platform_health():
     st.markdown(f"**Total Model Input Records Analyzed:** {row_count}")
 
 def render_about_platform():
-    st.title("📄 About Platform")
+    st.title(" About Platform")
     st.markdown("### Khavda Digital Twin Command Center")
     st.markdown("This platform acts as the central intelligence hub for the Khavda Renewable Energy Park, blending physical engineering models with advanced machine learning forecasts.")
     
@@ -1812,50 +1812,50 @@ def render_about_platform():
     st.markdown("---")
     st.caption("Version: 2.1.0 | AGEL Enterprise Release")
 
-if selection == "🏠 Executive Control Center":
+if selection == " Executive Control Center":
     # The Executive Alert Banner logic is placed inside the Executive Control Center rendering
     render_executive_overview()
-elif selection == "⚡ Plant Performance":
+elif selection == " Plant Performance":
     render_plant_performance()
-elif selection == "🔮 Generation Forecast":
+elif selection == " Generation Forecast":
     render_forecasting()
-elif selection == "🌱 Sustainability Analytics":
+elif selection == " Sustainability Analytics":
     render_carbon_analytics()
-elif selection == "🌤 Weather Intelligence":
+elif selection == " Weather Intelligence":
     render_weather_intelligence()
-elif selection == "🧠 AI Explainability":
+elif selection == " AI Explainability":
     render_explainability()
-elif selection == "📈 Energy Market Intelligence":
+elif selection == " Energy Market Intelligence":
     render_iex_analytics()
-elif selection == "🌐 Grid Intelligence":
+elif selection == " Grid Intelligence":
     render_grid_analytics()
-elif selection == "🔬 SHAP Analytics":
+elif selection == " SHAP Analytics":
     render_shap_analytics()
-elif selection == "🛰 Digital Twin":
+elif selection == " Digital Twin":
     try:
         from src.analytics.digital_twin import render_digital_twin
         render_digital_twin()
     except Exception as e:
         st.error(f"Failed to load module: {e}")
-elif selection == "🛠 Operations & Maintenance":
+elif selection == " Operations & Maintenance":
     try:
         from src.analytics.predictive_maintenance import render_predictive_maintenance
         render_predictive_maintenance()
     except Exception as e:
         st.error(f"Failed to load module: {e}")
-elif selection == "⚙️ MLOps Hub":
+elif selection == " MLOps Hub":
     try:
         from src.analytics.mlops_engine import render_mlops_hub
         render_mlops_hub()
     except Exception as e:
         st.error(f"Failed to load module: {e}")
-elif selection == "🌍 Portfolio Analytics":
+elif selection == " Portfolio Analytics":
     try:
         from src.analytics.portfolio_engine import render_portfolio_analytics
         render_portfolio_analytics()
     except Exception as e:
         st.error(f"Failed to load module: {e}")
-elif selection == "🤖 AI Operations Copilot":
+elif selection == " AI Operations Copilot":
     try:
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         if ROOT_DIR not in sys.path:
@@ -1863,14 +1863,14 @@ elif selection == "🤖 AI Operations Copilot":
         from src.ai.copilot import render_copilot
         render_copilot()
     except Exception as _cop_err:
-        st.error(f"⚠️ Copilot module failed to load: {_cop_err}")
+        st.error(f" Copilot module failed to load: {_cop_err}")
         st.info("Make sure `google-generativeai` is installed: `pip install google-generativeai python-dotenv`")
-elif selection == "⚙️ Platform Health":
+elif selection == " Platform Health":
     if 'render_platform_health' in globals():
         render_platform_health()
     else:
         st.warning("Platform Health under construction.")
-elif selection == "📄 About Platform":
+elif selection == " About Platform":
     if 'render_about_platform' in globals():
         render_about_platform()
     else:

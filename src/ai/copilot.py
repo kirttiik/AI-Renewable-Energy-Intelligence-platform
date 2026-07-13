@@ -118,12 +118,12 @@ def _render_messages():
     for msg in st.session_state["copilot_messages"]:
         if msg["role"] == "user":
             st.markdown(
-                f'<div class="chat-user">👤 <strong>You</strong><br>{msg["content"]}</div>',
+                f'<div class="chat-user"> <strong>You</strong><br>{msg["content"]}</div>',
                 unsafe_allow_html=True
             )
         else:
             st.markdown(
-                f'<div class="chat-ai">🤖 <strong>AI Copilot</strong><br>{msg["content"]}</div>',
+                f'<div class="chat-ai"> <strong>AI Copilot</strong><br>{msg["content"]}</div>',
                 unsafe_allow_html=True
             )
 
@@ -132,7 +132,7 @@ def _send(question: str, client: GeminiCopilot):
     """Append user message, call Gemini, append assistant response."""
     st.session_state["copilot_messages"].append({"role": "user", "content": question})
 
-    with st.spinner("🔄 Analysing operational data..."):
+    with st.spinner(" Analysing operational data..."):
         reply = client.send_message(question)
 
     st.session_state["copilot_messages"].append({"role": "assistant", "content": reply})
@@ -147,7 +147,7 @@ def render_copilot():
     # ── Banner ──────────────────────────────────────────────────────────────
     st.markdown("""
     <div class="copilot-banner">
-        <h1>🤖 AI Renewable Energy Operations Copilot</h1>
+        <h1> AI Renewable Energy Operations Copilot</h1>
         <p>Ask questions about renewable generation, weather, forecasting,
            market intelligence and plant performance.<br>
            Powered by Google Gemini · Context: Live pipeline reports</p>
@@ -160,17 +160,17 @@ def render_copilot():
 
     # ── Status chips ─────────────────────────────────────────────────────────
     api_status = (
-        '<span class="chip-available">✅ Gemini API Connected</span>'
+        '<span class="chip-available"> Gemini API Connected</span>'
         if client.is_ready else
-        '<span class="chip-unavailable">❌ Gemini API Offline</span>'
+        '<span class="chip-unavailable"> Gemini API Offline</span>'
     )
     report_count = len(reports)
-    reports_chip = f'<span class="chip-info">📂 {report_count} Reports Loaded</span>'
-    ts_chip = f'<span class="chip-info">🕐 {datetime.datetime.now().strftime("%H:%M IST")}</span>'
+    reports_chip = f'<span class="chip-info"> {report_count} Reports Loaded</span>'
+    ts_chip = f'<span class="chip-info"> {datetime.datetime.now().strftime("%H:%M IST")}</span>'
     st.markdown(f"{api_status} {reports_chip} {ts_chip}", unsafe_allow_html=True)
 
     if not client.is_ready:
-        st.error(f"⚠️ {client.error_message}")
+        st.error(f" {client.error_message}")
         st.info(
             "**Setup Instructions:**\n"
             "1. Create a `.env` file in the project root.\n"
@@ -181,13 +181,13 @@ def render_copilot():
         return
 
     # ── Reports availability expander ────────────────────────────────────────
-    with st.expander("📋 Loaded Data Sources", expanded=False):
+    with st.expander(" Loaded Data Sources", expanded=False):
         if reports:
             cols = st.columns(3)
             for i, name in enumerate(sorted(reports.keys())):
                 df = reports[name]
                 cols[i % 3].markdown(
-                    f'<span class="chip-available">✅</span> **{name}** ({len(df)} rows)',
+                    f'<span class="chip-available"></span> **{name}** ({len(df)} rows)',
                     unsafe_allow_html=True
                 )
         else:
@@ -196,7 +196,7 @@ def render_copilot():
     st.markdown("---")
 
     # ── Suggested question buttons ───────────────────────────────────────────
-    st.markdown("**💡 Suggested Questions** — click to ask instantly:")
+    st.markdown("** Suggested Questions** — click to ask instantly:")
     cols = st.columns(3)
     for i, q in enumerate(SUGGESTED_QUESTIONS):
         with cols[i % 3]:
@@ -207,9 +207,9 @@ def render_copilot():
     st.markdown("---")
     
     # ── Proactive AI Advisor (Module 9) ──────────────────────────────────────
-    st.subheader("📢 Proactive AI Advisor")
+    st.subheader(" Proactive AI Advisor")
     st.markdown("Automatically generate a comprehensive daily brief covering operations, risks, and market opportunities.")
-    if st.button("✨ Generate AI Daily Brief", type="primary", use_container_width=True):
+    if st.button(" Generate AI Daily Brief", type="primary", use_container_width=True):
         prompt = (
             "Generate a comprehensive Daily Executive Brief. Include:\n"
             "1. Tomorrow's Risks\n"
@@ -230,7 +230,7 @@ def render_copilot():
         st.markdown(
             """
             <div style="text-align:center; color:#7F8C8D; padding: 40px 0;">
-                <p style="font-size:2rem;">💬</p>
+                <p style="font-size:2rem;"></p>
                 <p>No conversation yet. Use the suggested questions above or type your own below.</p>
             </div>
             """,
@@ -248,14 +248,14 @@ def render_copilot():
     col_clear, col_export, col_refresh = st.columns([1, 1, 1])
 
     with col_clear:
-        if st.button("🗑️ Clear Chat", use_container_width=True):
+        if st.button(" Clear Chat", use_container_width=True):
             st.session_state["copilot_messages"] = []
             # Reset the Gemini chat session so it forgets prior context
             client.reset_chat()
             st.rerun()
 
     with col_export:
-        if st.button("📥 Export Conversation", use_container_width=True):
+        if st.button(" Export Conversation", use_container_width=True):
             history = st.session_state["copilot_messages"]
             if history:
                 lines = []
@@ -265,7 +265,7 @@ def render_copilot():
                 export_text = "\n".join(lines)
                 ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
                 st.download_button(
-                    label="⬇️ Download .txt",
+                    label=" Download .txt",
                     data=export_text,
                     file_name=f"copilot_conversation_{ts}.txt",
                     mime="text/plain",
@@ -275,7 +275,7 @@ def render_copilot():
                 st.info("No conversation to export yet.")
 
     with col_refresh:
-        if st.button("🔄 Refresh Context", use_container_width=True):
+        if st.button(" Refresh Context", use_container_width=True):
             # Force reload of reports and rebuild context
             st.session_state["copilot_client"] = None
             st.session_state["copilot_context"] = None

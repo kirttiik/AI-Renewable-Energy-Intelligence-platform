@@ -6,7 +6,7 @@ import numpy as np
 import datetime
 
 def render_mlops_hub():
-    st.title("⚙️ MLOps & Model Monitoring")
+    st.title(" MLOps & Model Monitoring")
     st.markdown("Track model drift, evaluate prediction accuracy, and orchestrate automated ML retraining workflows.")
     
     st.markdown("---")
@@ -14,7 +14,7 @@ def render_mlops_hub():
     # -------------------------------------------------------------------------
     # 1. Model Drift Monitoring (Module 4)
     # -------------------------------------------------------------------------
-    st.subheader("📉 Model Performance Drift")
+    st.subheader(" Model Performance Drift")
     
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Current Solar MAE", "1.62 MW", "+0.04 MW", delta_color="inverse")
@@ -40,16 +40,16 @@ def render_mlops_hub():
     st.plotly_chart(fig, use_container_width=True)
     
     if mae_trend[-1] > 1.5:
-        st.warning("⚠️ **Drift Alert:** Solar model MAE has crossed the acceptable threshold (1.5 MW). Retraining recommended.")
+        st.warning(" **Drift Alert:** Solar model MAE has crossed the acceptable threshold (1.5 MW). Retraining recommended.")
     else:
-        st.success("✅ Models are performing within acceptable accuracy thresholds.")
+        st.success(" Models are performing within acceptable accuracy thresholds.")
 
     st.markdown("---")
     
     # -------------------------------------------------------------------------
     # 2. Automated Model Retraining (Module 5)
     # -------------------------------------------------------------------------
-    st.subheader("🔄 Automated Retraining Workflow")
+    st.subheader(" Automated Retraining Workflow")
     st.markdown("Orchestrate the end-to-end ML training pipeline.")
     
     col_flow, col_action = st.columns([2, 1])
@@ -57,17 +57,17 @@ def render_mlops_hub():
     with col_flow:
         st.markdown("""
         **Pipeline Status:**
-        - 📥 **1. New Data Ingestion:** 14 new days of data available.
-        - ⚙️ **2. Model Retraining:** *Pending Trigger*
-        - 📊 **3. Validation:** *Pending*
-        - 📦 **4. Model Registry:** Currently on `v2.4.1`
-        - 🚀 **5. Deployment:** *Pending*
+        -  **1. New Data Ingestion:** 14 new days of data available.
+        -  **2. Model Retraining:** *Pending Trigger*
+        -  **3. Validation:** *Pending*
+        -  **4. Model Registry:** Currently on `v2.4.1`
+        -  **5. Deployment:** *Pending*
         """)
         st.progress(20, text="Pipeline Stage: Data Ready (20%)")
         
     with col_action:
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🚀 Trigger Full Retraining Pipeline", type="primary", use_container_width=True):
+        if st.button(" Trigger Full Retraining Pipeline", type="primary", use_container_width=True):
             st.success("Pipeline triggered successfully. (Simulated execution via GitHub Actions / Airflow).")
             st.info("Check back in ~15 minutes for updated model artifacts.")
             
