@@ -90,6 +90,14 @@ def load_weather_data() -> pd.DataFrame:
     """Load raw weather CSV and forward-fill sparse sensor gaps."""
     logger.info(f"Loading weather data from {WEATHER_PATH}")
     df = pd.read_csv(WEATHER_PATH)
+    
+    # Also load the open-meteo forecast so we can compute physics features for the future dates!
+    forecast_path = WEATHER_PATH.replace('khavda_weather.csv', 'khavda_weather_forecast.csv')
+    if os.path.exists(forecast_path):
+        forecast_df = pd.read_csv(forecast_path)
+        df = pd.concat([df, forecast_df], ignore_index=True)
+        df = df.drop_duplicates(subset=['date'], keep='last')
+        
     df["date"] = pd.to_datetime(df["date"])
 
     numeric_cols = [
@@ -98,7 +106,7 @@ def load_weather_data() -> pd.DataFrame:
         "humidity_pct", "rainfall_mm"
     ]
     df[numeric_cols] = df[numeric_cols].ffill().fillna(0)
-    logger.info(f"Weather data loaded — {len(df)} rows.")
+    logger.info(f"Weather & Forecast data loaded — {len(df)} rows.")
     return df
 
 
