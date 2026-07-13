@@ -114,7 +114,7 @@ def merge_datasets(datasets: dict) -> pd.DataFrame:
             pred_df = pred_df.rename(columns={'actual_total_generation_mw': 'actual_test_generation_mw'})
             
         cols_to_use = ['date'] + [col for col in pred_df.columns if col not in merged_df.columns]
-        merged_df = pd.merge(merged_df, pred_df[cols_to_use], on='date', how='left')
+        merged_df = pd.merge(merged_df, pred_df[cols_to_use], on='date', how='outer')
         
     # Standardize missing columns based on expectations
     expected_cols = [
