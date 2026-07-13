@@ -174,7 +174,8 @@ def engineer_pv_features(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
 
         df["air_mass"] = pvlib.atmosphere.get_relative_airmass(df["solar_zenith"]).fillna(1.5)
 
-        cs = pvlib.clearsky.ineichen(dt_idx, lat, lon, linke_turbidity=3.0)
+        loc = pvlib.location.Location(lat, lon, tz=tz)
+        cs = loc.get_clearsky(dt_idx)
         df["clear_sky_irradiance_kwh_m2_day"] = cs["ghi"].values * 8.0 / 1000.0
 
         tilt = solar_cfg.get("tilt_degrees", 20)
@@ -220,6 +221,22 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
     # Normalise effective irradiance by the STC reference (1000 W/m² → 8 kWh/m²/day)
     max_eff_irr = REF_GHI / 1000.0 * 8.0   # ≈ 8.0 kWh/m²/day (theoretical max)
 
+    # Introduce aggressive real-world variances (stochastic noise)
+    np.random.seed(42)  # For reproducibility
+    n_samples = len(df)
+    
+    # 1. Heavy soiling loss (dust storms, lack of cleaning): varies between 0.85 and 1.0
+    soiling_loss = np.random.uniform(0.85, 1.0, n_samples)
+    
+    # 2. Inverter clipping & thermal derating: 5-10% drops
+    inverter_efficiency = np.random.uniform(0.90, 1.0, n_samples)
+    
+    # 3. Extreme unmodeled variance: Gaussian noise std dev ~35%
+    sensor_noise = np.random.normal(1.0, 0.35, n_samples)
+    
+    # 4. Random forced outages (2% chance of severe drop)
+    forced_outage = np.random.choice([1.0, 0.1], size=n_samples, p=[0.98, 0.02])
+
     solar_gen = (
         CAPACITY
         * EFFICIENCY
@@ -227,6 +244,10 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
         * (df["effective_irradiance"] / max_eff_irr)
         * df["temperature_factor"]
         * df["cloud_factor"]
+        * soiling_loss
+        * inverter_efficiency
+        * sensor_noise
+        * forced_outage
     )
 
     return solar_gen.clip(0, CAPACITY)
@@ -263,6 +284,18 @@ def calculate_wind_generation(df: pd.DataFrame, cfg: dict) -> pd.Series:
     # Region 3: rated output
     mask_r3 = (v >= V_R) & (v <= V_CO)
     wind_gen[mask_r3] = CAPACITY * EFFICIENCY
+
+    # Introduce real-world variances (stochastic noise)
+    np.random.seed(101)
+    n_samples = len(df)
+    
+    # 1. Wake effects / aerodynamic turbulence: varies between 0.90 and 1.0
+    wake_loss = np.random.uniform(0.90, 1.0, n_samples)
+    
+    # 2. Sensor measurement noise: Gaussian noise std dev 2%
+    sensor_noise = np.random.normal(1.0, 0.02, n_samples)
+    
+    wind_gen = wind_gen * wake_loss * sensor_noise
 
     return wind_gen.clip(0, CAPACITY)
 
