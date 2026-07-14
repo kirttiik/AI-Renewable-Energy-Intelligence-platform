@@ -1,9 +1,16 @@
-"""
-Solar Generation Forecasting Model
+﻿"""
+Solar Generation Forecasting Model -- Quartz-Inspired Architecture
+===================================================================
+Upgraded to match the feature engineering approach of the
+Quartz Solar Forecast (openclimatefix/open-source-quartz-solar-forecast).
 
-This module builds a production-grade machine learning pipeline to forecast 
-solar generation at the Khavda Renewable Energy Park based on weather features 
-and engineered time-series features.
+Key upgrades over previous model:
+  1. Uses Open-Meteo Quartz features: GHI, DNI, DHI (split radiation)
+  2. 3-layer cloud cover: low / mid / high (Quartz innovation)
+  3. Visibility (dust/aerosol proxy) -- critical for Khavda desert
+  4. Rolling autoregressive features: h_mean_7d, h_median_7d, h_max_7d
+  5. Quartz-tuned XGBoost: 500 trees, regularization, no artificial noise
+  6. MAPE + forecast intervals saved to solar_predictions.csv
 """
 
 import os
@@ -17,307 +24,292 @@ try:
     from xgboost import XGBRegressor
     HAS_XGB = True
 except ImportError:
-    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.ensemble import GradientBoostingRegressor
     HAS_XGB = False
 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# ==================================================
-# CONSTANTS & PATHS
-# ==================================================
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-WEATHER_PATH = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather.csv')
-GENERATION_PATH = os.path.join(ROOT_DIR, 'data', 'processed', 'khavda_generation.csv')
-MODELS_DIR = os.path.join(ROOT_DIR, 'models')
-REPORTS_DIR = os.path.join(ROOT_DIR, 'reports')
-SOLAR_REPORTS_DIR = os.path.join(REPORTS_DIR, 'solar')
+OPENMETEO_PATH = os.path.join(ROOT_DIR, "data", "raw", "khavda_weather_openmeteo.csv")
+NASA_WEATHER_PATH = os.path.join(ROOT_DIR, "data", "raw", "khavda_weather.csv")
+GENERATION_PATH = os.path.join(ROOT_DIR, "data", "processed", "khavda_generation.csv")
+MODELS_DIR = os.path.join(ROOT_DIR, "models")
+REPORTS_DIR = os.path.join(ROOT_DIR, "reports")
+SOLAR_REPORTS_DIR = os.path.join(REPORTS_DIR, "solar")
 
-# Create necessary output directories
 os.makedirs(MODELS_DIR, exist_ok=True)
 os.makedirs(SOLAR_REPORTS_DIR, exist_ok=True)
 
-def load_data() -> pd.DataFrame:
-    """
-    Load raw weather data and processed generation data, and merge them on the 'date' column.
-    """
-    logger.info("Loading weather and generation datasets...")
-    try:
-        weather_df = pd.read_csv(WEATHER_PATH)
-        
-        forecast_path = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather_forecast.csv')
-        if os.path.exists(forecast_path):
-            forecast_df = pd.read_csv(forecast_path)
-            weather_df = pd.concat([weather_df, forecast_df], ignore_index=True)
-            weather_df = weather_df.drop_duplicates(subset=['date'], keep='last')
-            
-        gen_df = pd.read_csv(GENERATION_PATH)
-        
-        # Merge datasets on the date field (LEFT JOIN to preserve future forecast dates)
-        df = pd.merge(weather_df, gen_df, on='date', how='left')
-        logger.info(f"Successfully merged datasets. Shape: {df.shape}")
-        
-        return df
-    except Exception as e:
-        logger.error(f"Failed to load and merge data: {e}")
-        raise
+# ============================================================
+# Quartz-Inspired Feature Set
+# ============================================================
+QUARTZ_FEATURES = [
+    # Core radiation (Quartz: shortwave_radiation, direct_radiation)
+    "ghi_kwh_m2_day",
+    "direct_radiation_kwh_m2_day",
+    "dhi_kwh_m2_day",
+    "dni_kwh_m2_day",
+    "clearness_index",
+    "diffuse_fraction",
+    "direct_fraction",
+    # 3-layer cloud cover (Quartz innovation -- low/mid/high separate)
+    "cloud_cover_pct",
+    "cloud_cover_low_pct",
+    "cloud_cover_mid_pct",
+    "cloud_cover_high_pct",
+    # Weather (Quartz: temperature, precipitation, wind_speed, visibility)
+    "temperature_c",
+    "temperature_max_c",
+    "temperature_min_c",
+    "humidity_pct",
+    "rainfall_mm",
+    "wind_speed_ms",
+    "visibility_km",
+    # Temporal
+    "month",
+    "day_of_year",
+    "week_of_year",
+    "is_monsoon",
+    "is_weekend",
+    # Autoregressive rolling features (Quartz: h_mean, h_median, h_max)
+    "h_mean_7d",
+    "h_median_7d",
+    "h_max_7d",
+    "h_mean_30d",
+]
 
-def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Convert dates to datetime objects and engineer new time-series features.
-    Now includes physics-informed PV features from generate_renewable_generation.py.
-    """
-    logger.info("Performing feature engineering...")
-    try:
-        # Convert date to datetime
-        df['date'] = pd.to_datetime(df['date'])
-        
-        # Extract temporal features
-        df['year'] = df['date'].dt.year
-        df['month'] = df['date'].dt.month
-        df['quarter'] = df['date'].dt.quarter
-        df['day_of_year'] = df['date'].dt.dayofyear
-        df['week_of_year'] = df['date'].dt.isocalendar().week.astype(int)
-        df['is_weekend'] = df['date'].dt.dayofweek.isin([5, 6]).astype(int)
-        
-        # Base weather features
-        base_features = [
-            'temperature_c', 
-            'humidity_pct', 
-            'solar_radiation_kwh_m2_day',
-            'cloud_cover_pct', 
-            'rainfall_mm', 
-            'year', 
-            'month', 
-            'quarter',
-            'day_of_year', 
-            'week_of_year', 
-            'is_weekend'
-        ]
-        
-        # Physics-informed PV engineered features (from generation engine)
-        pv_features = [
-            col for col in [
-                'effective_irradiance', 'cell_temperature_c',
-                'temperature_factor', 'cloud_factor',
-                'performance_ratio', 'capacity_factor', 'ghi_w_m2'
-            ] if col in df.columns
-        ]
-        
-        features = base_features + pv_features
-        target = 'solar_generation_mw'
-        
-        # Subselect the required columns and handle NaNs ONLY in features
-        final_df = df[['date'] + features + [target]].dropna(subset=features)
-        
-        # Ensure chronological order for proper time series splitting
-        final_df = final_df.sort_values('date').reset_index(drop=True)
-        
-        logger.info(f"Feature engineering complete. Features: {features}")
-        logger.info(f"Prepared dataset shape: {final_df.shape}")
-        return final_df
-    except Exception as e:
-        logger.error(f"Error during feature engineering: {e}")
-        raise
+LEGACY_FEATURES = [
+    # From physics engine -- kept as complementary features
+    "effective_irradiance",
+    "cell_temperature_c",
+    "temperature_factor",
+    "cloud_factor",
+    "performance_ratio",
+    "capacity_factor",
+    "solar_radiation_kwh_m2_day",
+]
+
+TARGET = "solar_generation_mw"
+
+# Quartz-tuned XGBoost hyperparameters
+XGB_PARAMS = dict(
+    n_estimators=500,
+    learning_rate=0.05,
+    max_depth=6,
+    subsample=0.8,
+    colsample_bytree=0.8,
+    min_child_weight=5,
+    gamma=0.1,
+    reg_alpha=0.1,
+    reg_lambda=1.0,
+    random_state=42,
+    n_jobs=-1,
+)
+
+
+def load_data() -> pd.DataFrame:
+    """Load and merge Open-Meteo weather (preferred) + generation data."""
+    logger.info("Loading datasets...")
+
+    gen_df = pd.read_csv(GENERATION_PATH)
+    gen_df["date"] = pd.to_datetime(gen_df["date"])
+
+    # Use Open-Meteo as primary (Quartz-style features)
+    if os.path.exists(OPENMETEO_PATH):
+        wx_df = pd.read_csv(OPENMETEO_PATH)
+        wx_df["date"] = pd.to_datetime(wx_df["date"])
+        logger.info(f"Using Open-Meteo data: {len(wx_df)} rows")
+    else:
+        logger.warning("Open-Meteo not found, using NASA POWER (legacy).")
+        wx_df = pd.read_csv(NASA_WEATHER_PATH)
+        wx_df["date"] = pd.to_datetime(wx_df["date"])
+        wx_df = wx_df.rename(columns={"solar_radiation_kwh_m2_day": "ghi_kwh_m2_day"})
+
+    # Also load forecast weather if it exists
+    forecast_path = os.path.join(ROOT_DIR, "data", "raw", "khavda_weather_forecast.csv")
+    if os.path.exists(forecast_path):
+        fc_df = pd.read_csv(forecast_path)
+        fc_df["date"] = pd.to_datetime(fc_df["date"])
+        # Rename forecast columns to match Quartz schema if needed
+        if "solar_radiation_kwh_m2_day" in fc_df.columns and "ghi_kwh_m2_day" not in fc_df.columns:
+            fc_df = fc_df.rename(columns={"solar_radiation_kwh_m2_day": "ghi_kwh_m2_day"})
+        wx_df = pd.concat([wx_df, fc_df], ignore_index=True)
+        wx_df = wx_df.drop_duplicates(subset=["date"], keep="last")
+
+    # Merge weather + generation
+    df = wx_df.merge(gen_df, on="date", how="left")
+    df = df.sort_values("date").reset_index(drop=True)
+
+    # Add temporal features if missing (from Open-Meteo ingestion they already exist,
+    # but NASA POWER fallback may not have them)
+    if "day_of_year" not in df.columns:
+        df["day_of_year"] = df["date"].dt.dayofyear
+    if "month" not in df.columns:
+        df["month"] = df["date"].dt.month
+    if "week_of_year" not in df.columns:
+        df["week_of_year"] = df["date"].dt.isocalendar().week.astype(int)
+    if "is_weekend" not in df.columns:
+        df["is_weekend"] = df["date"].dt.dayofweek.isin([5, 6]).astype(int)
+    if "is_monsoon" not in df.columns:
+        df["is_monsoon"] = df["month"].isin([6, 7, 8, 9]).astype(int)
+    if "clearness_index" not in df.columns and "ghi_kwh_m2_day" in df.columns:
+        df["et_radiation_kwh_m2"] = 6.5 + 1.0 * np.cos(2 * np.pi * (df["day_of_year"] - 172) / 365)
+        df["clearness_index"] = (df["ghi_kwh_m2_day"] / df["et_radiation_kwh_m2"]).clip(0, 1)
+
+    # Add rolling autoregressive features (Quartz: h_mean, h_median, h_max)
+    df["h_mean_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).mean()
+    df["h_median_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).median()
+    df["h_max_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).max()
+    df["h_mean_30d"] = df[TARGET].shift(1).rolling(30, min_periods=7).mean()
+
+    logger.info(f"Dataset: {len(df)} rows | {df['date'].min().date()} to {df['date'].max().date()}")
+    return df
+
+
+def select_features(df: pd.DataFrame) -> list:
+    """Return feature columns available in the dataframe."""
+    all_features = QUARTZ_FEATURES + LEGACY_FEATURES
+    active = [f for f in all_features if f in df.columns]
+    logger.info(f"Active features ({len(active)}): {active}")
+    return active
+
 
 def train_model(df: pd.DataFrame):
-    """
-    Perform an 80/20 chronological time series split on historical data and train the model.
-    Returns the model, test set, test dates, and future data to predict.
-    """
-    logger.info("Executing 80/20 time series split and training model...")
-    try:
-        # Separate historical (has target) from future (no target)
-        historical_df = df.dropna(subset=['solar_generation_mw']).copy()
-        future_df = df[df['solar_generation_mw'].isna()].copy()
-        
-        # Time Series Split (80% Train, 20% Test)
-        split_idx = int(len(historical_df) * 0.8)
-        
-        train_df = historical_df.iloc[:split_idx]
-        test_df = historical_df.iloc[split_idx:]
-        
-        # Isolate features and target
-        feature_cols = [col for col in df.columns if col not in ['date', 'solar_generation_mw']]
-        
-        X_train = train_df[feature_cols]
-        y_train = train_df['solar_generation_mw']
-        X_test = test_df[feature_cols]
-        y_test = test_df['solar_generation_mw']
-        
-        logger.info(f"Training instances: {len(X_train)} | Testing instances: {len(X_test)}")
-        
-        # Initialize and Train Model
-        if HAS_XGB:
-            logger.info("XGBoost Regressor detected and instantiated.")
-            model = XGBRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
-        else:
-            logger.info("XGBoost not available. Falling back to RandomForestRegressor.")
-            model = RandomForestRegressor(n_estimators=100, random_state=42)
-            
+    """Chronological 80/20 split + Quartz-tuned XGBoost training."""
+    logger.info("Training Quartz-tuned XGBoost model...")
+
+    feature_cols = select_features(df)
+
+    historical = df.dropna(subset=[TARGET]).copy()
+    future = df[df[TARGET].isna()].copy()
+
+    split_idx = int(len(historical) * 0.8)
+    train_df = historical.iloc[:split_idx]
+    test_df = historical.iloc[split_idx:]
+
+    X_train = train_df[feature_cols].fillna(0)
+    y_train = train_df[TARGET]
+    X_test = test_df[feature_cols].fillna(0)
+    y_test = test_df[TARGET]
+
+    logger.info(f"Train: {len(X_train)} | Test: {len(X_test)} | Features: {len(feature_cols)}")
+
+    if HAS_XGB:
+        model = XGBRegressor(
+            **XGB_PARAMS,
+            early_stopping_rounds=30,
+            eval_metric="mae",
+        )
+        val_size = max(20, int(len(X_train) * 0.1))
+        X_val = X_train.iloc[-val_size:]
+        y_val = y_train.iloc[-val_size:]
+        X_tr = X_train.iloc[:-val_size]
+        y_tr = y_train.iloc[:-val_size]
+        model.fit(X_tr, y_tr, eval_set=[(X_val, y_val)], verbose=50)
+        logger.info(f"Best iteration: {model.best_iteration}")
+    else:
+        from sklearn.ensemble import GradientBoostingRegressor
+        model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.05, max_depth=6, random_state=42)
         model.fit(X_train, y_train)
-        logger.info("Model training completed successfully.")
-        
-        return model, X_test, y_test, test_df['date'], future_df, feature_cols
-    except Exception as e:
-        logger.error(f"Error during model training: {e}")
-        raise
+
+    y_pred = model.predict(X_test)
+    y_pred = np.clip(y_pred, 0, None)
+
+    return model, X_test, y_test, test_df["date"], future, feature_cols, y_pred
+
 
 def evaluate_model(y_true: pd.Series, y_pred: np.ndarray) -> dict:
-    """
-    Calculate core evaluation metrics: MAE, RMSE, R2, and MAPE.
-    """
-    logger.info("Evaluating model performance on test set...")
-    try:
-        mae = mean_absolute_error(y_true, y_pred)
-        rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-        r2 = r2_score(y_true, y_pred)
-        
-        # Calculate MAPE (handling division by zero by replacing zero with a small number)
-        y_true_safe = np.where(y_true == 0, 1e-9, y_true)
-        mape = np.mean(np.abs((y_true_safe - y_pred) / y_true_safe)) * 100
-        
-        metrics = {
-            'MAE': mae, 
-            'RMSE': rmse, 
-            'R2_Score': r2,
-            'MAPE': mape
-        }
-        
-        logger.info(f"Model Metrics -> MAE: {mae:.2f} | RMSE: {rmse:.2f} | R2: {r2:.4f} | MAPE: {mape:.2f}%")
-        return metrics
-    except Exception as e:
-        logger.error(f"Error during model evaluation: {e}")
-        raise
+    """MAE, RMSE, R2, MAPE metrics."""
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    r2 = r2_score(y_true, y_pred)
+    y_safe = np.where(y_true == 0, 1e-9, y_true)
+    mape = np.mean(np.abs((y_safe - y_pred) / y_safe)) * 100
+    metrics = {"MAE": mae, "RMSE": rmse, "R2_Score": r2, "MAPE": mape}
+    logger.info(f"Metrics -> MAE:{mae:.1f} | RMSE:{rmse:.1f} | R2:{r2:.4f} | MAPE:{mape:.2f}%")
+    return metrics
 
-def save_model(model) -> None:
-    """
-    Serialize and save the trained model.
-    """
-    model_path = os.path.join(MODELS_DIR, 'solar_model.pkl')
-    logger.info(f"Saving trained model to {model_path}...")
-    try:
-        with open(model_path, 'wb') as f:
-            pickle.dump(model, f)
-        logger.info("Model saved successfully.")
-    except Exception as e:
-        logger.error(f"Failed to save the model: {e}")
-        raise
 
-def save_results(dates: pd.Series, y_true: pd.Series, y_pred: np.ndarray, metrics: dict) -> None:
-    """
-    Save predictions, metrics, and generate an actual vs predicted plot.
-    """
-    logger.info("Saving predictions, metrics, and visualizations...")
-    try:
-        rmse = metrics.get('RMSE', np.std(y_pred) * 0.1)
-        
-        # 1. Save Predictions to CSV
-        preds_df = pd.DataFrame({
-            'date': dates,
-            'actual_solar_generation_mw': y_true.values,
-            'predicted_solar_generation_mw': y_pred
-        })
-        
-        # Add derived MWh and intervals
-        PSH = 5.8
-        preds_df['predicted_daily_energy_mwh'] = (preds_df['predicted_solar_generation_mw'] * PSH).round(2)
-        preds_df['predicted_solar_generation_mw_lower'] = (preds_df['predicted_solar_generation_mw'] - 1.96 * rmse).clip(lower=0)
-        preds_df['predicted_solar_generation_mw_upper'] = (preds_df['predicted_solar_generation_mw'] + 1.96 * rmse)
-        
-        preds_path = os.path.join(SOLAR_REPORTS_DIR, 'solar_predictions.csv')
-        preds_df.to_csv(preds_path, index=False)
-        
-        # 2. Save Metrics to CSV
-        metrics_df = pd.DataFrame([metrics])
-        metrics_path = os.path.join(SOLAR_REPORTS_DIR, 'solar_model_metrics.csv')
-        metrics_df.to_csv(metrics_path, index=False)
-        
-        # 3. Generate Plot
-        plt.figure(figsize=(14, 7))
-        plt.plot(dates, y_true.values, label='Actual Generation', color='#1f77b4', alpha=0.8, linewidth=1.5)
-        plt.plot(dates, y_pred, label='Predicted Generation', color='#ff7f0e', alpha=0.8, linewidth=1.5)
-        plt.title('Solar Generation Forecast vs Actual (20% Holdout Test Set)', fontsize=14, fontweight='bold')
-        plt.xlabel('Date', fontsize=12)
-        plt.ylabel('Solar Generation (MW)', fontsize=12)
-        plt.legend(loc='upper right')
-        plt.grid(True, linestyle='--', alpha=0.5)
-        plt.tight_layout()
-        
-        plot_path = os.path.join(SOLAR_REPORTS_DIR, 'solar_forecast_plot.png')
-        plt.savefig(plot_path, dpi=300)
-        plt.close()
-        
-        logger.info(f"Results successfully saved in {SOLAR_REPORTS_DIR}")
-    except Exception as e:
-        logger.error(f"Failed to save results/visualizations: {e}")
-        raise
+def save_results(dates, y_true, y_pred, metrics):
+    """Save predictions, uncertainty intervals, metrics, and plot."""
+    rmse = metrics.get("RMSE", np.std(y_pred) * 0.1)
+    PSH = 5.8  # Peak sun hours for Khavda
 
-def main() -> None:
-    """
-    Main orchestration function.
-    """
-    logger.info("==================================================")
-    logger.info("Starting Solar Forecast Modeling Pipeline")
-    logger.info("==================================================")
-    try:
-        df = load_data()
-        df = feature_engineering(df)
-        
-        model, X_test, y_test, test_dates, future_df, feature_cols = train_model(df)
-        
-        # Generate historical predictions
-        y_pred_hist = model.predict(X_test)
-        
-        # Inject noise to drop accuracy to ~90% (to reduce overfitting look)
-        noise_std = np.std(y_test) * 0.35
-        np.random.seed(42)
-        y_pred_hist = y_pred_hist + np.random.normal(0, noise_std, size=len(y_pred_hist))
-        
-        # Evaluate
-        metrics = evaluate_model(y_test, y_pred_hist)
-        
-        # Future Predictions!
-        if not future_df.empty:
-            future_X = future_df[feature_cols]
-            future_pred = model.predict(future_X)
-            
-            # Combine test dates/preds with future dates/preds for saving
-            all_dates = pd.concat([test_dates, future_df['date']])
-            all_y_true = pd.concat([y_test, pd.Series([np.nan]*len(future_pred))])
-            all_y_pred = np.concatenate([y_pred_hist, future_pred])
-            
-            logger.info(f"Generated {len(future_pred)} future predictions!")
-        else:
-            all_dates = test_dates
-            all_y_true = y_test
-            all_y_pred = y_pred_hist
-            
-        # Save artifacts
-        save_model(model)
-        save_results(all_dates, all_y_true, all_y_pred, metrics)
-        
-        # Extract and save feature importance
-        if hasattr(model, 'feature_importances_'):
-            importance_df = pd.DataFrame({
-                'feature': X_test.columns,
-                'importance': model.feature_importances_
-            }).sort_values('importance', ascending=False)
-            importance_path = os.path.join(SOLAR_REPORTS_DIR, 'solar_feature_importance.csv')
-            importance_df.to_csv(importance_path, index=False)
-            logger.info(f"Saved feature importance to {importance_path}")
-        
-        logger.info("==================================================")
-        logger.info("Solar Forecast Modeling Pipeline Completed Successfully!")
-        logger.info("==================================================")
-    except Exception as e:
-        logger.error(f"Pipeline failed with an error: {e}")
+    preds_df = pd.DataFrame({
+        "date": dates.values,
+        "actual_solar_generation_mw": y_true.values,
+        "predicted_solar_generation_mw": y_pred,
+    })
+    preds_df["predicted_daily_energy_mwh"] = (preds_df["predicted_solar_generation_mw"] * PSH).round(2)
+    preds_df["predicted_solar_generation_mw_lower"] = np.clip(preds_df["predicted_solar_generation_mw"] - 1.96 * rmse, 0, None)
+    preds_df["predicted_solar_generation_mw_upper"] = preds_df["predicted_solar_generation_mw"] + 1.96 * rmse
+
+    preds_df.to_csv(os.path.join(SOLAR_REPORTS_DIR, "solar_predictions.csv"), index=False)
+    pd.DataFrame([metrics]).to_csv(os.path.join(SOLAR_REPORTS_DIR, "solar_model_metrics.csv"), index=False)
+
+    # Plot
+    plt.figure(figsize=(14, 7))
+    plt.plot(dates.values, y_true.values, label="Actual", color="#2ECC71", linewidth=1.5, alpha=0.9)
+    plt.plot(dates.values, y_pred, label="Predicted (Quartz XGBoost)", color="#FF8C00", linewidth=1.5, linestyle="--")
+    plt.fill_between(dates.values,
+                     preds_df["predicted_solar_generation_mw_lower"],
+                     preds_df["predicted_solar_generation_mw_upper"],
+                     alpha=0.15, color="#FF8C00", label="95% Confidence Interval")
+    plt.title(f"Quartz-Inspired Solar Forecast vs Actual (20% Holdout)\n"
+              f"MAE={metrics['MAE']:.0f}MW | RMSE={metrics['RMSE']:.0f}MW | MAPE={metrics['MAPE']:.1f}% | R2={metrics['R2_Score']:.4f}",
+              fontsize=13, fontweight="bold")
+    plt.xlabel("Date")
+    plt.ylabel("Solar Generation (MW)")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(SOLAR_REPORTS_DIR, "solar_forecast_plot.png"), dpi=200)
+    plt.close()
+    logger.info("Results saved.")
+
+
+def main():
+    logger.info("=" * 60)
+    logger.info("Solar Forecast Model -- Quartz-Inspired Architecture")
+    logger.info("=" * 60)
+
+    df = load_data()
+    feature_cols = select_features(df)
+    model, X_test, y_test, test_dates, future_df, feature_cols, y_pred = train_model(df)
+    metrics = evaluate_model(y_test, y_pred)
+
+    if not future_df.empty:
+        fut_X = future_df[feature_cols].fillna(0)
+        fut_pred = np.clip(model.predict(fut_X), 0, None)
+        all_dates = pd.concat([test_dates, future_df["date"]])
+        all_true = pd.concat([y_test, pd.Series([np.nan] * len(fut_pred))])
+        all_pred = np.concatenate([y_pred, fut_pred])
+    else:
+        all_dates = test_dates
+        all_true = y_test
+        all_pred = y_pred
+
+    # Save model
+    with open(os.path.join(MODELS_DIR, "solar_model.pkl"), "wb") as f:
+        pickle.dump(model, f)
+
+    # Save feature importance
+    if hasattr(model, "feature_importances_"):
+        imp_df = pd.DataFrame({
+            "feature": feature_cols,
+            "importance": model.feature_importances_
+        }).sort_values("importance", ascending=False)
+        imp_df.to_csv(os.path.join(SOLAR_REPORTS_DIR, "solar_feature_importance.csv"), index=False)
+        logger.info("Top-5 features: " + str(list(imp_df["feature"].head(5))))
+
+    save_results(all_dates, all_true, all_pred, metrics)
+    logger.info("=" * 60)
+    logger.info("Quartz-Inspired Solar Model Pipeline COMPLETE!")
+    logger.info("=" * 60)
+
 
 if __name__ == "__main__":
     main()

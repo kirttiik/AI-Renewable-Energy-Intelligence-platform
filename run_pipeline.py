@@ -30,13 +30,17 @@ PIPELINE_STEPS = [
     # ── Data Ingestion (Critical) ──────────────────────────────────────────
     ("src/ingestion/khavda_weather_ingestion.py",       True),   # NASA POWER — core input
     ("src/ingestion/open_meteo_ingestion.py",           True),   # Future forecast — core input
+    ("src/ingestion/openmeteo_historical_ingestion.py", True),   # Open-Meteo Archive 2020–present (Quartz-style features)
 
     # ── Physics-Informed Generation Engine (Critical) ──────────────────────
     ("src/ingestion/generate_renewable_generation.py",  True),   # pvlib PV engine
 
     # ── ML Forecasting (Critical) ──────────────────────────────────────────
-    ("src/forecasting/solar_model.py",                  True),
+    ("src/forecasting/solar_model.py",                  True),   # Quartz-inspired XGBoost
     ("src/analytics/forecast_confidence.py",            False),
+
+    # ── Backtesting (Non-critical — only runs after historical data available)
+    ("src/forecasting/backtest_solar_model.py",         False),  # Walk-forward backtest 2021–present
 
     # ── Hourly Forecast Ingestion (after models) ───────────────────────────
     ("src/ingestion/open_meteo_hourly_ingestion.py",    False),
