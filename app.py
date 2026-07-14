@@ -126,9 +126,9 @@ with st.sidebar:
     selection = st.radio("Navigation", sections)
     
     st.markdown("---")
-    global_time_horizon = st.radio(
-        " Time Horizon",
-        ["All Time", "Yesterday", "Today", "Tomorrow", " Custom Range"],
+    global_time_horizon = st.sidebar.selectbox(
+        "Time Horizon",
+        ["All Time", "Yesterday", "Today", "Tomorrow", "Next 14 Days", " Custom Range"],
         index=0,
         help="Filter data by time period. Custom Range lets you pick exact dates."
     )
@@ -206,6 +206,8 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
         target_date = global_today - pd.Timedelta(days=1)
     elif horizon == "Tomorrow":
         target_date = global_today + pd.Timedelta(days=1)
+    elif horizon == "Next 14 Days":
+        return df[(df['date'].dt.date >= global_today.date()) & (df['date'].dt.date <= (global_today + pd.Timedelta(days=14)).date())]
     else:
         return df
 

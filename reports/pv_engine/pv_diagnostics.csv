@@ -1,11 +1,11 @@
 Diagnostic,Value
-Average Cell Temperature (°C),44.83490979553675
-Maximum Cell Temperature (°C),63.722486458935705
-Average Effective Irradiance,3.5439226558908823
-Average Performance Ratio,0.8200000000000002
-Average Capacity Factor,0.36325345296356715
-Average Temperature Loss (%),6.942218428437863
-Average Cloud Loss (%),35.817988943266265
-Maximum Cloud Curtailment (%),99.94
-Temperature Stress Days,473.0
-Cloud Curtailment Days,619.0
+Average Cell Temperature (°C),43.91520284715757
+Maximum Cell Temperature (°C),61.71033483795461
+Average Effective Irradiance,3.9611348583333332
+Average Performance Ratio,0.8200000000000001
+Average Capacity Factor,0.405656125
+Average Temperature Loss (%),6.620320996505146
+Average Cloud Loss (%),30.78430555555556
+Maximum Cloud Curtailment (%),100.0
+Temperature Stress Days,319.0
+Cloud Curtailment Days,656.0
