@@ -285,7 +285,7 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
         
         # Key metrics row
         peak_solar_hour = int(hdf.loc[hdf['solar_generation_mw'].idxmax(), 'hour']) if not hdf.empty else 'N/A'
-        total_gen       = hdf['total_generation_mw'].sum()
+        total_gen       = hdf['solar_generation_mw'].sum()
         
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Peak Solar Hour", f"{peak_solar_hour}:00")
@@ -663,14 +663,14 @@ def render_forecasting():
     diff = None
 
     try:
-        pred_path = os.path.join(ROOT, 'reports', 'total_output', 'total_output_predictions.csv')
+        pred_path = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
         if os.path.exists(pred_path):
             cdf = pd.read_csv(pred_path)
             cdf['date'] = pd.to_datetime(cdf['date'])
             cdf = cdf.sort_values('date')
             if not cdf.empty:
                 last_row = cdf.iloc[-1]
-                ml_prediction = float(last_row.get('predicted_total_generation_mw', 0) or 0)
+                ml_prediction = float(last_row.get('predicted_solar_generation_mw', 0) or 0)
         solar_metrics_path = os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv')
         if os.path.exists(solar_metrics_path):
             sm = pd.read_csv(solar_metrics_path)
@@ -1445,7 +1445,7 @@ def render_platform_health():
     c4.metric("GitHub Actions",   " Healthy")
     
     c5, c6, c7, c8 = st.columns(4)
-    c5.metric("Forecast Models",       check_any_file([os.path.join('data','processed','total_output_predictions.csv'), os.path.join('reports','total_output','total_output_predictions.csv')]))
+    c5.metric("Forecast Models",       check_any_file([os.path.join('data','processed','solar_predictions.csv'), os.path.join('reports','solar','solar_predictions.csv')]))
     c6.metric("SHAP Engine",           check_any_file([os.path.join('reports','shap_feature_ranking_solar.csv')]))
     c7.metric("Data Sources Connected", "6 / 6")
     c8.metric("Latest Update Time",    pd.Timestamp.now().strftime("%H:%M UTC"))
