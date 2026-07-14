@@ -273,23 +273,17 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
         st.plotly_chart(fig_hourly, use_container_width=True)
         
         # Weather conditions
-        col1, col2 = st.columns(2)
-        with col1:
-            fig_solar_rad = px.area(
-                hdf, x='hour', y='solar_radiation_wm2',
-                title='Hourly Solar Irradiance (W/m²)',
-                color_discrete_sequence=['#FF8C00']
-            )
-            fig_solar_rad.update_layout(height=300, xaxis_title='Hour')
-            st.plotly_chart(fig_solar_rad, use_container_width=True)
-        with col2:
-            
+        fig_solar_rad = px.area(
+            hdf, x='hour', y='solar_radiation_wm2',
+            title='Hourly Solar Irradiance (W/m²)',
+            color_discrete_sequence=['#FF8C00']
+        )
+        fig_solar_rad.update_layout(height=300, xaxis_title='Hour')
+        st.plotly_chart(fig_solar_rad, use_container_width=True)
         
         # Key metrics row
         peak_solar_hour = int(hdf.loc[hdf['solar_generation_mw'].idxmax(), 'hour']) if not hdf.empty else 'N/A'
-        peak_wind_hour  = int(hdf.loc[hdf['wind_generation_mw'].idxmax(), 'hour']) if not hdf.empty else 'N/A'
         total_gen       = hdf['total_generation_mw'].sum()
-        peak_hour_total = int(hdf.loc[hdf['total_generation_mw'].idxmax(), 'hour']) if not hdf.empty else 'N/A'
         
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Peak Solar Hour", f"{peak_solar_hour}:00")
@@ -303,7 +297,7 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
             x=hdf['datetime'], y=hdf['solar_generation_mw'],
             name='Solar (MW)', fill='tozeroy', line=dict(color='#FFB347')
         ))
-                fig_multi.update_layout(
+        fig_multi.update_layout(
             xaxis_title='Date/Time', yaxis_title='Generation (MW)',
             title='Hourly Generation (Multi-Day View)', height=400
         )
