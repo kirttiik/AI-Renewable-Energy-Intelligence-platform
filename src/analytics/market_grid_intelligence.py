@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
-from app import get_data_sources, GLOBAL_TODAY, filter_by_time_horizon
 
 def calculate_weather_quality(cloud, temp, humidity, solar, wind, rain):
     """Calculate Weather Quality Score (0-100)"""
@@ -103,12 +102,18 @@ def render_market_grid_intelligence():
     # ---------------------------------------------------------
     # DATA LOADING & ERROR HANDLING
     # ---------------------------------------------------------
-    data = get_data_sources()
     ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     # Try to load real data
-    df_solar = data.get('solar_pred', pd.DataFrame())
-    df_metrics = data.get('solar_metrics', pd.DataFrame())
+    try:
+        df_solar = pd.read_csv(os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv'))
+    except:
+        df_solar = pd.DataFrame()
+        
+    try:
+        df_metrics = pd.read_csv(os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv'))
+    except:
+        df_metrics = pd.DataFrame()
     
     # Mock IEX market data if unavailable (never crash)
     iex_path = os.path.join(ROOT, 'data', 'processed', 'iex_dam_prices.csv')
