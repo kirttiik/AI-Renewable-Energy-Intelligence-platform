@@ -97,6 +97,19 @@ def safe_number(value):
 
 data = get_data_sources()
 
+# Compute a single, synchronized global 'today' for all time horizon filtering.
+GLOBAL_TODAY = pd.to_datetime('today').normalize()
+if not data.get('generation', pd.DataFrame()).empty:
+    _gen = data['generation']
+    if 'actual_solar_generation_mw' in _gen.columns:
+        _hist = _gen.dropna(subset=['actual_solar_generation_mw'])
+        if not _hist.empty:
+            GLOBAL_TODAY = pd.to_datetime(_hist['date']).max().normalize()
+    elif 'solar_generation_mw' in _gen.columns:
+        _hist = _gen[_gen['solar_generation_mw'] > 0]
+        if not _hist.empty:
+            GLOBAL_TODAY = pd.to_datetime(_hist['date']).max().normalize()
+
 # ==========================================
 # SIDEBAR NAVIGATION
 # ==========================================
@@ -187,16 +200,7 @@ def filter_by_time_horizon(df, horizon, custom_start=None, custom_end=None):
         return df
 
     # Anchor "today" to the last date with actual solar data
-    global_today = pd.to_datetime('today').normalize()
-    if 'actual_solar_generation_mw' in df.columns:
-        hist_df = df.dropna(subset=['actual_solar_generation_mw'])
-        if not hist_df.empty:
-            global_today = hist_df['date'].max()
-    elif 'solar_generation_mw' in df.columns:
-        # Use max date of non-zero generation as proxy for today
-        hist_df = df[df['solar_generation_mw'] > 0]
-        if not hist_df.empty:
-            global_today = hist_df['date'].max()
+    global_today = GLOBAL_TODAY
 
     if horizon == "All Time":
         return df
@@ -226,8 +230,8 @@ def get_hourly_for_horizon(horizon, custom_start=None, custom_end=None):
             return hdf[(hdf['date'] >= custom_start) & (hdf['date'] <= custom_end)]
         return hdf
     
-    # Determine reference date from system clock
-    ref_today = pd.Timestamp.now().normalize().date()
+    # Determine reference date from synchronized global clock
+    ref_today = GLOBAL_TODAY.date()
     
     if horizon == "Today":
         target = ref_today
