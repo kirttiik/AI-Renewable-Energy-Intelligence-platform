@@ -265,7 +265,7 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
             barmode='stack',
             xaxis_title='Hour of Day',
             yaxis_title='Generation (MW)',
-            title='Hourly Solar + Wind Generation Profile',
+            title='Hourly Solar Generation Profile',
             xaxis=dict(tickmode='linear', tick0=0, dtick=1),
             legend=dict(orientation='h', yanchor='bottom', y=1.02),
             height=400
@@ -283,13 +283,7 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
             fig_solar_rad.update_layout(height=300, xaxis_title='Hour')
             st.plotly_chart(fig_solar_rad, use_container_width=True)
         with col2:
-            fig_wind = px.line(
-                hdf, x='hour', y='wind_speed_ms',
-                title='Hourly Wind Speed (m/s)',
-                color_discrete_sequence=['#00BFFF']
-            )
-            fig_wind.update_layout(height=300, xaxis_title='Hour')
-            st.plotly_chart(fig_wind, use_container_width=True)
+            
         
         # Key metrics row
         peak_solar_hour = int(hdf.loc[hdf['solar_generation_mw'].idxmax(), 'hour']) if not hdf.empty else 'N/A'
@@ -299,8 +293,8 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
         
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Peak Solar Hour", f"{peak_solar_hour}:00")
-        c2.metric("Peak Wind Hour",  f"{peak_wind_hour}:00")
-        c3.metric("Peak Combined",   f"{peak_hour_total}:00")
+        c2.empty()
+        c3.empty()
         c4.metric("Daily Total",     f"{total_gen:,.0f} MW")
     else:
         # Multi-day range — show by datetime
@@ -309,11 +303,7 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
             x=hdf['datetime'], y=hdf['solar_generation_mw'],
             name='Solar (MW)', fill='tozeroy', line=dict(color='#FFB347')
         ))
-        fig_multi.add_trace(go.Scatter(
-            x=hdf['datetime'], y=hdf['wind_generation_mw'],
-            name='Wind (MW)', fill='tozeroy', line=dict(color='#5B9BD5')
-        ))
-        fig_multi.update_layout(
+                fig_multi.update_layout(
             xaxis_title='Date/Time', yaxis_title='Generation (MW)',
             title='Hourly Generation (Multi-Day View)', height=400
         )
@@ -365,7 +355,6 @@ def render_executive_overview():
     
     # ---- Live data extraction for KPIs ----
     today_forecast = None
-    dam_price = None
     carbon_offset = None
     forecast_confidence = "N/A"
     weather_risk = "N/A"
@@ -373,7 +362,6 @@ def render_executive_overview():
     plant_health_score = 92
     perf_ratio = 0.82
     cap_factor = 28.4
-    daily_revenue_inr = None
     latest_update = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
     
     try:
@@ -386,41 +374,25 @@ def render_executive_overview():
                 latest_gen = df_gen.iloc[-1]
                 perf_ratio = latest_gen.get('performance_ratio', 0.82)
                 cap_factor = latest_gen.get('capacity_factor', 0.284) * 100
-                today_forecast = latest_gen.get('total_generation_mw', None)
+                today_forecast = latest_gen.get('solar_generation_mw', None)
     except Exception:
         pass
 
     try:
         # ML Predictions (use the latest predicted value if available)
-        pred_path = os.path.join(ROOT, 'reports', 'total_output', 'total_output_predictions.csv')
+        pred_path = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
         if os.path.exists(pred_path):
             df_pred = pd.read_csv(pred_path)
             df_pred['date'] = pd.to_datetime(df_pred['date'])
             if not df_pred.empty:
-                # Prefer the most recent predicted value
+                # Prefer the most recent predicted value (e.g. tomorrow or today depending on run time)
                 last_pred = df_pred.sort_values('date').iloc[-1]
-                pred_val = last_pred.get('predicted_total_generation_mw', None)
+                pred_val = last_pred.get('predicted_solar_generation_mw', None)
                 if pred_val is not None and float(pred_val) > 0:
                     today_forecast = float(pred_val)
     except Exception:
         pass
 
-    try:
-        # Revenue data for DAM price and revenue
-        rev_path = os.path.join(ROOT, 'data', 'processed', 'revenue_analytics.csv')
-        if os.path.exists(rev_path):
-            df_rev = pd.read_csv(rev_path)
-            df_rev['date'] = pd.to_datetime(df_rev['date'])
-            if not df_rev.empty:
-                latest_rev = df_rev.sort_values('date').iloc[-1]
-                daily_revenue_inr = latest_rev.get('daily_revenue_inr', None)
-                # Estimate DAM price: Revenue / Generation
-                gen_val = latest_rev.get('total_generation_mw', None)
-                if daily_revenue_inr and gen_val and float(gen_val) > 0:
-                    dam_price = float(daily_revenue_inr) / (float(gen_val) * 1000)  # INR/MWh -> per kWh
-    except Exception:
-        pass
-    
     try:
         # Carbon offset
         carb_path = os.path.join(ROOT, 'data', 'processed', 'carbon_offset_analytics.csv')
@@ -458,25 +430,24 @@ def render_executive_overview():
 
     # Fallbacks for display
     today_forecast_disp = f"{today_forecast:,.1f} MW" if today_forecast is not None else "N/A"
-    dam_price_disp      = f"Rs {dam_price:.2f}/kWh" if dam_price is not None else "N/A"
     carbon_disp         = f"{carbon_offset:,.2f} Tons" if carbon_offset is not None else "N/A"
-    revenue_disp        = f"Rs {daily_revenue_inr/1e5:.2f} L/day" if daily_revenue_inr else "N/A"
 
     st.markdown("### Executive Summary")
-    st.info(f"**Briefing:** Latest generation output is **{today_forecast_disp}**. Weather risk: **{weather_risk}**. DAM price estimate: **{dam_price_disp}**. Forecast confidence: **{forecast_confidence}**. Daily revenue: **{revenue_disp}**.")
+    st.info(f"**Briefing:** Latest solar generation output prediction is **{today_forecast_disp}**. Current weather risk is **{weather_risk}**. Quartz-inspired ML forecast confidence is **{forecast_confidence}**.")
     
     st.markdown("### Top-Level KPIs")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Latest Generation", today_forecast_disp)
-    c2.metric("Est. DAM Price", dam_price_disp)
-    c3.metric("CO2 Avoided (Period)", carbon_disp)
-    c4.metric("Forecast Confidence", forecast_confidence)
+    c1.metric("Latest Prediction", today_forecast_disp)
+    c2.metric("CO2 Avoided (Period)", carbon_disp)
+    c3.metric("Forecast Confidence", forecast_confidence)
+    c4.metric("Weather Risk Level", weather_risk)
     
     c5, c6, c7, c8 = st.columns(4)
-    c5.metric("Weather Risk Level", weather_risk)
-    c6.metric("Pipeline Health", pipeline_health)
-    c7.metric("Performance Ratio", f"{perf_ratio:.2f}")
-    c8.metric("Capacity Factor", f"{cap_factor:.1f}%")
+    c5.metric("Pipeline Health", pipeline_health)
+    c6.metric("Performance Ratio", f"{perf_ratio:.2f}")
+    c7.metric("Capacity Factor", f"{cap_factor:.1f}%")
+    c8.empty()
+
 
     st.markdown("---")
     
@@ -1043,39 +1014,7 @@ def render_explainability():
         # Load REAL metrics from pipeline report CSVs
         _exp_root = os.path.dirname(os.path.abspath(__file__))
         _solar_m = {'MAE': 'N/A', 'RMSE': 'N/A', 'R2': 'N/A'}
-        _wind_m  = {'Train_MAE': 'N/A', 'Test_MAE': 'N/A', 'Test_RMSE': 'N/A', 'Test_R2': 'N/A'}
-        _total_m = {'Test_MAE': 'N/A', 'Test_RMSE': 'N/A', 'Test_R2': 'N/A'}
-        try:
-            _sp = os.path.join(_exp_root, 'reports', 'solar', 'solar_model_metrics.csv')
-            if os.path.exists(_sp):
-                _sm = pd.read_csv(_sp)
-                _solar_m = {'MAE': round(float(_sm['MAE'].iloc[0]),3), 'RMSE': round(float(_sm['RMSE'].iloc[0]),3), 'R2': round(float(_sm['R2_Score'].iloc[0]),4)}
-        except Exception: pass
-        try:
-            _wp = os.path.join(_exp_root, 'reports', 'wind', 'wind_model_metrics.csv')
-            if os.path.exists(_wp):
-                _wm = pd.read_csv(_wp)
-                _wind_m = {'Train_MAE': round(float(_wm['Train_MAE'].iloc[0]),3), 'Test_MAE': round(float(_wm['Test_MAE'].iloc[0]),3), 'Test_RMSE': round(float(_wm['Test_RMSE'].iloc[0]),3), 'Test_R2': round(float(_wm['Test_R2'].iloc[0]),4)}
-        except Exception: pass
-        try:
-            _tp = os.path.join(_exp_root, 'reports', 'total_output', 'total_output_metrics.csv')
-            if os.path.exists(_tp):
-                _tm = pd.read_csv(_tp)
-                _total_m = {'Test_MAE': round(float(_tm['Test_MAE'].iloc[0]),3), 'Test_RMSE': round(float(_tm['Test_RMSE'].iloc[0]),3), 'Test_R2': round(float(_tm['Test_R2'].iloc[0]),4)}
-        except Exception: pass
-
-        c_p1.markdown("**Solar Generation Model**")
-        c_p1.write("- **Model Type:** XGBoost Regressor")
-        c_p1.write(f"- **Test MAE:** {_solar_m['MAE']} MW")
-        c_p1.write(f"- **Test RMSE:** {_solar_m['RMSE']} MW")
-        c_p1.write(f"- **Test R2:** {_solar_m['R2']}")
-        
-        c_p2.markdown("**Wind Generation Model**")
-        c_p2.write("- **Model Type:** XGBoost Regressor")
-        c_p2.write(f"- **Train MAE:** {_wind_m['Train_MAE']} MW")
-        c_p2.write(f"- **Test MAE:** {_wind_m['Test_MAE']} MW")
-        c_p2.write(f"- **Test RMSE:** {_wind_m['Test_RMSE']} MW")
-        c_p2.write(f"- **Test R2:** {_wind_m['Test_R2']}")
+                c_p2.write(f"- **Test R2:** {_wind_m['Test_R2']}")
         
         c_p3.markdown("**Total Output Model**")
         c_p3.write("- **Model Type:** Hybrid XGBoost")
@@ -1088,11 +1027,7 @@ def render_explainability():
         categories = ['Accuracy (R²)', 'Stability (1/RMSE)', 'Precision (1/MAE)', 'Generalization', 'Confidence']
         fig_radar = go.Figure()
         _s_r2 = round(float(_solar_m['R2']) * 100, 1) if isinstance(_solar_m['R2'], (int, float)) else 96
-        _w_r2 = round(float(_wind_m['Test_R2']) * 100, 1) if isinstance(_wind_m['Test_R2'], (int, float)) else 88
-        _s_rmse_score = max(0, min(100, 100 - float(_solar_m['RMSE'])*5)) if isinstance(_solar_m['RMSE'], (int,float)) else 85
-        _w_rmse_score = max(0, min(100, 100 - float(_wind_m['Test_RMSE'])*3)) if isinstance(_wind_m['Test_RMSE'], (int,float)) else 70
-        fig_radar.add_trace(go.Scatterpolar(r=[_s_r2, _s_rmse_score, 90, 92, 95], theta=categories, fill='toself', name='Solar Model'))
-        fig_radar.add_trace(go.Scatterpolar(r=[_w_r2, _w_rmse_score, 75, 82, 85], theta=categories, fill='toself', name='Wind Model'))
+                
         fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=True, height=350, margin=dict(t=30, b=0))
         st.plotly_chart(fig_radar, use_container_width=True)
         
@@ -1211,448 +1146,6 @@ def render_shap_analytics():
     st.markdown(f"**Executive Recommendation:** Invest in high-resolution, hyper-local sensor hardware for **{top_driver_friendly}** to drastically reduce model uncertainty and financial risk.")
 
 # ===========================================================================
-# IEX ANALYTICS — Data Loader (cached)
-# ===========================================================================
-@st.cache_data(ttl=3600, show_spinner=False)
-def load_iex_data():
-    """Load or generate all IEX analytics data.
-    Note: Cache busted to load restored optimistic/pessimistic columns.
-    """
-    import sys
-    ROOT = os.path.dirname(os.path.abspath(__file__))
-    sys.path.insert(0, ROOT)
-
-    market_dir  = os.path.join(ROOT, 'data', 'market')
-    iex_path    = os.path.join(market_dir, 'iex_prices.csv')
-    backtest_path = os.path.join(ROOT, 'reports', 'market', 'revenue_backtesting.csv')
-    future_path   = os.path.join(ROOT, 'reports', 'market', 'future_market_revenue.csv')
-    summary_path  = os.path.join(ROOT, 'reports', 'market', 'iex_market_summary.csv')
-    insights_path = os.path.join(ROOT, 'reports', 'market', 'market_executive_insights.csv')
-
-    # Auto-generate if missing
-    if not os.path.exists(iex_path):
-        try:
-            from src.ingestion.iex_price_generator import main as _gen
-            _gen()
-        except Exception as e:
-            st.warning(f"Could not auto-generate IEX prices: {e}")
-
-    if not os.path.exists(backtest_path):
-        try:
-            from src.analytics.iex_analytics import run_iex_analytics
-            run_iex_analytics()
-        except Exception as e:
-            st.warning(f"Could not run IEX analytics engine: {e}")
-
-    def _read(p):
-        if os.path.exists(p):
-            df = pd.read_csv(p)
-            if 'date' in df.columns:
-                df['date'] = pd.to_datetime(df['date'])
-            if 'iex_prices.csv' in p:
-                if 'dam_price_rs_mwh' in df.columns:
-                    df['dam_price_rs_kwh'] = (df['dam_price_rs_mwh'] / 1000).round(2)
-                if 'rtm_price_rs_mwh' in df.columns:
-                    df['rtm_price_rs_kwh'] = (df['rtm_price_rs_mwh'] / 1000).round(2)
-                elif 'dam_price_rs_mwh' in df.columns:
-                    df['rtm_price_rs_kwh'] = (df['dam_price_rs_mwh'] * 1.03 / 1000).round(2)
-            return df
-        return pd.DataFrame()
-
-    return {
-        'iex'      : _read(iex_path),
-        'backtest' : _read(backtest_path),
-        'future'   : _read(future_path),
-        'summary'  : _read(summary_path),
-        'insights' : _read(insights_path),
-    }
-
-
-# ===========================================================================
-# IEX ANALYTICS — Render
-# ===========================================================================
-def render_iex_analytics():
-    st.title(" IEX Market Intelligence")
-    st.markdown(
-        "Real-time Indian Energy Exchange (IEX) Day-Ahead Market analytics "
-        "fused with AI generation forecasts for end-to-end revenue intelligence."
-    )
-
-    iex_d = load_iex_data()
-    iex      = iex_d['iex']
-    backtest = iex_d['backtest']
-    future   = iex_d['future']
-    summary  = iex_d['summary']
-    insights = iex_d['insights']
-
-    if iex.empty:
-        st.error(" IEX price data could not be loaded. Please run the pipeline first.")
-        return
-
-    # ── filter by global time horizon ────────────────────────────────────────
-    iex_f  = filter_by_time_horizon(iex,      global_time_horizon, custom_start_date, custom_end_date)
-    bt_f   = filter_by_time_horizon(backtest,  global_time_horizon, custom_start_date, custom_end_date)
-    if iex_f.empty:
-        iex_f  = iex
-        bt_f   = backtest
-
-    # ======================================================================
-    # SECTION 1 — MARKET OVERVIEW KPIs
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Market Overview")
-
-    kpi = summary.iloc[0].to_dict() if not summary.empty else {}
-
-    avg_price   = safe_number(kpi.get('avg_dam_price_rs_kwh', iex_f['dam_price_rs_kwh'].mean()))
-    avg_rtm     = safe_number(kpi.get('avg_rtm_price_rs_kwh', iex_f['rtm_price_rs_kwh'].mean()))
-    max_price   = safe_number(kpi.get('max_dam_price_rs_kwh', iex_f['dam_price_rs_kwh'].max()))
-    min_price   = safe_number(kpi.get('min_dam_price_rs_kwh', iex_f['dam_price_rs_kwh'].min()))
-    volatility  = safe_number(kpi.get('price_volatility_pct',
-                              (iex_f['dam_price_rs_kwh'].std() / iex_f['dam_price_rs_kwh'].mean()) * 100))
-    total_rev   = safe_number(kpi.get('total_revenue_inr', bt_f['revenue_inr'].sum() if not bt_f.empty else 0))
-    avg_day_rev = safe_number(kpi.get('avg_daily_revenue_inr', bt_f['revenue_inr'].mean() if not bt_f.empty else 0))
-
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric(" Avg DAM Price",       f"₹{avg_price:,.2f} /kWh")
-    c2.metric(" Avg RTM Price",       f"₹{avg_rtm:,.2f} /kWh")
-    c3.metric(" Peak DAM Price",       f"₹{max_price:,.2f} /kWh")
-    c4.metric(" Floor DAM Price",      f"₹{min_price:,.2f} /kWh")
-
-    c5, c6, c7 = st.columns(3)
-    c5.metric(" Avg Daily Revenue",    f"₹{avg_day_rev/1e5:.2f} L")
-    c6.metric(" Total Market Revenue", f"₹{total_rev/1e7:.2f} Cr")
-    c7.metric(" Price Volatility",      f"{volatility:.2f}%")
-
-    # ======================================================================
-    # SECTION 2 — IEX PRICE ANALYTICS
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" IEX DAM Price Analytics")
-
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "Daily Trend", "Monthly Avg", "Distribution", "Volatility"
-    ])
-
-    with tab1:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=iex_f['date'], y=iex_f['dam_price_rs_kwh'],
-            mode='lines+markers', name='DAM Price',
-            line=dict(color='#FF6B35', width=1.5)
-        ))
-        if 'rtm_price_rs_kwh' in iex_f.columns:
-            fig.add_trace(go.Scatter(
-                x=iex_f['date'], y=iex_f['rtm_price_rs_kwh'],
-                mode='lines+markers', name='RTM Price',
-                line=dict(color='#2ECC71', width=1.5, dash='dot')
-            ))
-        fig.add_trace(go.Scatter(
-            x=iex_f['date'],
-            y=iex_f['dam_price_rs_kwh'].rolling(30, min_periods=1).mean(),
-            mode='lines', name='30-Day MA (DAM)',
-            line=dict(color='#004E89', width=2, dash='dash')
-        ))
-        # Highlight highest / lowest days
-        if not iex_f.empty:
-            hi_row = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmax()]
-            lo_row = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmin()]
-            fig.add_trace(go.Scatter(
-                x=[hi_row['date']], y=[hi_row['dam_price_rs_kwh']],
-                mode='markers', name='Highest Day',
-                marker=dict(color='red', size=10, symbol='star')
-            ))
-            fig.add_trace(go.Scatter(
-                x=[lo_row['date']], y=[lo_row['dam_price_rs_kwh']],
-                mode='markers', name='Lowest Day',
-                marker=dict(color='green', size=10, symbol='star')
-            ))
-        fig.update_layout(
-            title='Daily Market Clearing Price (₹/kWh)',
-            xaxis_title='Date', yaxis_title='₹ / kWh',
-            height=420, legend=dict(orientation='h', y=1.1)
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-        if not iex_f.empty:
-            hi = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmax()]
-            lo = iex_f.loc[iex_f['dam_price_rs_kwh'].idxmin()]
-            c1, c2 = st.columns(2)
-            c1.info(f" **Highest Price Day:** {hi['date'].strftime('%d %b %Y')}  —  ₹{hi['dam_price_rs_kwh']:,.2f}/kWh")
-            c2.success(f" **Lowest Price Day:** {lo['date'].strftime('%d %b %Y')}  —  ₹{lo['dam_price_rs_kwh']:,.2f}/kWh")
-
-    with tab2:
-        monthly_avg = iex.groupby(iex['date'].dt.to_period('M'))['dam_price_rs_kwh'].mean().reset_index()
-        monthly_avg['date'] = monthly_avg['date'].astype(str)
-        fig2 = px.bar(
-            monthly_avg, x='date', y='dam_price_rs_kwh',
-            title='Monthly Average DAM Price (₹/kWh)',
-            color='dam_price_rs_kwh',
-            color_continuous_scale='RdYlGn_r',
-            labels={'date': 'Month', 'dam_price_rs_kwh': '₹/kWh'}
-        )
-        fig2.update_layout(height=420, coloraxis_showscale=False)
-        st.plotly_chart(fig2, use_container_width=True)
-
-    with tab3:
-        fig3 = px.histogram(
-            iex_f, x='dam_price_rs_kwh', nbins=50,
-            title='DAM Price Distribution (₹/kWh)',
-            labels={'dam_price_rs_kwh': '₹/kWh', 'count': 'Days'},
-            color_discrete_sequence=['#5B9BD5']
-        )
-        fig3.add_vline(x=avg_price, line_dash='dash', line_color='red',
-                       annotation_text=f'Avg: ₹{avg_price:,.2f}', annotation_position='top right')
-        fig3.update_layout(height=400)
-        st.plotly_chart(fig3, use_container_width=True)
-
-    with tab4:
-        rolling_std = iex_f['dam_price_rs_kwh'].rolling(30, min_periods=1).std()
-        fig4 = go.Figure()
-        fig4.add_trace(go.Scatter(
-            x=iex_f['date'], y=rolling_std,
-            fill='tozeroy', name='30-Day Rolling σ',
-            line=dict(color='#FF4444')
-        ))
-        fig4.update_layout(
-            title='30-Day Rolling Price Volatility (₹/kWh σ)',
-            xaxis_title='Date', yaxis_title='Std Dev (₹/kWh)', height=380
-        )
-        st.plotly_chart(fig4, use_container_width=True)
-
-    # ======================================================================
-    # SECTION 3 — REVENUE BACKTESTING
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Revenue Backtesting  (Generation × DAM Price)")
-
-    if bt_f.empty:
-        st.warning("No revenue backtest data for the selected time horizon.")
-    else:
-        total_bt = bt_f['revenue_inr'].sum()
-        avg_bt   = bt_f['revenue_inr'].mean()
-
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Total Revenue",    f"₹{total_bt/1e7:.2f} Cr")
-        c2.metric("Avg Daily Revenue", f"₹{avg_bt/1e5:.2f} L")
-        c3.metric("Days Analysed",    f"{len(bt_f):,}")
-
-        # Revenue Trend Chart
-        fig_rev = go.Figure()
-        fig_rev.add_trace(go.Scatter(
-            x=bt_f['date'], y=bt_f['revenue_lakhs'],
-            fill='tozeroy', name='Revenue (₹ Lakhs)',
-            line=dict(color='#2ECC71', width=1.5)
-        ))
-        fig_rev.add_trace(go.Scatter(
-            x=bt_f['date'],
-            y=bt_f['revenue_lakhs'].rolling(30, min_periods=1).mean(),
-            name='30-Day MA', line=dict(color='#E74C3C', dash='dash', width=2)
-        ))
-        fig_rev.update_layout(
-            title='Daily Market Revenue Trend (₹ Lakhs)',
-            xaxis_title='Date', yaxis_title='₹ Lakhs', height=380
-        )
-        st.plotly_chart(fig_rev, use_container_width=True)
-
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.markdown("**Top 10 Revenue Days**")
-            top10 = bt_f.nlargest(10, 'revenue_inr')[[
-                'date','total_generation_mw','dam_price_rs_kwh','rtm_price_rs_kwh','revenue_lakhs'
-            ]].copy()
-            top10['date'] = top10['date'].dt.strftime('%d %b %Y')
-            top10.columns = ['Date','Generation (MW)','DAM (₹/kWh)','RTM (₹/kWh)','Revenue (₹ L)']
-            st.dataframe(top10.reset_index(drop=True), use_container_width=True)
-
-        with col_b:
-            st.markdown("**Bottom 10 Revenue Days**")
-            bot10 = bt_f.nsmallest(10, 'revenue_inr')[[
-                'date','total_generation_mw','dam_price_rs_kwh','rtm_price_rs_kwh','revenue_lakhs'
-            ]].copy()
-            bot10['date'] = bot10['date'].dt.strftime('%d %b %Y')
-            bot10.columns = ['Date','Generation (MW)','DAM (₹/kWh)','RTM (₹/kWh)','Revenue (₹ L)']
-            st.dataframe(bot10.reset_index(drop=True), use_container_width=True)
-
-        st.markdown("**Full Backtesting Dataset**")
-        display_bt = bt_f[['date','solar_generation_mw','wind_generation_mw',
-                            'total_generation_mw','dam_price_rs_kwh','rtm_price_rs_kwh',
-                            'revenue_inr','revenue_lakhs','revenue_crores']].copy()
-        display_bt['date'] = display_bt['date'].dt.strftime('%Y-%m-%d')
-        display_bt.columns = [
-            'Date','Solar MW','Wind MW','Total MW',
-            'DAM (₹/kWh)','RTM (₹/kWh)','Revenue (₹)','Revenue (Lakhs)','Revenue (Crores)'
-        ]
-        st.dataframe(display_bt.tail(60), use_container_width=True)
-
-    # ======================================================================
-    # SECTION 4 — FUTURE REVENUE FORECAST
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Future Revenue Forecast")
-
-    if future.empty:
-        st.info("No future forecast data available. Run the pipeline to generate predictions.")
-    else:
-        days_ahead = len(future)
-        total_fut  = future['forecast_revenue_inr'].sum()
-        avg_fut    = future['forecast_revenue_inr'].mean()
-
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Forecast Horizon",       f"{days_ahead} days")
-        c2.metric("Total Forecast Revenue", f"₹{total_fut/1e5:.2f} L")
-        c3.metric("Avg Daily Revenue",      f"₹{avg_fut/1e5:.2f} L")
-
-        fig_fut = go.Figure()
-        fig_fut.add_trace(go.Bar(
-            x=future['date'], y=future['forecast_revenue_lakhs'],
-            name='Expected Revenue', marker_color='#3498DB'
-        ))
-        fig_fut.add_trace(go.Scatter(
-            x=future['date'], y=future['optimistic_revenue_inr'] / 1e5,
-            name='Optimistic (+15%)', mode='lines',
-            line=dict(color='#2ECC71', dash='dot', width=2)
-        ))
-        fig_fut.add_trace(go.Scatter(
-            x=future['date'], y=future['pessimistic_revenue_inr'] / 1e5,
-            name='Pessimistic (-15%)', mode='lines',
-            line=dict(color='#E74C3C', dash='dot', width=2)
-        ))
-        fig_fut.update_layout(
-            title='Forward Revenue Forecast with Upside/Downside Bands (₹ Lakhs)',
-            xaxis_title='Date', yaxis_title='₹ Lakhs', height=400,
-            legend=dict(orientation='h', y=1.1)
-        )
-        st.plotly_chart(fig_fut, use_container_width=True)
-
-        # Invalidate cache if needed
-        # @st.cache_data
-        # def load_iex_data():
-        #     # Refresh cache by timestamp
-        
-        display_fut = future[[
-            'date','forecast_generation_mw','expected_dam_price_kwh',
-            'forecast_revenue_lakhs','optimistic_revenue_inr','pessimistic_revenue_inr'
-        ]].copy()
-        display_fut['date'] = display_fut['date'].dt.strftime('%Y-%m-%d')
-        display_fut['optimistic_revenue_inr']   /= 1e5
-        display_fut['pessimistic_revenue_inr']  /= 1e5
-        display_fut.columns = [
-            'Date','Forecast Gen (MW)','Expected Price (₹/kWh)',
-            'Revenue (₹ L)','Optimistic (₹ L)','Pessimistic (₹ L)'
-        ]
-        st.dataframe(display_fut, use_container_width=True)
-
-    # ======================================================================
-    # SECTION 5 — SCENARIO SIMULATOR
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Revenue Scenario Simulator")
-    st.markdown("Adjust market conditions and see the projected revenue impact in real-time.")
-
-    col_sl1, col_sl2 = st.columns(2)
-    with col_sl1:
-        price_up   = st.slider(" Price Increase (%)",   min_value=0,   max_value=100, value=0,   step=5,  key='scen_price_up')
-        price_down = st.slider(" Price Decrease (%)",  min_value=0,   max_value=50,  value=0,   step=5,  key='scen_price_dn')
-    with col_sl2:
-        gen_up   = st.slider(" Generation Increase (%)", min_value=0,  max_value=50,  value=0,  step=5,  key='scen_gen_up')
-        gen_down = st.slider(" Generation Decrease (%)", min_value=0, max_value=50,  value=0,  step=5,  key='scen_gen_dn')
-
-    net_price_chg = price_up - price_down
-    net_gen_chg   = gen_up   - gen_down
-
-    if not backtest.empty:
-        from src.analytics.iex_analytics import simulate_scenario
-        scen = simulate_scenario(backtest, net_price_chg, net_gen_chg)
-
-        s1, s2, s3, s4 = st.columns(4)
-        delta_str = f"{'+'if scen['delta_crores']>=0 else ''}{scen['delta_crores']:.2f} Cr"
-        pct_str   = f"{'+'if scen['pct_impact']>=0 else ''}{scen['pct_impact']:.2f}%"
-        s1.metric("Base Revenue",     f"₹{scen['base_crores']:.2f} Cr")
-        s2.metric("Scenario Revenue", f"₹{scen['scenario_crores']:.2f} Cr",
-                  delta=delta_str,
-                  delta_color="normal" if scen['delta_crores'] >= 0 else "inverse")
-        s3.metric("Revenue Δ",        delta_str)
-        s4.metric("% Impact",          pct_str)
-
-        # Visual comparison bar
-        fig_scen = go.Figure(go.Bar(
-            x=['Base Revenue', 'Scenario Revenue'],
-            y=[scen['base_crores'], scen['scenario_crores']],
-            marker_color=['#3498DB', '#2ECC71' if scen['scenario_crores'] >= scen['base_crores'] else '#E74C3C'],
-            text=[f"₹{scen['base_crores']:.2f} Cr", f"₹{scen['scenario_crores']:.2f} Cr"],
-            textposition='outside'
-        ))
-        fig_scen.update_layout(
-            title='Base vs Scenario Revenue Comparison (₹ Crores)',
-            yaxis_title='₹ Crores', height=350
-        )
-        st.plotly_chart(fig_scen, use_container_width=True)
-    else:
-        st.info("Run the pipeline to enable scenario simulation.")
-
-    # ======================================================================
-    # SECTION 6 — EXECUTIVE MARKET INSIGHTS
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Executive Market Insights")
-
-    if not insights.empty:
-        for _, row in insights.iterrows():
-            with st.expander(f" {row.get('Section', 'Insight')}", expanded=False):
-                st.markdown(row.get('Insight', ''))
-    else:
-        # Fallback static insights
-        static_insights = [
-            ("Price Seasonality",
-             "IEX DAM prices peak during summer months (April–June) driven by high cooling demand, "
-             "aligning perfectly with Khavda's solar generation peak — a powerful revenue multiplier."),
-            ("Revenue Concentration",
-             "The top 3 revenue months account for the majority of annual market revenue. "
-             "Strategic scheduling of maintenance windows during monsoon months maximises revenue capture."),
-            ("Market Volatility Risk",
-             "IEX price volatility requires a hedging strategy. PPAs for 60–70% of capacity is recommended "
-             "alongside active participation in the spot market for the remaining volume."),
-            ("Future Revenue Outlook",
-             "AI-driven forecasts confirm stable renewable output over the next 14 days. "
-             "Revenue is expected to remain consistent with seasonal averages."),
-            ("Market Floor Strategy",
-             "Khavda's variable cost per MWh remains well below the IEX market price floor, "
-             "ensuring positive contribution margin under all market clearing scenarios."),
-        ]
-        for section, text in static_insights:
-            with st.expander(f" {section}", expanded=False):
-                st.markdown(text)
-
-    # ======================================================================
-    # SECTION 7 — DOWNLOAD EXPORTS
-    # ======================================================================
-    st.markdown("---")
-    st.subheader(" Export Market Reports")
-
-    ROOT = os.path.dirname(os.path.abspath(__file__))
-    export_files = {
-        "IEX Market Summary KPIs": os.path.join(ROOT, 'reports', 'market', 'iex_market_summary.csv'),
-        "Revenue Backtesting":     os.path.join(ROOT, 'reports', 'market', 'revenue_backtesting.csv'),
-        "Future Market Revenue":   os.path.join(ROOT, 'reports', 'market', 'future_market_revenue.csv'),
-        "Executive Market Insights": os.path.join(ROOT, 'reports', 'market', 'market_executive_insights.csv'),
-    }
-
-    cols = st.columns(len(export_files))
-    for i, (label, path) in enumerate(export_files.items()):
-        with cols[i]:
-            if os.path.exists(path):
-                with open(path, 'rb') as f:
-                    st.download_button(
-                        label=f" {label}",
-                        data=f.read(),
-                        file_name=os.path.basename(path),
-                        mime='text/csv',
-                        key=f'dl_{i}'
-                    )
-            else:
-                st.caption(f"{label} not generated yet.")
-
 
 # ==========================================
 # ROUTING LOGIC
