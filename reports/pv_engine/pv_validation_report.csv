@@ -1,13 +1,13 @@
 Metric,Value
-Maximum Generation (MW),15022.221904178605
-Minimum Generation (MW),3.1513768595417986
-Average Generation (MW),7276.356841051251
+Maximum Generation (MW),15045.388446815936
+Minimum Generation (MW),3.2176715782628955
+Average Generation (MW),7265.068375124255
 Installed Capacity (MW),20000.0
-Maximum Capacity Utilization (%),75.11110952089302
+Maximum Capacity Utilization (%),75.22694223407967
 Days Exceeding Capacity,0.0
 Negative Generation Count,0.0
 Missing Values Count,0.0
-Temperature Factor (Avg),0.9305892985722903
-Cloud Factor (Avg),0.6423613376835235
+Temperature Factor (Avg),0.9305778157156214
+Cloud Factor (Avg),0.6418201105673373
 Performance Ratio (Avg),0.8200000000000002
-Cell Temperature (Avg C),44.83162897934561
+Cell Temperature (Avg C),44.83490979553675

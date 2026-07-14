@@ -47,7 +47,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 ROOT_DIR     = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-WEATHER_PATH = os.path.join(ROOT_DIR, "data", "raw", "khavda_weather.csv")
+WEATHER_PATH = os.path.join(ROOT_DIR, "data", "raw", "khavda_weather_openmeteo.csv")
 CONFIG_PATH  = os.path.join(ROOT_DIR, "config", "plant_config.yaml")
 OUTPUT_PATH  = os.path.join(ROOT_DIR, "data", "processed", "khavda_generation.csv")
 
@@ -72,7 +72,7 @@ def load_weather_data() -> pd.DataFrame:
     logger.info(f"Loading weather data from {WEATHER_PATH}")
     df = pd.read_csv(WEATHER_PATH)
 
-    forecast_path = WEATHER_PATH.replace("khavda_weather.csv", "khavda_weather_forecast.csv")
+    forecast_path = WEATHER_PATH.replace("khavda_weather_openmeteo.csv", "khavda_weather_forecast.csv")
     if os.path.exists(forecast_path):
         forecast_df = pd.read_csv(forecast_path)
         df = pd.concat([df, forecast_df], ignore_index=True)
@@ -81,7 +81,7 @@ def load_weather_data() -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"])
     numeric_cols = [
         "temperature_c", "cloud_cover_pct",
-        "solar_radiation_kwh_m2_day", "wind_speed_ms",
+        "ghi_kwh_m2_day", "wind_speed_ms",
         "humidity_pct", "rainfall_mm"
     ]
     df[numeric_cols] = df[numeric_cols].ffill().fillna(0)
@@ -101,13 +101,13 @@ def engineer_pv_features(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     PSH   = s.get("peak_sun_hours", 5.8)
 
     # GHI W/m2 peak approximation
-    df["ghi_w_m2"] = (df["solar_radiation_kwh_m2_day"] * 1000.0 / PSH).clip(lower=0)
+    df["ghi_w_m2"] = (df["ghi_kwh_m2_day"] * 1000.0 / PSH).clip(lower=0)
 
     # Cloud factor
     df["cloud_factor"] = (1.0 - df["cloud_cover_pct"] / 100.0).clip(0.0, 1.0)
 
     # Effective irradiance after cloud attenuation
-    df["effective_irradiance"] = (df["solar_radiation_kwh_m2_day"] * df["cloud_factor"]).clip(lower=0)
+    df["effective_irradiance"] = (df["ghi_kwh_m2_day"] * df["cloud_factor"]).clip(lower=0)
 
     # PV Cell Temperature
     if HAS_PVLIB:
