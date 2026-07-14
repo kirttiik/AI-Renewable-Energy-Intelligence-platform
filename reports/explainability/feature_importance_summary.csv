@@ -16,4 +16,3 @@ Solar,week_of_year,0.0,Drives predictive model outcome.,Underlying correlation f
 Solar,year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,quarter,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,performance_ratio,0.0,Reflects overall system health and losses.,Ratio of actual plant AC output to theoretical DC output at STC.,Initiate full diagnostic sweep if PR drops below 75% for 3+ consecutive days.
-Solar,ghi_w_m2,0.0,Total sunlight available at the site.,Sum of direct and diffuse solar radiation incident on a horizontal surface.,Use for long-term site viability tracking and panel degradation baseline.

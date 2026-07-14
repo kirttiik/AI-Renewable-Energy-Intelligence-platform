@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 # PATHS AND CONFIGURATION
 # ==================================================
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-INPUT_DATA_PATH = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather.csv')
+INPUT_DATA_PATH = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather_openmeteo.csv')
 OUTPUT_DATA_PATH = os.path.join(ROOT_DIR, 'data', 'processed', 'weather_risk_analytics.csv')
 REPORTS_DIR = os.path.join(ROOT_DIR, 'reports')
 WEATHER_REPORTS_DIR = os.path.join(REPORTS_DIR, 'weather')
@@ -43,6 +43,9 @@ def load_weather_data() -> pd.DataFrame:
         
         if os.path.exists(forecast_path):
             forecast_df = pd.read_csv(forecast_path)
+            # rename solar_radiation to ghi if forecast uses old schema
+            if 'solar_radiation_kwh_m2_day' in forecast_df.columns:
+                forecast_df = forecast_df.rename(columns={'solar_radiation_kwh_m2_day': 'ghi_kwh_m2_day'})
             df = pd.concat([df, forecast_df], ignore_index=True)
             df = df.drop_duplicates(subset=['date'], keep='last')
             
@@ -50,7 +53,12 @@ def load_weather_data() -> pd.DataFrame:
         
         # Clean missing raw data
         numeric_cols = ['temperature_c', 'humidity_pct', 'wind_speed_ms', 
-                        'solar_radiation_kwh_m2_day', 'rainfall_mm', 'cloud_cover_pct']
+                        'ghi_kwh_m2_day', 'rainfall_mm', 'cloud_cover_pct']
+        
+        for col in numeric_cols:
+            if col not in df.columns:
+                df[col] = 0
+                
         df[numeric_cols] = df[numeric_cols].ffill().fillna(0)
         
         return df

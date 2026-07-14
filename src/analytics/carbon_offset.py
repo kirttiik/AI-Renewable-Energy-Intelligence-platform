@@ -69,7 +69,6 @@ def load_data() -> pd.DataFrame:
                 (preds['actual_solar_generation_mw'].isna())
             ][['date', 'predicted_solar_generation_mw']].copy()
             future = future.rename(columns={'predicted_solar_generation_mw': 'solar_generation_mw'})
-            future['total_generation_mw'] = future['solar_generation_mw']
             future['site_name'] = 'Khavda Renewable Energy Park'
             df = pd.concat([hist, future], ignore_index=True)
             if not future.empty:
@@ -276,7 +275,7 @@ def main():
 
         # 4. Filter and Order Columns (Solar only — no wind)
         output_cols = [
-            'date', 'site_name', 'solar_generation_mw', 'total_generation_mw',
+            'date', 'site_name', 'solar_generation_mw',
             'renewable_energy_mwh',
             'co2_avoided_kg', 'coal_saved_kg', 'trees_equivalent',
             'co2_avoided_tons', 'coal_saved_tons', 'trees_equivalent_million'

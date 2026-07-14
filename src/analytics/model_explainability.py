@@ -53,9 +53,7 @@ def load_feature_importance_files() -> dict:
     models_data = {}
     
     paths = {
-        'Solar': SOLAR_FI_PATH,
-        'Wind': WIND_FI_PATH,
-        'Total Output': TOTAL_FI_PATH
+        'Solar': SOLAR_FI_PATH
     }
     
     for model_name, path in paths.items():
@@ -77,7 +75,7 @@ def generate_model_comparison(models_data: dict) -> pd.DataFrame:
     """Identify the most important feature for each model."""
     logger.info("Generating model comparison...")
     
-    required_models = {'Solar', 'Wind', 'Total Output'}
+    required_models = {'Solar'}
     if set(models_data.keys()) != required_models:
         logger.warning(f"Model Comparison Validation Warning: Expected exactly {required_models}, but got {set(models_data.keys())}. Continuing with available models.")
         
@@ -88,12 +86,7 @@ def generate_model_comparison(models_data: dict) -> pd.DataFrame:
             # Assuming files are sorted descending by importance
             top_row = df.iloc[0]
             feature = top_row['feature']
-            if model_name == 'Solar':
-                meaning = "Solar generation is highly predictable based on irradiance."
-            elif model_name == 'Wind':
-                meaning = "Wind generation is highly predictable."
-            else:
-                meaning = "Blended operations reduce overall intermittency."
+            meaning = "Solar generation is highly predictable based on irradiance and cloud cover."
             
             comparison_data.append({
                 'Model': model_name,

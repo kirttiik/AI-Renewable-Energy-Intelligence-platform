@@ -21,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-WEATHER_PATH = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather.csv')
+WEATHER_PATH = os.path.join(ROOT_DIR, 'data', 'raw', 'khavda_weather_openmeteo.csv')
 GENERATION_PATH = os.path.join(ROOT_DIR, 'data', 'processed', 'khavda_generation.csv')
 MODELS_DIR = os.path.join(ROOT_DIR, 'models')
 REPORTS_DIR = os.path.join(ROOT_DIR, 'reports')
@@ -51,41 +51,28 @@ def load_data() -> pd.DataFrame:
     return df
 
 def get_model_config():
-    """Define features and targets for each model exactly as used in training.
-    
-    PV engineered features are included with a fallback guard — if a model
-    was trained before the physics upgrade, SHAP will skip missing features.
-    """
+    """Define features and targets for each model exactly as used in training."""
     # PV engineered features added by the pvlib generation engine
     pv_features = [
-        'effective_irradiance', 'ghi_w_m2', 'cell_temperature_c',
+        'effective_irradiance', 'cell_temperature_c',
         'temperature_factor', 'cloud_factor', 'performance_ratio', 'capacity_factor'
+    ]
+    # New Quartz-inspired features
+    quartz_features = [
+        'temperature_max_c', 'temperature_min_c', 'wind_speed_max_ms', 'cloud_cover_low_pct',
+        'cloud_cover_mid_pct', 'cloud_cover_high_pct', 'visibility_km', 'ghi_kwh_m2_day',
+        'direct_radiation_kwh_m2_day', 'dhi_kwh_m2_day', 'dni_kwh_m2_day', 'dni_peak_w_m2',
+        'diffuse_fraction', 'direct_fraction', 'et_radiation_kwh_m2', 'clearness_index', 'is_monsoon',
+        'h_mean_7d', 'h_median_7d', 'h_max_7d', 'h_mean_30d'
     ]
     return {
         'solar': {
             'features': [
-                'temperature_c', 'humidity_pct', 'solar_radiation_kwh_m2_day',
-                'cloud_cover_pct', 'rainfall_mm', 'year', 'month', 'quarter',
-                'day_of_year', 'week_of_year', 'is_weekend'
-            ] + pv_features,
-            'model_file': 'solar_model.pkl'
-        },
-        'wind': {
-            'features': [
-                'wind_speed_ms', 'temperature_c', 'humidity_pct', 'rainfall_mm',
-                'cloud_cover_pct', 'month', 'quarter', 'day_of_year',
-                'week_of_year', 'is_weekend',
-                'cloud_factor', 'capacity_factor', 'effective_irradiance'
-            ],
-            'model_file': 'wind_model.pkl'
-        },
-        'total_output': {
-            'features': [
                 'temperature_c', 'humidity_pct', 'wind_speed_ms',
-                'solar_radiation_kwh_m2_day', 'cloud_cover_pct', 'rainfall_mm',
-                'month', 'quarter', 'day_of_year', 'week_of_year', 'is_weekend'
-            ] + pv_features,
-            'model_file': 'total_output_model.pkl'
+                'cloud_cover_pct', 'rainfall_mm', 'month',
+                'day_of_year', 'week_of_year', 'is_weekend'
+            ] + pv_features + quartz_features,
+            'model_file': 'solar_model.pkl'
         }
     }
 
