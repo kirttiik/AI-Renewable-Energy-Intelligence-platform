@@ -1,5 +1,5 @@
 Category,Insight
-Solar Operations,Solar generation dependency on capacity_factor sits at an overwhelmingly high 41.11%. Any anomaly in capacity_factor will immediately impact daily megawatt yield.
-Secondary Risk Factor,"Beyond primary drivers, cloud_cover_pct acts as the most critical secondary variable (39.11% cross-model average), requiring continuous weather monitoring."
+Solar Operations,Solar generation dependency on capacity_factor sits at an overwhelmingly high 40.39%. Any anomaly in capacity_factor will immediately impact daily megawatt yield.
+Secondary Risk Factor,"Beyond primary drivers, cloud_cover_pct acts as the most critical secondary variable (38.70% cross-model average), requiring continuous weather monitoring."
 Revenue Security,"Because our top features drive >90% of model predictability, isolating our sensor grid maintenance to prioritize these exact metrics will secure maximum INR revenue."
 Sustainability Verification,Stable forecasting accuracy driven by these top variables enables highly reliable ESG reporting and carbon offset monetization baselines.
