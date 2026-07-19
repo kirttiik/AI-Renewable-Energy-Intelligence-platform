@@ -1,34 +1,34 @@
 Model,Feature,Importance,Business Explanation,Engineering Explanation,Operational Recommendation
-Solar,capacity_factor,0.4039,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
-Solar,cloud_cover_pct,0.387,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,effective_irradiance,0.0956,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
-Solar,direct_radiation_kwh_m2_day,0.0562,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cloud_factor,0.027,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
-Solar,clearness_index,0.0184,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,ghi_kwh_m2_day,0.0061,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,is_monsoon,0.0015,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cloud_cover_high_pct,0.001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,temperature_min_c,0.0009,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,month,0.0004,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,wind_speed_ms,0.0003,Core fuel for wind energy generation.,Kinetic energy of wind scales with the cube of wind speed up to rated capacity.,Ensure pitch systems are calibrated for optimal aerodynamic capture.
-Solar,h_max_7d,0.0002,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,temperature_factor,0.0002,Measures overall thermal efficiency penalty.,Multiplier quantifying deviation from STC (Standard Test Conditions) efficiency.,Review module-level derating if factor falls below manufacturer specifications.
+Solar,cloud_factor,0.4005,Directly limits energy production capacity.,Cloud cover attenuates direct normal irradiance (DNI) and diffuses sunlight.,Pre-position battery storage or buy real-time power if cloud cover spikes.
+Solar,capacity_factor,0.3331,Measures utilization of installed capacity.,Actual generation divided by maximum possible generation over a period.,Use as top-line KPI for executive boardroom reporting.
+Solar,cloud_cover_pct,0.1335,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,effective_irradiance,0.0757,Primary driver of solar revenue yield.,Higher irradiance increases photon flux reaching PV cells.,Schedule maintenance during sustained low irradiance periods.
+Solar,direct_radiation_kwh_m2_day,0.0386,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,clearness_index,0.0101,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,ghi_kwh_m2_day,0.0039,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,is_monsoon,0.0019,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cloud_cover_high_pct,0.0009,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,temperature_min_c,0.0004,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,wind_speed_ms,0.0002,Core fuel for wind energy generation.,Kinetic energy of wind scales with the cube of wind speed up to rated capacity.,Ensure pitch systems are calibrated for optimal aerodynamic capture.
 Solar,cell_temperature_c,0.0002,Indicates thermal degradation of efficiency.,Increased heat causes voltage drop due to thermal excitation of charge carriers.,Monitor for extreme heat anomalies and dispatch cooling protocols if available.
-Solar,temperature_max_c,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,day_of_year,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,month,0.0002,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cloud_cover_mid_pct,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,temperature_factor,0.0001,Measures overall thermal efficiency penalty.,Multiplier quantifying deviation from STC (Standard Test Conditions) efficiency.,Review module-level derating if factor falls below manufacturer specifications.
 Solar,temperature_c,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,h_mean_7d,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cloud_cover_low_pct,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,dni_kwh_m2_day,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,h_mean_30d,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,direct_fraction,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,day_of_year,0.0001,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,direct_fraction,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,temperature_max_c,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,rainfall_mm,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,dni_kwh_m2_day,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,h_max_7d,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,diffuse_fraction,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,dhi_kwh_m2_day,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,week_of_year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
-Solar,cloud_cover_mid_pct,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,h_mean_7d,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,h_mean_30d,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,cloud_cover_low_pct,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,h_median_7d,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,humidity_pct,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,dhi_kwh_m2_day,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
+Solar,week_of_year,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,is_weekend,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,visibility_km,0.0,Drives predictive model outcome.,Underlying correlation found by XGBoost algorithm.,Monitor feature variance closely.
 Solar,performance_ratio,0.0,Reflects overall system health and losses.,Ratio of actual plant AC output to theoretical DC output at STC.,Initiate full diagnostic sweep if PR drops below 75% for 3+ consecutive days.
