@@ -1,9 +1,9 @@
 KPI,Value
-High Risk Days,2
-Medium Risk Days,399
-Low Risk Days,1649
-Weather Warning Days,34
-Critical Alert Days,2
-Average Risk Score,1.15
+High Risk Days,3
+Medium Risk Days,418
+Low Risk Days,1631
+Weather Warning Days,35
+Critical Alert Days,3
+Average Risk Score,1.16
 Maximum Risk Score,2.25
 Most Common Risk Factor,CLOUD_CURTAILMENT
