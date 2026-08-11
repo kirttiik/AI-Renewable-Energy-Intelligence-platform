@@ -207,12 +207,3 @@ energy-market-intelligence-platform/
 
 ---
 
-## 📄 Resume Section
-
-*(ATS-Friendly bullet points for Data Professionals)*
-
-* Architected an end-to-end AI-powered Digital Twin for a Renewable Energy Park using Python, Pandas, and XGBoost to simulate and forecast grid-scale energy generation.
-* Developed highly accurate ensemble forecasting pipelines predicting solar and wind output, achieving an impressive R² score of 0.99+ across all operational models.
-* Engineered a Revenue and Risk Analytics engine that quantified weather-related generation threats, directly mapping meteorological anomalies to financial revenue-at-risk.
-* Designed an automated AI Explainability and Executive Summary layer that translated complex machine learning feature importance into plain-English business insights for C-suite stakeholders.
-* Operationalized sustainability pipelines calculating over 180,000 tons of avoided CO₂ emissions, preparing the overarching dataset for seamless Power BI and Streamlit integration.
