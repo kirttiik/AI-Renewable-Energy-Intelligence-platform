@@ -237,9 +237,11 @@ def get_hourly_for_horizon(horizon, custom_start=None, custom_end=None):
     if horizon == "Today":
         target = ref_today
     elif horizon == "Yesterday":
-        target = ref_today - pd.Timedelta(days=1)
+        target = ref_today - datetime.timedelta(days=1)
     elif horizon == "Tomorrow":
-        target = ref_today + pd.Timedelta(days=1)
+        target = ref_today + datetime.timedelta(days=1)
+    elif horizon == "Next 14 Days":
+        return hdf[(hdf['date'] >= ref_today) & (hdf['date'] <= (ref_today + datetime.timedelta(days=14)))]
     else:
         return hdf  # All Time — return all hourly data
     
@@ -316,6 +318,13 @@ def render_hourly_charts(horizon, custom_start=None, custom_end=None):
 # ==========================================
 
 def render_executive_alerts():
+    # Render new advanced threshold alerts from EnergyMap API integration
+    try:
+        from src.analytics.threshold_alerts import render_alerts_banner
+        render_alerts_banner()
+    except Exception as e:
+        pass
+        
     # Helper to calculate and display alerts based on data
     alerts = []
     
@@ -371,25 +380,29 @@ def render_executive_overview():
         if os.path.exists(gen_path):
             df_gen = pd.read_csv(gen_path)
             df_gen['date'] = pd.to_datetime(df_gen['date'])
-            if not df_gen.empty:
-                latest_gen = df_gen.iloc[-1]
-                perf_ratio = latest_gen.get('performance_ratio', 0.82)
-                cap_factor = latest_gen.get('capacity_factor', 0.284) * 100
-                today_forecast = latest_gen.get('solar_generation_mw', None)
+            df_gen_f = filter_by_time_horizon(df_gen, global_time_horizon, custom_start_date, custom_end_date)
+            if df_gen_f.empty and not df_gen.empty: df_gen_f = df_gen.tail(1)
+            
+            if not df_gen_f.empty:
+                perf_ratio = df_gen_f['performance_ratio'].mean() if 'performance_ratio' in df_gen_f.columns else 0.82
+                cap_factor = df_gen_f['capacity_factor'].mean() * 100 if 'capacity_factor' in df_gen_f.columns else 28.4
+                if 'solar_generation_mw' in df_gen_f.columns:
+                    today_forecast = df_gen_f['solar_generation_mw'].mean()
     except Exception:
         pass
 
     try:
-        # ML Predictions (use the latest predicted value if available)
+        # ML Predictions (use the filtered predicted value if available)
         pred_path = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
         if os.path.exists(pred_path):
             df_pred = pd.read_csv(pred_path)
             df_pred['date'] = pd.to_datetime(df_pred['date'])
-            if not df_pred.empty:
-                # Prefer the most recent predicted value (e.g. tomorrow or today depending on run time)
-                last_pred = df_pred.sort_values('date').iloc[-1]
-                pred_val = last_pred.get('predicted_solar_generation_mw', None)
-                if pred_val is not None and float(pred_val) > 0:
+            df_pred_f = filter_by_time_horizon(df_pred, global_time_horizon, custom_start_date, custom_end_date)
+            if df_pred_f.empty and not df_pred.empty: df_pred_f = df_pred.sort_values('date').tail(1)
+            
+            if not df_pred_f.empty and 'predicted_solar_generation_mw' in df_pred_f.columns:
+                pred_val = df_pred_f['predicted_solar_generation_mw'].mean()
+                if pd.notna(pred_val) and pred_val > 0:
                     today_forecast = float(pred_val)
     except Exception:
         pass
@@ -414,8 +427,11 @@ def render_executive_overview():
         if os.path.exists(risk_path):
             df_risk = pd.read_csv(risk_path)
             df_risk['date'] = pd.to_datetime(df_risk['date'])
-            if not df_risk.empty:
-                weather_risk = df_risk.sort_values('date').iloc[-1].get('overall_risk_level', 'N/A')
+            df_risk_f = filter_by_time_horizon(df_risk, global_time_horizon, custom_start_date, custom_end_date)
+            if df_risk_f.empty and not df_risk.empty: df_risk_f = df_risk.sort_values('date').tail(1)
+            
+            if not df_risk_f.empty:
+                weather_risk = df_risk_f.sort_values('date').iloc[-1].get('overall_risk_level', 'N/A')
     except Exception:
         pass
 
@@ -482,15 +498,14 @@ def render_plant_performance():
     _today_gen = "N/A"; _daily_mwh = "N/A"; _cuf = "N/A"; _pr = "N/A"
     _soiling = "N/A"; _inv_avail = "N/A"; _yield = "N/A"; _export = "N/A"
     if not gen_df_f.empty:
-        lr = gen_df_f.iloc[-1]
-        _today_gen  = f"{float(lr.get('solar_generation_mw', 0)):,.1f} MW"
-        _daily_mwh  = f"{float(lr.get('daily_energy_mwh', 0)):,.0f} MWh"
-        _cuf        = f"{float(lr.get('cuf_daily', 0))*100:.2f}%"
-        _pr         = f"{float(lr.get('pr_daily', lr.get('performance_ratio', 0))):.3f}"
-        _soiling    = f"{float(lr.get('soiling_loss_pct', 2)):.2f}%"
-        _inv_avail  = f"{float(lr.get('inverter_availability_pct', 98)):.1f}%"
-        _yield      = f"{float(lr.get('specific_yield_kwh_kwp', 0)):.4f} kWh/kWp"
-        _export     = f"{float(lr.get('grid_export_mwh', 0)):,.0f} MWh"
+        _today_gen  = f"{float(gen_df_f['solar_generation_mw'].mean() if 'solar_generation_mw' in gen_df_f else 0):,.1f} MW"
+        _daily_mwh  = f"{float(gen_df_f['daily_energy_mwh'].mean() if 'daily_energy_mwh' in gen_df_f else 0):,.0f} MWh"
+        _cuf        = f"{float(gen_df_f['cuf_daily'].mean() if 'cuf_daily' in gen_df_f else 0)*100:.2f}%"
+        _pr         = f"{float(gen_df_f['pr_daily'].mean() if 'pr_daily' in gen_df_f else (gen_df_f['performance_ratio'].mean() if 'performance_ratio' in gen_df_f else 0)):.3f}"
+        _soiling    = f"{float(gen_df_f['soiling_loss_pct'].mean() if 'soiling_loss_pct' in gen_df_f else 2):.2f}%"
+        _inv_avail  = f"{float(gen_df_f['inverter_availability_pct'].mean() if 'inverter_availability_pct' in gen_df_f else 98):.1f}%"
+        _yield      = f"{float(gen_df_f['specific_yield_kwh_kwp'].mean() if 'specific_yield_kwh_kwp' in gen_df_f else 0):.4f} kWh/kWp"
+        _export     = f"{float(gen_df_f['grid_export_mwh'].sum() if 'grid_export_mwh' in gen_df_f else 0):,.0f} MWh"
 
     c1, c2, c3, c4 = st.columns(4)
     c5, c6, c7, c8 = st.columns(4)
@@ -520,19 +535,24 @@ def render_plant_performance():
         df_gen = pd.DataFrame()
         if os.path.exists(gen_path):
             df_gen = pd.read_csv(gen_path)
+            if 'date' in df_gen.columns:
+                df_gen['date'] = pd.to_datetime(df_gen['date'])
+                
+        df_gen_f = filter_by_time_horizon(df_gen, global_time_horizon, custom_start_date, custom_end_date)
+        if df_gen_f.empty and not df_gen.empty:
+            df_gen_f = df_gen.sort_values('date').tail(1)
             
-        if not df_gen.empty:
-            latest = df_gen.iloc[-1]
-            eff_irr = latest.get('effective_irradiance', 5.84)
-            poa     = latest.get('poa_irradiance_w_m2', 850)
+        if not df_gen_f.empty:
+            eff_irr = df_gen_f['effective_irradiance'].mean() if 'effective_irradiance' in df_gen_f else 5.84
+            poa     = df_gen_f['poa_irradiance_w_m2'].mean() if 'poa_irradiance_w_m2' in df_gen_f else 850
             ghi     = poa * 0.9  # approx mock if missing
-            cell_t  = latest.get('cell_temperature_c', 52.3)
+            cell_t  = df_gen_f['cell_temperature_c'].mean() if 'cell_temperature_c' in df_gen_f else 52.3
             amb_t   = 35.0 # mock ambient
-            zenith  = latest.get('solar_zenith', 30.5)
-            elevation = latest.get('solar_elevation', 59.5)
-            azimuth = latest.get('solar_azimuth', 180.2)
-            t_fac   = latest.get('temperature_factor', 0.89)
-            c_fac   = latest.get('cloud_factor', 0.85)
+            zenith  = df_gen_f['solar_zenith'].mean() if 'solar_zenith' in df_gen_f else 30.5
+            elevation = df_gen_f['solar_elevation'].mean() if 'solar_elevation' in df_gen_f else 59.5
+            azimuth = df_gen_f['solar_azimuth'].mean() if 'solar_azimuth' in df_gen_f else 180.2
+            t_fac   = df_gen_f['temperature_factor'].mean() if 'temperature_factor' in df_gen_f else 0.89
+            c_fac   = df_gen_f['cloud_factor'].mean() if 'cloud_factor' in df_gen_f else 0.85
             
             t_loss = (1 - t_fac) * 100
             c_loss = (1 - c_fac) * 100
@@ -672,10 +692,11 @@ def render_forecasting():
         if os.path.exists(pred_path):
             cdf = pd.read_csv(pred_path)
             cdf['date'] = pd.to_datetime(cdf['date'])
-            cdf = cdf.sort_values('date')
-            if not cdf.empty:
-                last_row = cdf.iloc[-1]
-                ml_prediction = float(last_row.get('predicted_solar_generation_mw', 0) or 0)
+            cdf_f = filter_by_time_horizon(cdf, global_time_horizon, custom_start_date, custom_end_date)
+            if cdf_f.empty and not cdf.empty: cdf_f = cdf.sort_values('date').tail(1)
+            
+            if not cdf_f.empty:
+                ml_prediction = float(cdf_f['predicted_solar_generation_mw'].mean())
         solar_metrics_path = os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv')
         if os.path.exists(solar_metrics_path):
             sm = pd.read_csv(solar_metrics_path)
@@ -961,11 +982,17 @@ def render_weather_intelligence():
             gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
             if os.path.exists(gen_path):
                 g_df = pd.read_csv(gen_path)
-                if not g_df.empty:
-                    c_loss = (1.0 - g_df.get('cloud_factor', pd.Series([1.0])).mean()) * 100
-                    t_loss = (1.0 - g_df.get('temperature_factor', pd.Series([1.0])).mean()) * 100
-                    eff_irr = g_df.get('effective_irradiance', pd.Series([0])).mean()
-                    wind_cool = g_df.get('wind_speed_ms', pd.Series([0])).mean() * 0.15
+                if 'date' in g_df.columns:
+                    g_df['date'] = pd.to_datetime(g_df['date'])
+                g_df_f = filter_by_time_horizon(g_df, global_time_horizon, custom_start_date, custom_end_date)
+                if g_df_f.empty and not g_df.empty:
+                    g_df_f = g_df.sort_values('date').tail(1)
+                
+                if not g_df_f.empty:
+                    c_loss = (1.0 - g_df_f.get('cloud_factor', pd.Series([1.0])).mean()) * 100
+                    t_loss = (1.0 - g_df_f.get('temperature_factor', pd.Series([1.0])).mean()) * 100
+                    eff_irr = g_df_f.get('effective_irradiance', pd.Series([0])).mean()
+                    wind_cool = g_df_f.get('wind_speed_ms', pd.Series([0])).mean() * 0.15
                     
                     p1, p2 = st.columns(2)
                     p1.metric("Cloud Curtailment Risk", f"{c_loss:.1f}%")

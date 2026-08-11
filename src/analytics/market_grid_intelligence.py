@@ -19,9 +19,9 @@ def calculate_weather_quality(cloud, temp, humidity, solar, wind, rain):
     
     return max(0, min(100, score))
 
-def calculate_dsm_risk(conf, w_risk, cloud):
+def calculate_dsm_risk(conf, w_risk, cloud, freq_out=0.0):
     """Estimate Deviation Settlement Mechanism (DSM) Risk"""
-    risk_score = (100 - conf) * 1.5 + w_risk * 0.8 + (cloud / 100) * 20
+    risk_score = (100 - conf) * 1.5 + w_risk * 0.8 + (cloud / 100) * 20 + (freq_out * 5)
     
     if risk_score > 40: return "Critical", "red"
     if risk_score > 25: return "High", "orange"
@@ -41,12 +41,14 @@ def calculate_curtailment_risk(w_quality, gen, cloud):
         return "High", "Maximum generation expected. Grid curtailment probability is elevated."
     return "Low", "Normal generation levels. Grid absorption capacity is sufficient."
 
-def calculate_opportunity_score(price, conf, w_quality, pr, w_risk):
+def calculate_opportunity_score(price, conf, w_quality, pr, w_risk, cov=0.0):
     """Market Opportunity Score (0-100)"""
     # Normalize price (assuming 3000-8000 range)
     norm_price = max(0, min(100, (price - 3000) / 5000 * 100))
+    # Volatility bonus: Higher volatility = higher trading opportunity
+    vol_bonus = min(15, cov * 50)
     
-    score = (norm_price * 0.30) + (conf * 0.25) + (w_quality * 0.20) + (pr * 100 * 0.15) - (w_risk * 0.10)
+    score = (norm_price * 0.30) + (conf * 0.25) + (w_quality * 0.15) + (pr * 100 * 0.15) - (w_risk * 0.10) + vol_bonus
     return max(0, min(100, score))
 
 def generate_recommendations(opp_score, dsm, grid_readiness, conf, w_quality):
@@ -115,16 +117,18 @@ def render_market_grid_intelligence():
     except:
         df_metrics = pd.DataFrame()
     
-    # Mock IEX market data if unavailable (never crash)
-    iex_path = os.path.join(ROOT, 'data', 'processed', 'iex_dam_prices.csv')
-    if os.path.exists(iex_path):
-        df_iex = pd.read_csv(iex_path)
+    # Load India Energy Atlas Live Data
+    em_path = os.path.join(ROOT, 'data', 'processed', 'energymap_live.csv')
+    if os.path.exists(em_path):
+        df_em = pd.read_csv(em_path)
     else:
-        st.warning("Live IEX Data unavailable. Using cached market prices for simulation.")
-        dates = pd.date_range(start=pd.Timestamp.today() - pd.Timedelta(days=30), periods=45)
-        df_iex = pd.DataFrame({
+        st.warning("Live EnergyMap Data unavailable. Using robust proxy simulation.")
+        dates = pd.date_range(start=pd.Timestamp.today() - pd.Timedelta(days=14), periods=15)
+        df_em = pd.DataFrame({
             'date': dates,
-            'dam_price': np.random.normal(5500, 300, len(dates))
+            'dam_price_inr': np.random.normal(5500, 300, len(dates)),
+            'frequency_out_of_band_pct': np.random.uniform(0.1, 5.0, len(dates)),
+            'price_cov': np.random.uniform(0.15, 0.45, len(dates))
         })
         
     if df_solar.empty:
@@ -132,7 +136,9 @@ def render_market_grid_intelligence():
         return
         
     # Baseline values
-    base_price = float(df_iex['dam_price'].iloc[-1])
+    base_price = float(df_em['dam_price_inr'].iloc[0])
+    base_cov = float(df_em['price_cov'].iloc[0])
+    base_freq_out = float(df_em['frequency_out_of_band_pct'].iloc[0])
     base_gen_mw = float(df_solar['predicted_solar_generation_mw'].iloc[0])
     base_conf = float(df_metrics['R2_Score'].iloc[0]) * 100 if not df_metrics.empty else 95.0
     
@@ -153,14 +159,14 @@ def render_market_grid_intelligence():
     # Weather Quality
     w_quality = calculate_weather_quality(sim_cloud, sim_temp, 40, sim_solar, 5, 0)
     
-    # DSM Risk
-    dsm_str, dsm_color = calculate_dsm_risk(sim_conf, sim_wrisk, sim_cloud)
+    # DSM Risk (now using Grid Frequency Stability)
+    dsm_str, dsm_color = calculate_dsm_risk(sim_conf, sim_wrisk, sim_cloud, base_freq_out)
     
     # Grid Readiness
     grid_read = calculate_grid_readiness(sim_conf, 0.82, w_quality, 0.28)
     
-    # Market Opportunity
-    opp_score = calculate_opportunity_score(sim_price, sim_conf, w_quality, 0.82, sim_wrisk)
+    # Market Opportunity (now using Price Volatility COV)
+    opp_score = calculate_opportunity_score(sim_price, sim_conf, w_quality, 0.82, sim_wrisk, base_cov)
     
     # Scheduling Intelligence
     base_gen_gwh = (base_gen_mw * 5.8) / 1000.0
@@ -249,18 +255,38 @@ def render_market_grid_intelligence():
     with tab2:
         mc1, mc2, mc3 = st.columns(3)
         mc1.metric("Today's DAM Price", f"₹ {sim_price:,.0f}")
-        prev_price = df_iex['dam_price'].iloc[-2] if len(df_iex) > 1 else sim_price
+        prev_price = df_em['dam_price_inr'].iloc[1] if len(df_em) > 1 else sim_price
         mc2.metric("Yesterday Price", f"₹ {prev_price:,.0f}")
-        mc3.metric("7-Day Avg", f"₹ {df_iex['dam_price'].tail(7).mean():,.0f}")
+        mc3.metric("Price Volatility (CoV)", f"{base_cov*100:.1f}%")
         
-        st.markdown("### Historical Price Trend")
+        st.markdown("### Market & Operations Correlation (Duck Curve)")
         fig_price = go.Figure()
-        fig_price.add_trace(go.Scatter(x=df_iex['date'].tail(14), y=df_iex['dam_price'].tail(14), mode='lines+markers', name='DAM Price', line=dict(color='#8E44AD')))
-        fig_price.update_layout(height=300, margin=dict(l=0, r=0, t=30, b=0))
+        
+        # Plot DAM Price
+        fig_price.add_trace(go.Scatter(
+            x=df_em['date'].tail(14), y=df_em['dam_price_inr'].tail(14), 
+            mode='lines+markers', name='DAM Price (INR/MWh)', 
+            line=dict(color='#8E44AD', width=3), yaxis='y1'
+        ))
+        
+        # Overlay Solar Generation to show 'Duck Belly'
+        if not df_solar.empty:
+            df_solar_tail = df_solar.tail(14)
+            fig_price.add_trace(go.Bar(
+                x=df_solar_tail['date'], y=df_solar_tail['predicted_solar_generation_mw'], 
+                name='Predicted Solar (MW)', marker_color='rgba(241, 196, 15, 0.4)', yaxis='y2'
+            ))
+            
+        fig_price.update_layout(
+            height=350, margin=dict(l=0, r=0, t=30, b=0),
+            yaxis=dict(title='DAM Price (INR/MWh)', side='left'),
+            yaxis2=dict(title='Solar Generation (MW)', overlaying='y', side='right', showgrid=False),
+            hovermode='x unified', legend=dict(orientation='h', y=1.1)
+        )
         st.plotly_chart(fig_price, use_container_width=True)
         
         # Current status
-        status = "Bullish 📈" if sim_price > df_iex['dam_price'].tail(7).mean() else "Bearish 📉"
+        status = "Bullish 📈" if sim_price > df_em['dam_price_inr'].mean() else "Bearish 📉"
         st.markdown(f"**Current Market Status:** {status}")
 
     with tab3:
