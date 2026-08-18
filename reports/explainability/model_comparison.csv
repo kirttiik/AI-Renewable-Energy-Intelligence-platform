@@ -1,2 +1,2 @@
 Model,Top Driver,Importance %,Business Meaning,Top_Feature,Importance
-Solar,capacity_factor,44.02%,Solar generation is highly predictable based on irradiance and cloud cover.,capacity_factor,0.44019172
+Solar,cloud_factor,62.74%,Solar generation is highly predictable based on irradiance and cloud cover.,cloud_factor,0.62743896
