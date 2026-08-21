@@ -1,4 +1,4 @@
 KPI,Value,Importance_Percentage
-Most Influential Feature,cloud_factor,58.532804000000006
-Most Explainable Model,Solar,58.532804000000006
-Dominant Renewable Driver,cloud_factor,58.532804000000006
+Most Influential Feature,capacity_factor,42.073688
+Most Explainable Model,Solar,42.073688
+Dominant Renewable Driver,capacity_factor,42.073688
