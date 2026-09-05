@@ -143,7 +143,7 @@ with st.sidebar:
     global_time_horizon = st.sidebar.selectbox(
         "Time Horizon",
         ["All Time", "Yesterday", "Today", "Tomorrow", "Next 14 Days", " Custom Range"],
-        index=0,
+        index=2,
         help="Filter data by time period. Custom Range lets you pick exact dates."
     )
     
