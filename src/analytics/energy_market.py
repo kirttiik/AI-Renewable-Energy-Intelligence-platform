@@ -60,8 +60,8 @@ def render_iex_analytics():
     with tab1:
         st.subheader("Historical Market Prices (Daily Average)")
         fig_daily = go.Figure()
-        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_dam'], mode='lines', name='Avg DAM', line=dict(color='blue', width=2)))
-        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_rtm'], mode='lines', name='Avg RTM (Simulated)', line=dict(color='red', width=2, dash='dot')))
+        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_dam'], mode='lines+markers', name='Avg DAM', line=dict(color='blue', width=2)))
+        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_rtm'], mode='lines+markers', name='Avg RTM (Simulated)', line=dict(color='red', width=2, dash='dot')))
         
         fig_daily.update_layout(
             xaxis_title="Date",
