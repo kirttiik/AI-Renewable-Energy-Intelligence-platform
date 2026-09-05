@@ -69,11 +69,17 @@ def render_digital_twin():
     # -------------------------------------------------------------------------
     col_ahi, col_rca = st.columns([1, 1])
     
+    def safe_int(v, default=0):
+        try:
+            return default if pd.isna(v) else int(v)
+        except:
+            return default
+
     soiling = last_row.get('soiling_loss_pct', 2.0)
-    inv_avail = last_row.get('inverter_availability_pct', 100)
+    inv_avail = last_row.get('inverter_availability_pct', 100.0)
     
     # Simple weighted health score
-    health_score = int((pr * 0.4) + (inv_avail * 0.4) + ((100 - soiling) * 0.2))
+    health_score = safe_int((pr * 0.4) + (inv_avail * 0.4) + ((100 - soiling) * 0.2), 85)
     
     with col_ahi:
         st.subheader(" Asset Health Index")
@@ -96,9 +102,9 @@ def render_digital_twin():
         st.plotly_chart(fig_gauge, use_container_width=True)
         
         st.markdown("**Health Drivers:**")
-        st.progress(int(pr), text=f"Performance Ratio ({pr:.1f}%)")
-        st.progress(int(inv_avail), text=f"Inverter Availability ({inv_avail:.1f}%)")
-        clean_score = int(100 - soiling)
+        st.progress(safe_int(pr, 80), text=f"Performance Ratio ({pr:.1f}%)")
+        st.progress(safe_int(inv_avail, 100), text=f"Inverter Availability ({inv_avail:.1f}%)")
+        clean_score = safe_int(100 - soiling, 98)
         st.progress(clean_score, text=f"Panel Cleanliness ({clean_score:.1f}%)")
         
     # -------------------------------------------------------------------------
@@ -113,12 +119,12 @@ def render_digital_twin():
         cloud_factor = last_row.get('cloud_factor', 1.0)
         temp_factor = last_row.get('temperature_factor', 1.0)
         
-        loss_cloud = -int(cap * (1 - cloud_factor))
-        loss_temp = -int(cap * (1 - temp_factor))
-        loss_soil = -int(cap * (soiling / 100))
-        loss_inv = -int(cap * (1 - inv_avail / 100))
+        loss_cloud = -safe_int(cap * (1 - cloud_factor))
+        loss_temp = -safe_int(cap * (1 - temp_factor))
+        loss_soil = -safe_int(cap * (soiling / 100))
+        loss_inv = -safe_int(cap * (1 - inv_avail / 100))
         
-        actual_output = int(expected_gen)
+        actual_output = safe_int(expected_gen)
         
         # Waterfall chart for RCA
         fig_rca = go.Figure(go.Waterfall(
