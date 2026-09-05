@@ -72,13 +72,13 @@ def render_digital_twin(horizon="All Time", custom_start=None, custom_end=None):
     c3.metric("Capacity Factor", f"{cf:.1f}%", delta=f"{delta_cf:+.1f}%")
     c4.metric("Cell Temperature", f"{temp:.1f} °C", delta=f"{delta_temp:+.1f} °C", delta_color="inverse")
     
-    # Plot last 14 days of Generation vs Physics Baseline
+    # Plot Generation vs Physics Baseline
     df_plot = df.tail(14)
     fig = go.Figure()
     baseline = df_plot.get('physics_baseline_mw', df_plot['solar_generation_mw'] * 1.05)
-    fig.add_trace(go.Scatter(x=df_plot["date"], y=baseline, name="Physics Baseline (Theoretical Max)", line=dict(dash='dash', color='gray')))
-    fig.add_trace(go.Scatter(x=df_plot["date"], y=df_plot["solar_generation_mw"], name="Actual Peak Generation", fill='tozeroy', line=dict(color='#3498DB')))
-    fig.update_layout(title="Daily Peak Generation: Physics Baseline vs Actual (Last 14 Days)", height=300, margin=dict(t=30, b=0, l=0, r=0))
+    fig.add_trace(go.Scatter(x=df_plot["date"], y=baseline, mode='lines+markers', name="Physics Baseline (Theoretical Max)", line=dict(dash='dash', color='gray')))
+    fig.add_trace(go.Scatter(x=df_plot["date"], y=df_plot["solar_generation_mw"], mode='lines+markers', name="Actual Peak Generation", fill='tozeroy', line=dict(color='#3498DB')))
+    fig.update_layout(title="Daily Peak Generation: Physics Baseline vs Actual", height=300, margin=dict(t=30, b=0, l=0, r=0))
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("---")

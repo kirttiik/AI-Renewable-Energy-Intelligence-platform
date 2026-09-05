@@ -809,16 +809,21 @@ def render_forecasting():
     import datetime as _dt
     now = _dt.datetime.now()
 
-    df_solar_pred = data.get('solar_pred', pd.DataFrame())
-    df_gen = data.get('generation', pd.DataFrame())
+    try:
+        pred_path_graph = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
+        df_solar_pred = pd.read_csv(pred_path_graph) if os.path.exists(pred_path_graph) else pd.DataFrame()
+        if not df_solar_pred.empty: df_solar_pred['date'] = pd.to_datetime(df_solar_pred['date'])
+        
+        gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
+        df_gen = pd.read_csv(gen_path) if os.path.exists(gen_path) else pd.DataFrame()
+        if not df_gen.empty: df_gen['date'] = pd.to_datetime(df_gen['date'])
+    except Exception:
+        df_solar_pred = pd.DataFrame()
+        df_gen = pd.DataFrame()
 
     # Apply time horizon filter
     df_solar_f = filter_by_time_horizon(df_solar_pred, global_time_horizon, custom_start_date, custom_end_date)
     df_gen_f = filter_by_time_horizon(df_gen, global_time_horizon, custom_start_date, custom_end_date)
-
-    # Use full dataset if filter returns nothing
-    if df_solar_f.empty and not df_solar_pred.empty: df_solar_f = df_solar_pred
-    if df_gen_f.empty and not df_gen.empty: df_gen_f = df_gen
 
     # 2. The Prediction View
     st.subheader("AI Generation Forecast vs Actuals")
@@ -832,7 +837,7 @@ def render_forecasting():
             if not actuals.empty:
                 fig_future.add_trace(go.Scatter(
                     x=actuals['date'], y=actuals['solar_generation_mw'],
-                    mode='lines', name='Actual Generation (MW)',
+                    mode='lines+markers', name='Actual Generation (MW)',
                     line=dict(color='#2ECC71', width=2)
                 ))
                 
@@ -842,7 +847,7 @@ def render_forecasting():
             if not physics.empty:
                 fig_future.add_trace(go.Scatter(
                     x=physics['date'], y=physics['physics_baseline_mw'],
-                    mode='lines', name='Physics Baseline (MW)',
+                    mode='lines+markers', name='Physics Baseline (MW)',
                     line=dict(color='#3498DB', width=1.5, dash='dash')
                 ))
 
@@ -852,7 +857,7 @@ def render_forecasting():
             if not preds.empty:
                 fig_future.add_trace(go.Scatter(
                     x=preds['date'], y=preds['predicted_solar_generation_mw'],
-                    mode='lines', name='ML Predicted (MW)',
+                    mode='lines+markers', name='ML Predicted (MW)',
                     line=dict(color='#FF8C00', width=2, dash='dot')
                 ))
 
