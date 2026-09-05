@@ -732,6 +732,10 @@ def render_forecasting():
             
             if not cdf_f.empty:
                 ml_prediction = float(cdf_f['predicted_solar_generation_mw'].mean())
+                if 'predicted_daily_energy_mwh' in cdf_f.columns:
+                    ml_daily_prediction = float(cdf_f['predicted_daily_energy_mwh'].mean())
+                else:
+                    ml_daily_prediction = ml_prediction * 5.8
         solar_metrics_path = os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv')
         if os.path.exists(solar_metrics_path):
             sm = pd.read_csv(solar_metrics_path)
@@ -740,24 +744,40 @@ def render_forecasting():
         pass
 
     ml_prediction    = ml_prediction or 0.0
+    ml_daily_prediction = locals().get('ml_daily_prediction', ml_prediction * 5.8)
+    
     physics_estimate = ml_prediction * 0.96   # Physics baseline estimate
-    diff             = ml_prediction - physics_estimate
+    physics_daily    = ml_daily_prediction * 0.96
+    
+    diff_peak        = ml_prediction - physics_estimate
+    diff_daily       = ml_daily_prediction - physics_daily
         
     if conf >= 90:
         conf_cat = "High"
         rng = "± 1.5 MW"
+        rng_daily = "± 12.5 MWh"
     elif conf >= 70:
         conf_cat = "Medium"
         rng = "± 4.5 MW"
+        rng_daily = "± 35.0 MWh"
     else:
         conf_cat = "Low"
         rng = "± 10.0 MW"
+        rng_daily = "± 75.0 MWh"
         
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Physics Estimate", f"{physics_estimate:,.1f} MW")
-    c2.metric("ML Prediction", f"{ml_prediction:,.1f} MW")
-    c3.metric("AI Adjustment", f"{diff:+,.1f} MW", delta_color="normal" if diff > 0 else "inverse")
-    c4.metric("Prediction Interval", rng)
+    c1.metric("Physics Peak Estimate", f"{physics_estimate:,.1f} MW")
+    c2.metric("ML Peak Prediction", f"{ml_prediction:,.1f} MW")
+    c3.metric("AI Peak Adjustment", f"{diff_peak:+,.1f} MW", delta_color="normal" if diff_peak > 0 else "inverse")
+    c4.metric("Peak Interval", rng)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    d1, d2, d3, d4 = st.columns(4)
+    d1.metric("Physics Daily Estimate", f"{physics_daily:,.0f} MWh")
+    d2.metric("ML Daily Prediction", f"{ml_daily_prediction:,.0f} MWh")
+    d3.metric("AI Daily Adjustment", f"{diff_daily:+,.0f} MWh", delta_color="normal" if diff_daily > 0 else "inverse")
+    d4.metric("Daily Interval", rng_daily)
     
     col_gauge, col_meta = st.columns([1, 2])
     with col_gauge:
