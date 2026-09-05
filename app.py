@@ -447,7 +447,7 @@ def render_executive_overview():
     st.markdown("### Top-Level KPIs")
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Peak Generation", today_forecast_disp)
-    c2.metric("CO2 Avoided (Period)", carbon_disp)
+    c2.metric("Daily Generation", daily_energy_disp)
     c3.metric("Forecast Confidence", forecast_confidence)
     c4.metric("Weather Risk Level", weather_risk)
     
@@ -455,7 +455,7 @@ def render_executive_overview():
     c5.metric("Pipeline Health", pipeline_health)
     c6.metric("Performance Ratio", f"{perf_ratio:.2f}")
     c7.metric("Capacity Factor", f"{cap_factor:.1f}%")
-    c8.metric("Daily Generation", daily_energy_disp)
+    c8.empty()
 
 
     st.markdown("---")
