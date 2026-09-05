@@ -455,7 +455,7 @@ def render_executive_overview():
     c5.metric("Pipeline Health", pipeline_health)
     c6.metric("Performance Ratio", f"{perf_ratio:.2f}")
     c7.metric("Capacity Factor", f"{cap_factor:.1f}%")
-    c8.metric("24h Generation (Energy)", daily_energy_disp)
+    c8.metric("Daily Generation", daily_energy_disp)
 
 
     st.markdown("---")
