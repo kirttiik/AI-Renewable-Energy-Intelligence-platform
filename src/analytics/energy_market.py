@@ -7,88 +7,93 @@ import os
 
 def render_iex_analytics():
     st.title("📈 Energy Market Intelligence (IEX)")
-    st.markdown("Analyze daily pricing trends across the Indian Energy Exchange (IEX) to optimize renewable energy sales strategy.")
+    st.markdown("Analyze actual historical pricing trends from the Indian Energy Exchange (IEX).")
     
-    # 1. Generate/Load simulated IEX data
-    dates = pd.date_range(end=pd.Timestamp.today().date(), periods=60)
+    data_path = "data/raw/iex_dam_actuals.csv"
+    if not os.path.exists(data_path):
+        st.warning(f"IEX Data not found at {data_path}. Please run the scraper pipeline.")
+        return
+        
+    df = pd.read_csv(data_path)
+    df.rename(columns=lambda x: x.replace(" *", "").strip(), inplace=True)
+    
+    if "MCP (Rs/MWh)" not in df.columns:
+        st.error("Missing MCP column in scraped data.")
+        return
+        
+    # Process the data
+    df['MCP (INR/kWh)'] = df['MCP (Rs/MWh)'] / 1000
+    df['Datetime'] = pd.to_datetime(df['Date'] + " " + df['Time Block'].str.split(" - ").str[0], format="%d-%m-%Y %H:%M")
+    
+    # Simulate RTM spread to show comparative analysis
     np.random.seed(42)
+    df['RTM (INR/kWh)'] = df['MCP (INR/kWh)'] + np.random.normal(0, 0.5, size=len(df))
+    # Occasional spikes
+    spike_indices = np.random.choice(len(df), size=max(1, len(df)//20), replace=False)
+    df.loc[spike_indices, 'RTM (INR/kWh)'] += np.random.uniform(2, 4, size=len(spike_indices))
+    df['RTM (INR/kWh)'] = np.clip(df['RTM (INR/kWh)'], 0.5, None)
     
-    # DAM is the baseline (Day Ahead Market), say around 3.5 to 5.5 INR/kWh
-    dam_base = 4.5
-    dam_prices = dam_base + np.random.normal(0, 0.4, size=len(dates))
+    # Calculate daily averages for the macro view
+    daily_df = df.groupby('Date').agg(
+        avg_dam=('MCP (INR/kWh)', 'mean'),
+        avg_rtm=('RTM (INR/kWh)', 'mean'),
+        peak_dam=('MCP (INR/kWh)', 'max'),
+        min_dam=('MCP (INR/kWh)', 'min')
+    ).reset_index()
+    daily_df['SortDate'] = pd.to_datetime(daily_df['Date'], format="%d-%m-%Y")
+    daily_df.sort_values(by='SortDate', inplace=True)
     
-    # GDAM (Green Day Ahead Market) typically tracks DAM but might have a slight premium
-    gdam_prices = dam_prices + np.random.normal(0.1, 0.2, size=len(dates))
+    # Overall KPIs
+    latest_date = daily_df['Date'].iloc[-1]
+    latest_stats = daily_df.iloc[-1]
     
-    # RTM (Real-Time Market) is much more volatile, spiking when there are sudden grid deficits
-    rtm_prices = dam_prices + np.random.normal(0, 1.2, size=len(dates))
-    # Occasional extreme spikes
-    spike_indices = np.random.choice(len(dates), size=3, replace=False)
-    rtm_prices[spike_indices] += np.random.uniform(3, 6, size=3)
-    
-    # Ensure no negative prices
-    dam_prices = np.clip(dam_prices, 1.0, None)
-    gdam_prices = np.clip(gdam_prices, 1.0, None)
-    rtm_prices = np.clip(rtm_prices, 1.0, None)
-    
-    df = pd.DataFrame({
-        'Date': dates,
-        'DAM (INR/kWh)': dam_prices,
-        'GDAM (INR/kWh)': gdam_prices,
-        'RTM (INR/kWh)': rtm_prices
-    })
-    
-    # KPIs
-    latest = df.iloc[-1]
-    prev = df.iloc[-2]
+    st.markdown(f"**Latest Data Received:** {latest_date} | **Total Historical Days:** {len(daily_df)}")
     
     col1, col2, col3 = st.columns(3)
-    col1.metric("Latest GDAM Price", f"₹ {latest['GDAM (INR/kWh)']:.2f}", f"{latest['GDAM (INR/kWh)'] - prev['GDAM (INR/kWh)']:.2f} vs yesterday")
-    col2.metric("Latest DAM Price", f"₹ {latest['DAM (INR/kWh)']:.2f}", f"{latest['DAM (INR/kWh)'] - prev['DAM (INR/kWh)']:.2f} vs yesterday")
-    col3.metric("Latest RTM Price", f"₹ {latest['RTM (INR/kWh)']:.2f}", f"{latest['RTM (INR/kWh)'] - prev['RTM (INR/kWh)']:.2f} vs yesterday")
-    
+    col1.metric(f"Avg DAM Price ({latest_date})", f"₹ {latest_stats['avg_dam']:.2f}/kWh")
+    col2.metric(f"Peak DAM Price ({latest_date})", f"₹ {latest_stats['peak_dam']:.2f}/kWh")
+    col3.metric(f"Avg RTM Price ({latest_date})", f"₹ {latest_stats['avg_rtm']:.2f}/kWh")
     st.markdown("---")
     
-    # Main Chart
-    st.subheader("Market Price Trends (Last 60 Days)")
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df['Date'], y=df['DAM (INR/kWh)'], mode='lines', name='DAM', line=dict(color='blue', width=2)))
-    fig.add_trace(go.Scatter(x=df['Date'], y=df['GDAM (INR/kWh)'], mode='lines', name='GDAM', line=dict(color='green', width=2)))
-    fig.add_trace(go.Scatter(x=df['Date'], y=df['RTM (INR/kWh)'], mode='lines', name='RTM', line=dict(color='red', width=2, dash='dot')))
+    tab1, tab2 = st.tabs(["📊 Daily Historical Trends", "⏱️ Intraday 15-Min Profile"])
     
-    fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Price (INR/kWh)",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        hovermode="x unified",
-        height=450
-    )
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Interpretation Engine
-    st.subheader("🤖 AI Market Interpretation")
-    
-    # Calculate volatility and spreads
-    rtm_volatility = df['RTM (INR/kWh)'].std()
-    dam_volatility = df['DAM (INR/kWh)'].std()
-    
-    avg_gdam_premium = (df['GDAM (INR/kWh)'] - df['DAM (INR/kWh)']).mean()
-    rtm_spikes = (df['RTM (INR/kWh)'] > df['DAM (INR/kWh)'] * 1.3).sum()
-    
-    interpretation = []
-    
-    if avg_gdam_premium > 0.05:
-        interpretation.append(f"✅ **Green Premium:** The Green Day Ahead Market (GDAM) is trading at an average premium of ₹{avg_gdam_premium:.2f}/kWh over the standard DAM. Selling un-contracted renewable generation here is highly favorable.")
-    else:
-        interpretation.append(f"⚠️ **Weak Green Premium:** GDAM is closely tracking DAM with negligible premium (₹{avg_gdam_premium:.2f}/kWh).")
+    with tab1:
+        st.subheader("Historical Market Prices (Daily Average)")
+        fig_daily = go.Figure()
+        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_dam'], mode='lines', name='Avg DAM', line=dict(color='blue', width=2)))
+        fig_daily.add_trace(go.Scatter(x=daily_df['SortDate'], y=daily_df['avg_rtm'], mode='lines', name='Avg RTM (Simulated)', line=dict(color='red', width=2, dash='dot')))
         
-    if rtm_volatility > dam_volatility * 1.5:
-        interpretation.append(f"📈 **High RTM Volatility:** The Real-Time Market (RTM) shows significant price instability compared to DAM. In the last 60 days, there were **{rtm_spikes} days** where RTM prices spiked more than 30% above DAM. Holding a small percentage of capacity for RTM could yield windfall profits during grid deficit hours.")
-    else:
-        interpretation.append(f"⚖️ **Stable RTM:** RTM prices are currently stable and tracking close to day-ahead forecasts. Selling ahead (DAM/GDAM) is currently the lowest-risk strategy.")
+        fig_daily.update_layout(
+            xaxis_title="Date",
+            yaxis_title="Price (INR/kWh)",
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            hovermode="x unified",
+            height=450
+        )
+        st.plotly_chart(fig_daily, use_container_width=True)
         
-    for text in interpretation:
-        st.info(text)
+    with tab2:
+        st.subheader("Granular Intraday Profiling")
+        selected_date = st.selectbox("Select Date for Intraday Analysis", daily_df['Date'][::-1])
+        intra_df = df[df['Date'] == selected_date].copy()
         
+        fig_intra = go.Figure()
+        fig_intra.add_trace(go.Scatter(x=intra_df['Datetime'], y=intra_df['MCP (INR/kWh)'], mode='lines', name='DAM', line=dict(color='blue', width=2)))
+        fig_intra.add_trace(go.Scatter(x=intra_df['Datetime'], y=intra_df['RTM (INR/kWh)'], mode='lines', name='RTM (Sim)', line=dict(color='red', width=2, dash='dot')))
+        
+        fig_intra.update_layout(
+            xaxis_title="Time",
+            yaxis_title="Price (INR/kWh)",
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            hovermode="x unified",
+            height=450
+        )
+        st.plotly_chart(fig_intra, use_container_width=True)
+        
+        # Intra-day interpretation
+        peak_hour = intra_df.loc[intra_df['MCP (INR/kWh)'].idxmax(), 'Time Block']
+        intra_max = intra_df['MCP (INR/kWh)'].max()
+        st.info(f"🔥 **Peak Demand Insight ({selected_date}):** The highest clearing price occurred during the **{peak_hour}** block (₹{intra_max:.2f}/kWh). Recommend discharging battery storage or maximizing generation to this window.")
+
     st.markdown("---")
-    st.markdown("**Data Source Note:** *This is a realistic simulated dataset representing Indian Energy Exchange market structures for prototyping purposes.*")
+    st.markdown("**Data Source Note:** *This dashboard is now powered by an automated pipeline appending ACTUAL historical scraped IEX data. RTM is overlaid as a simulated spread for comparative analysis.*")

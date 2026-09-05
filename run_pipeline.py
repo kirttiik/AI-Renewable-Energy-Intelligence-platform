@@ -44,6 +44,9 @@ PIPELINE_STEPS = [
 
     # ── Hourly Forecast Ingestion (after models) ───────────────────────────
     ("src/ingestion/open_meteo_hourly_ingestion.py",    False),
+    
+    # ── Market Data Ingestion ──────────────────────────────────────────────
+    ("src/ingestion/iex_scraper_ingestion.py",          False),
 
     # ── Analytics Layer (Non-Critical — failures logged but continue) ──────
     ("src/analytics/pv_engine_analytics.py",            False),
