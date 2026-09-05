@@ -1,4 +1,4 @@
-﻿"""
+"""
 Solar Generation Forecasting Model -- Quartz-Inspired Architecture
 ===================================================================
 Upgraded to match the feature engineering approach of the
@@ -165,14 +165,23 @@ def load_data() -> pd.DataFrame:
     df["h_max_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).max()
     df["h_mean_30d"] = df[TARGET].shift(1).rolling(30, min_periods=7).mean()
 
+    # CRITICAL FIX: Future forecasts will have NaN targets, causing rolling features
+    # to become NaN. We forward-fill the rolling features so the forecast uses the 
+    # most recent known historical plant health.
+    roll_cols = ["h_mean_7d", "h_median_7d", "h_max_7d", "h_mean_30d"]
+    df[roll_cols] = df[roll_cols].ffill()
+
     logger.info(f"Dataset: {len(df)} rows | {df['date'].min().date()} to {df['date'].max().date()}")
     return df
 
 
 def select_features(df: pd.DataFrame) -> list:
     """Return feature columns available in the dataframe."""
-    all_features = QUARTZ_FEATURES + LEGACY_FEATURES
-    active = [f for f in all_features if f in df.columns]
+    # CRITICAL FIX: Removed LEGACY_FEATURES from ML training.
+    # Legacy features are intermediate calculations of the PVLib physics engine
+    # (e.g. effective_irradiance). Passing them to XGBoost causes target leakage
+    # because the model simply reverse-engineers the PVLib multiplication formula.
+    active = [f for f in QUARTZ_FEATURES if f in df.columns]
     logger.info(f"Active features ({len(active)}): {active}")
     return active
 
@@ -186,9 +195,11 @@ def train_model(df: pd.DataFrame):
     historical = df.dropna(subset=[TARGET]).copy()
     future = df[df[TARGET].isna()].copy()
 
-    split_idx = int(len(historical) * 0.8)
-    train_df = historical.iloc[:split_idx]
-    test_df = historical.iloc[split_idx:]
+    # CRITICAL FIX: Use a robust 365-day test set instead of 80/20 to properly
+    # evaluate the model's ability to forecast across all seasons.
+    test_size = min(365, int(len(historical) * 0.2))
+    train_df = historical.iloc[:-test_size]
+    test_df = historical.iloc[-test_size:]
 
     X_train = train_df[feature_cols].fillna(0)
     y_train = train_df[TARGET]

@@ -245,6 +245,18 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     df["specific_yield_kwh_kwp"]    = ((df["daily_energy_mwh"] * 1000) / (CAPACITY * 1000)).round(4)
     df["capacity_factor"]           = df["cuf_daily"]
 
+    # --- CRITICAL FIX: Target Leakage Prevention ---
+    # The 'solar_generation_mw' column is our ML target. It cannot be known for future dates.
+    # We must mask all synthetic SCADA target columns for dates > today so the ML model
+    # is forced to predict them.
+    future_mask = df["date"].dt.date > pd.Timestamp.today().date()
+    target_cols = [
+        "solar_generation_mw", "total_generation_mw", "daily_energy_mwh", 
+        "grid_export_mwh", "cuf_daily", "pr_daily", "capacity_factor",
+        "soiling_loss_pct", "inverter_availability_pct", "specific_yield_kwh_kwp"
+    ]
+    df.loc[future_mask, target_cols] = np.nan
+
     # Pure physics baseline (no stochastic noise) — for Actual vs ML vs Physics comparison
     physics_base = (
         CAPACITY * PR * eff_irr_norm * df["temperature_factor"]
@@ -274,8 +286,9 @@ def validate_generation_data(df: pd.DataFrame, cfg: dict) -> bool:
         "effective_irradiance", "cell_temperature_c",
         "temperature_factor", "cloud_factor", "performance_ratio"
     ]
-    if df[critical_cols].isnull().any().any():
-        logger.error("Validation Failed: Null values in critical columns.")
+    historical_df = df[df["date"].dt.date <= pd.Timestamp.today().date()]
+    if historical_df[critical_cols].isnull().any().any():
+        logger.error("Validation Failed: Null values in critical columns for historical dates.")
         return False
     if (df["solar_generation_mw"] < 0).any():
         logger.error("Validation Failed: Negative generation values detected.")
