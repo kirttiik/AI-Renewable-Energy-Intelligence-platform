@@ -99,7 +99,8 @@ data = get_data_sources()
 
 # Compute a single, synchronized global 'today' for all time horizon filtering.
 # We anchor this to the actual system clock since the GitHub pipeline runs daily.
-GLOBAL_TODAY = pd.to_datetime('today').normalize()
+# Note: Temporarily hardcoded to Sept 6th per user request for testing.
+GLOBAL_TODAY = pd.to_datetime('2026-09-06').normalize()
 
 # ==========================================
 # SIDEBAR NAVIGATION
