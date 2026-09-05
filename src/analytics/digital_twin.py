@@ -36,7 +36,10 @@ def render_digital_twin(horizon="All Time", custom_start=None, custom_end=None):
             df = df[(df['date'] >= custom_start) & (df['date'] <= custom_end)]
             
     if df.empty:
-        st.error(f"No simulation data available for the selected timeframe ({horizon}).")
+        if horizon in ["Tomorrow", "Next 14 Days"]:
+            st.info("The Live Physics Engine requires actual observed weather data to calculate generation, which is not available for future dates. To view future predictions, please navigate to the **Generation Forecast** module (powered by our ML models).")
+        else:
+            st.error(f"No simulation data available for the selected timeframe ({horizon}).")
         return
 
     last_row = df.iloc[-1]
