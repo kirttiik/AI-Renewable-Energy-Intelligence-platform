@@ -3,7 +3,7 @@
 # =============================================================
 # Adani Green Energy Ltd (AGEL) — Khavda, Gujarat, India
 # All parameters calibrated to produce realistic SCADA output:
-#   Target daily generation: 10,000 – 12,000 MWh
+#   Target daily generation: 120,000 – 140,000 MWh
 #   Annual CUF: ~27%
 # =============================================================
 

@@ -182,6 +182,7 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     """
     s         = cfg["solar"]
     CAPACITY  = s["installed_capacity_mw"]
+    DC_CAPACITY = s.get("dc_capacity_mw", CAPACITY * 1.35)
     PR        = s["performance_ratio"]
     PSH       = s.get("peak_sun_hours", 5.8)
     GRID_AVAIL = s.get("grid_availability_pct", 0.995)
@@ -192,9 +193,8 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     TRF_EFF   = s.get("transformer_efficiency", 0.995)
     CABLE     = s.get("cable_loss_pct", 0.005)
 
-    # Calibrated reference irradiance for Khavda
-    # MAX_GHI = 6.75 kWh/m2/day ensures 20GW plant outputs 10k-12k MW at peak (good-day GHI ~5-6 kWh/m2)
-    MAX_GHI = 6.75
+    # MAX_GHI = 2.75 ensures the plant hits its 20GW peak capacity frequently, driving CUF to ~27%
+    MAX_GHI = 2.75
 
     n   = len(df)
     rng = np.random.default_rng(seed=42)
@@ -217,9 +217,9 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     # Normalised effective irradiance
     eff_irr_norm = (df["effective_irradiance"] / MAX_GHI).clip(0.0, 1.0)
 
-    # Final AC power at grid connection
+    # Final AC power at grid connection (base generation from DC panels)
     solar_gen = (
-        CAPACITY
+        DC_CAPACITY
         * PR
         * eff_irr_norm
         * df["temperature_factor"]
@@ -231,14 +231,18 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         * GRID_AVAIL
         * measurement_noise
     )
+    # Clip at AC Capacity limit (Inverter Clipping)
     solar_gen = solar_gen.clip(0.0, CAPACITY)
 
     # Assign columns
     df["solar_generation_mw"]       = solar_gen.values
     df["total_generation_mw"]       = df["solar_generation_mw"]
-    df["daily_energy_mwh"]          = (df["solar_generation_mw"] * PSH).round(2)
+    # Realistic Peak Sun Hours equivalent for a high DC/AC ratio plant in Gujarat
+    df["daily_energy_mwh"]          = (df["solar_generation_mw"] * 7.5).round(2)
     df["grid_export_mwh"]           = (df["daily_energy_mwh"] * (1.0 - AUX_CONS)).round(2)
-    df["cuf_daily"]                 = (df["solar_generation_mw"] / CAPACITY).round(4)
+    
+    # True Engineering CUF = Daily Energy / (Capacity * 24 hours)
+    df["cuf_daily"]                 = (df["daily_energy_mwh"] / (CAPACITY * 24)).round(4)
     df["pr_daily"]                  = (eff_irr_norm.values * df["temperature_factor"].values * PR).clip(0, 1).round(4)
     df["soiling_loss_pct"]          = (soiling_cycle * 100).round(2)
     df["inverter_availability_pct"] = (inv_avail * 100).round(2)
