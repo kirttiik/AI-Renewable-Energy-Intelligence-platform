@@ -64,15 +64,13 @@ def load_data() -> pd.DataFrame:
         if os.path.exists(solar_pred_path):
             preds = pd.read_csv(solar_pred_path)
             preds['date'] = pd.to_datetime(preds['date'])
-            future = preds[
-                (preds['date'] > last_hist_date) &
-                (preds['actual_solar_generation_mw'].isna())
-            ][['date', 'predicted_solar_generation_mw']].copy()
-            future = future.rename(columns={'predicted_solar_generation_mw': 'solar_generation_mw'})
-            future['site_name'] = 'Khavda Renewable Energy Park'
-            df = pd.concat([hist, future], ignore_index=True)
-            if not future.empty:
-                logger.info(f"Appended {len(future)} future prediction rows.")
+            
+            # Merge ML predictions into the historical dataset
+            df = pd.merge(hist, preds[['date', 'predicted_solar_generation_mw']], on='date', how='left')
+            
+            # Fill the missing actual generation with the predicted generation
+            df['solar_generation_mw'] = df['solar_generation_mw'].fillna(df['predicted_solar_generation_mw'])
+            logger.info("Merged ML predictions for future dates.")
         else:
             df = hist.copy()
 
@@ -84,6 +82,10 @@ def load_data() -> pd.DataFrame:
         PSH = 5.8  # Khavda peak sun hours
         if 'daily_energy_mwh' not in df.columns:
             df['daily_energy_mwh'] = df['solar_generation_mw'] * PSH
+        else:
+            # Future rows from ML predictions will have NaN for daily_energy_mwh,
+            # so we must fill them to calculate future carbon offsets.
+            df['daily_energy_mwh'] = df['daily_energy_mwh'].fillna(df['solar_generation_mw'] * PSH)
 
         return df
     except Exception as e:

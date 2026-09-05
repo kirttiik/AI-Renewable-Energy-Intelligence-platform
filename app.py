@@ -119,8 +119,6 @@ with st.sidebar:
         " Sustainability Analytics",
         " Energy Market Intelligence",
         " Grid Intelligence",
-        " AI Explainability",
-        " SHAP Analytics",
         " MLOps Hub",
         " AI Operations Copilot",
         " Platform Health",
@@ -467,6 +465,9 @@ def render_executive_overview():
         st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
         
     st.markdown("---")
+    
+    render_explainability()
+    render_shap_analytics()
 
 def render_plant_performance():
     st.title(" Plant Performance")
@@ -1018,7 +1019,7 @@ def render_weather_intelligence():
         st.info("No extreme weather events expected over the next 48 hours. Dust accumulation risk remains moderate.")
 
 def render_explainability():
-    st.title(" AI Explainability & Model Performance")
+    st.header(" AI Explainability & Model Performance")
     st.markdown("Demystifying machine learning predictions, evaluating model metrics, and translating features into operational engineering actions.")
     
     # ---------------------------------------------------------
@@ -1114,7 +1115,7 @@ def render_explainability():
             st.markdown("<hr style='margin:10px 0;'>", unsafe_allow_html=True)
 
 def render_shap_analytics():
-    st.title(" SHAP Analytics")
+    st.header(" SHAP Analytics")
     st.markdown("Advanced Model Explainability using SHapley Additive exPlanations. Understand exactly *why* the AI predicts what it does.")
     
     shap_rank_df = data.get('shap_solar_rank', pd.DataFrame())
@@ -1562,8 +1563,6 @@ elif selection == " DSM Intelligence":
         render_dsm_intelligence()
     except Exception as e:
         st.error(f"Failed to load DSM Intelligence module: {e}")
-elif selection == " AI Explainability":
-    render_explainability()
 elif selection == " Energy Market Intelligence":
     try:
         from src.analytics.energy_market import render_iex_analytics
@@ -1572,8 +1571,6 @@ elif selection == " Energy Market Intelligence":
         st.error(f"Failed to load Energy Market Intelligence module: {e}")
 elif selection == " Grid Intelligence":
     render_grid_analytics()
-elif selection == " SHAP Analytics":
-    render_shap_analytics()
 elif selection == " Digital Twin":
     try:
         from src.analytics.digital_twin import render_digital_twin
