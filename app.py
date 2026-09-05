@@ -470,6 +470,46 @@ def render_executive_overview():
         st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
         
     st.markdown("---")
+    st.subheader(" 14-Day Generation & Forecast Log")
+    try:
+        if os.path.exists(pred_path):
+            df_table = pd.read_csv(pred_path)
+            df_table['date'] = pd.to_datetime(df_table['date'])
+            # We hardcode today to align with our simulation dates
+            today = pd.to_datetime('2026-09-05')
+            
+            df_past = df_table[(df_table['date'] >= today - pd.Timedelta(days=14)) & (df_table['date'] < today)].copy()
+            df_fut = df_table[(df_table['date'] >= today) & (df_table['date'] <= today + pd.Timedelta(days=13))].copy()
+            
+            table_data = []
+            for _, row in df_past.iterrows():
+                peak = row['actual_solar_generation_mw']
+                if pd.isna(peak): continue
+                table_data.append({
+                    "Date": row['date'].strftime('%Y-%m-%d'),
+                    "Source": "Historical (Physics Engine)",
+                    "Peak Generation (MW)": f"{peak:,.1f}",
+                    "Daily Generation (MWh)": f"{peak * 7.5:,.0f}"
+                })
+            
+            for _, row in df_fut.iterrows():
+                peak = row['predicted_solar_generation_mw']
+                energy = row['predicted_daily_energy_mwh']
+                table_data.append({
+                    "Date": row['date'].strftime('%Y-%m-%d'),
+                    "Source": "Forecast (ML Model)",
+                    "Peak Generation (MW)": f"{peak:,.1f}",
+                    "Daily Generation (MWh)": f"{energy:,.0f}"
+                })
+                
+            if table_data:
+                st.dataframe(pd.DataFrame(table_data), use_container_width=True, hide_index=True)
+            else:
+                st.info("No forecast data available in the current timeframe.")
+    except Exception as e:
+        st.error(f"Could not load forecast table: {e}")
+        
+    st.markdown("---")
     
     render_explainability()
     render_shap_analytics()
