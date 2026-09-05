@@ -127,10 +127,12 @@ with st.sidebar:
     selection = st.radio("Navigation", sections)
     
     st.markdown("---")
+    default_horizon_index = 1 if selection == " Grid Intelligence" else 2
+    
     global_time_horizon = st.sidebar.selectbox(
         "Time Horizon",
         ["All Time", "Yesterday", "Today", "Tomorrow", "Next 14 Days", " Custom Range"],
-        index=2,
+        index=default_horizon_index,
         help="Filter data by time period. Custom Range lets you pick exact dates."
     )
     
