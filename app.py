@@ -111,7 +111,7 @@ with st.sidebar:
     
     sections = [
         " Executive Control Center",
-        " Digital Twin",
+        " PVLib Model",
         " Plant Performance",
         " Generation Forecast",
         " Weather Intelligence",
@@ -1571,7 +1571,7 @@ elif selection == " Energy Market Intelligence":
         st.error(f"Failed to load Energy Market Intelligence module: {e}")
 elif selection == " Grid Intelligence":
     render_grid_analytics()
-elif selection == " Digital Twin":
+elif selection == " PVLib Model":
     try:
         from src.analytics.digital_twin import render_digital_twin
         render_digital_twin()

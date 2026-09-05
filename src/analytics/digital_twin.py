@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 def render_digital_twin():
-    st.title(" Renewable Energy Digital Twin")
+    st.title(" PVLib Model")
     st.markdown("Live physics simulation, asset health monitoring, and automated root cause analysis.")
     
     st.markdown("---")
