@@ -16,22 +16,8 @@ def fetch_iex_dam_data():
         page.wait_for_selector("table", timeout=30000)
         time.sleep(3)
         
-        print("Selecting 'LAST 31 DAYS' Delivery Period...")
-        # Target the dropdowns
-        dropdowns = page.locator("div[role='combobox']")
-        # The Delivery Period is usually the second one
-        dropdowns.nth(1).click()
-        time.sleep(1)
-        
-        # Click the "LAST 31 DAYS" option
-        page.locator("li[role='option']", has_text="LAST 31 DAYS").click()
-        time.sleep(1)
-        
-        # Click Update Report
-        print("Clicking Update Report...")
-        page.locator("button", has_text="Update Report").click()
-        
-        # Wait for network and table update
+        # The page loads the most recent available date by default.
+        # Just wait a moment for the GraphQL query to populate the table.
         time.sleep(5)
         
         print("Extracting Data Table...")
