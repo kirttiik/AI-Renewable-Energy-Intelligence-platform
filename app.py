@@ -458,18 +458,7 @@ def render_executive_overview():
     c8.empty()
 
 
-    st.markdown("---")
-    
-    st.subheader(" System Monitoring & Compliance")
-    col_left, col_right = st.columns(2)
-    with col_left:
-        st.markdown(f"**Data Freshness (Latest Update):** {latest_update}")
-        st.markdown("**Model Version:** v2.1.0 (Physics-Informed XGBoost)")
-    with col_right:
-        st.markdown("**GitHub Action Status:**  Passing")
-        st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
-        
-    st.markdown("---")
+
     st.subheader(" 14-Day Generation & Forecast Log")
     try:
         if os.path.exists(pred_path):
@@ -513,6 +502,17 @@ def render_executive_overview():
     
     render_explainability()
     render_shap_analytics()
+
+    st.markdown("---")
+    
+    st.subheader(" System Monitoring & Compliance")
+    col_left, col_right = st.columns(2)
+    with col_left:
+        st.markdown(f"**Data Freshness (Latest Update):** {latest_update}")
+        st.markdown("**Model Version:** v2.1.0 (Physics-Informed XGBoost)")
+    with col_right:
+        st.markdown("**GitHub Action Status:**  Passing")
+        st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
 
 def render_plant_performance():
     st.title(" Plant Performance")
