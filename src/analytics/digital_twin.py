@@ -5,7 +5,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 
-def render_digital_twin():
+import datetime
+
+def render_digital_twin(horizon="All Time", custom_start=None, custom_end=None):
     st.title(" PVLib Model")
     st.markdown("Live physics simulation, asset health monitoring, and automated root cause analysis.")
     
@@ -16,12 +18,25 @@ def render_digital_twin():
     df = pd.DataFrame()
     if os.path.exists(gen_path):
         df = pd.read_csv(gen_path)
-        df['date'] = pd.to_datetime(df['date'])
+        df['date'] = pd.to_datetime(df['date']).dt.date
         df = df.dropna(subset=['solar_generation_mw'])
         df = df.sort_values('date')
         
+        # Filter by horizon
+        global_today = datetime.date(2026, 9, 5)
+        if horizon == "Today":
+            df = df[df['date'] == global_today]
+        elif horizon == "Yesterday":
+            df = df[df['date'] == global_today - datetime.timedelta(days=1)]
+        elif horizon == "Tomorrow":
+            df = df[df['date'] == global_today + datetime.timedelta(days=1)]
+        elif horizon == "Next 14 Days":
+            df = df[(df['date'] >= global_today) & (df['date'] <= global_today + datetime.timedelta(days=14))]
+        elif horizon == " Custom Range" and custom_start and custom_end:
+            df = df[(df['date'] >= custom_start) & (df['date'] <= custom_end)]
+            
     if df.empty:
-        st.error("No simulation data available. Please run the generation pipeline.")
+        st.error(f"No simulation data available for the selected timeframe ({horizon}).")
         return
 
     last_row = df.iloc[-1]
