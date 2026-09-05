@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -10,26 +11,55 @@ def render_digital_twin():
     
     st.markdown("---")
     
+    ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
+    df = pd.DataFrame()
+    if os.path.exists(gen_path):
+        df = pd.read_csv(gen_path)
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.sort_values('date')
+        
+    if df.empty:
+        st.error("No simulation data available. Please run the generation pipeline.")
+        return
+
+    last_row = df.iloc[-1]
+    prev_row = df.iloc[-2] if len(df) > 1 else last_row
+    
     # -------------------------------------------------------------------------
     # 1. Physics Simulation (Module 1)
     # -------------------------------------------------------------------------
     st.subheader(" Live Physics Simulation")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Expected Generation (MW)", "12,450.5", delta="-120.3", delta_color="inverse")
-    c2.metric("Performance Ratio", "82.4%", delta="+0.3%")
-    c3.metric("Capacity Factor", "31.2%", delta="-0.5%", delta_color="inverse")
-    c4.metric("Cell Temperature", "48.2 °C", delta="+2.1 °C", delta_color="inverse")
     
-    # Fake time series data for physics visualization
-    hours = list(range(6, 19))
-    expected = [500, 1200, 2500, 4000, 5200, 6000, 6200, 6000, 5000, 3500, 2000, 800, 100]
-    actual =   [490, 1150, 2400, 3800, 4900, 5600, 5800, 5700, 4800, 3400, 1900, 750, 90]
-    df_sim = pd.DataFrame({"Hour": hours, "Expected": expected, "Actual": actual})
+    expected_gen = last_row.get('solar_generation_mw', 12450.5)
+    expected_gen_prev = prev_row.get('solar_generation_mw', expected_gen)
+    delta_gen = expected_gen - expected_gen_prev
     
+    pr = last_row.get('performance_ratio', 0.82) * 100
+    pr_prev = prev_row.get('performance_ratio', pr/100) * 100
+    delta_pr = pr - pr_prev
+    
+    cf = last_row.get('capacity_factor', 0.312) * 100
+    cf_prev = prev_row.get('capacity_factor', cf/100) * 100
+    delta_cf = cf - cf_prev
+    
+    temp = last_row.get('cell_temperature_c', 48.2)
+    temp_prev = prev_row.get('cell_temperature_c', temp)
+    delta_temp = temp - temp_prev
+    
+    c1.metric("Peak Generation (MW)", f"{expected_gen:,.1f}", delta=f"{delta_gen:+.1f}")
+    c2.metric("Performance Ratio", f"{pr:.1f}%", delta=f"{delta_pr:+.1f}%")
+    c3.metric("Capacity Factor", f"{cf:.1f}%", delta=f"{delta_cf:+.1f}%")
+    c4.metric("Cell Temperature", f"{temp:.1f} °C", delta=f"{delta_temp:+.1f} °C", delta_color="inverse")
+    
+    # Plot last 14 days of Generation vs Physics Baseline
+    df_plot = df.tail(14)
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df_sim["Hour"], y=df_sim["Expected"], name="Expected (Physics Model)", line=dict(dash='dash', color='gray')))
-    fig.add_trace(go.Scatter(x=df_sim["Hour"], y=df_sim["Actual"], name="Actual Generation", fill='tozeroy', line=dict(color='#3498DB')))
-    fig.update_layout(title="Generation Envelope: Expected vs Actual", height=300, margin=dict(t=30, b=0, l=0, r=0))
+    baseline = df_plot.get('physics_baseline_mw', df_plot['solar_generation_mw'] * 1.05)
+    fig.add_trace(go.Scatter(x=df_plot["date"], y=baseline, name="Physics Baseline (Theoretical Max)", line=dict(dash='dash', color='gray')))
+    fig.add_trace(go.Scatter(x=df_plot["date"], y=df_plot["solar_generation_mw"], name="Actual Peak Generation", fill='tozeroy', line=dict(color='#3498DB')))
+    fig.update_layout(title="Daily Peak Generation: Physics Baseline vs Actual (Last 14 Days)", height=300, margin=dict(t=30, b=0, l=0, r=0))
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("---")
@@ -39,11 +69,16 @@ def render_digital_twin():
     # -------------------------------------------------------------------------
     col_ahi, col_rca = st.columns([1, 1])
     
+    soiling = last_row.get('soiling_loss_pct', 2.0)
+    inv_avail = last_row.get('inverter_availability_pct', 100)
+    
+    # Simple weighted health score
+    health_score = int((pr * 0.4) + (inv_avail * 0.4) + ((100 - soiling) * 0.2))
+    
     with col_ahi:
         st.subheader(" Asset Health Index")
         st.markdown("Composite score evaluating efficiency, degradation, and stability.")
         
-        health_score = 88
         fig_gauge = go.Figure(go.Indicator(
             mode = "gauge+number",
             value = health_score,
@@ -61,9 +96,10 @@ def render_digital_twin():
         st.plotly_chart(fig_gauge, use_container_width=True)
         
         st.markdown("**Health Drivers:**")
-        st.progress(85, text="Performance Ratio (85%)")
-        st.progress(92, text="Temperature Stress Resilience (92%)")
-        st.progress(78, text="Generation Stability (78%)")
+        st.progress(int(pr), text=f"Performance Ratio ({pr:.1f}%)")
+        st.progress(int(inv_avail), text=f"Inverter Availability ({inv_avail:.1f}%)")
+        clean_score = int(100 - soiling)
+        st.progress(clean_score, text=f"Panel Cleanliness ({clean_score:.1f}%)")
         
     # -------------------------------------------------------------------------
     # 3. Root Cause Analysis (Module 6)
@@ -72,16 +108,31 @@ def render_digital_twin():
         st.subheader(" Root Cause Analysis")
         st.markdown("Attribution of generation variance from theoretical maximum.")
         
+        # Calculate MW losses based on 20000 capacity
+        cap = 20000
+        cloud_factor = last_row.get('cloud_factor', 1.0)
+        temp_factor = last_row.get('temperature_factor', 1.0)
+        
+        loss_cloud = -int(cap * (1 - cloud_factor))
+        loss_temp = -int(cap * (1 - temp_factor))
+        loss_soil = -int(cap * (soiling / 100))
+        loss_inv = -int(cap * (1 - inv_avail / 100))
+        
+        actual_output = int(expected_gen)
+        
         # Waterfall chart for RCA
         fig_rca = go.Figure(go.Waterfall(
             name = "Variance", orientation = "v",
-            measure = ["absolute", "relative", "relative", "relative", "relative", "relative", "total"],
-            x = ["Theoretical Max", "Cloud Cover", "Temperature", "Soiling", "Inverter Clipping", "Grid Curtailment", "Actual Output"],
+            measure = ["absolute", "relative", "relative", "relative", "relative", "total"],
+            x = ["DC Capacity", "Cloud Cover", "Temp Derating", "Soiling", "Inv/Grid Losses", "Actual Peak Output"],
             textposition = "outside",
-            y = [14000, -850, -420, -150, -80, 0, 12500],
+            y = [cap, loss_cloud, loss_temp, loss_soil, loss_inv, actual_output],
             connector = {"line":{"color":"rgb(63, 63, 63)"}},
         ))
         fig_rca.update_layout(title="Generation Variance Waterfall (MW)", height=350, showlegend=False, margin=dict(t=40, b=0, l=0, r=0))
         st.plotly_chart(fig_rca, use_container_width=True)
         
-        st.info("**RCA Insight:** Cloud cover attenuation is the primary driver of generation loss today (-850 MW), followed by temperature-induced derating (-420 MW).")
+        # Dynamic RCA Insight
+        losses = {"Cloud cover": abs(loss_cloud), "Temperature derating": abs(loss_temp), "Soiling": abs(loss_soil)}
+        primary_driver = max(losses, key=losses.get)
+        st.info(f"**RCA Insight:** {primary_driver} is the primary driver of generation loss today ({losses[primary_driver]} MW).")
