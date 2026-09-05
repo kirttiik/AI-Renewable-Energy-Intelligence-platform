@@ -126,7 +126,6 @@ with st.sidebar:
         " Operations & Maintenance",
         " Generation Forecast",
         " Weather Intelligence",
-        " Market & Grid Intelligence",
         " DSM Intelligence",
         " Sustainability Analytics",
         " Energy Market Intelligence",
@@ -1568,12 +1567,6 @@ elif selection == " Sustainability Analytics":
     render_carbon_analytics()
 elif selection == " Weather Intelligence":
     render_weather_intelligence()
-elif selection == " Market & Grid Intelligence":
-    try:
-        from src.analytics.market_grid_intelligence import render_market_grid_intelligence
-        render_market_grid_intelligence()
-    except Exception as e:
-        st.error(f"Failed to load Market & Grid Intelligence module: {e}")
 elif selection == " DSM Intelligence":
     try:
         from src.analytics.dsm_intelligence import render_dsm_intelligence
