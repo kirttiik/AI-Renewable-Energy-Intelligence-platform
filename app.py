@@ -116,7 +116,6 @@ with st.sidebar:
         " Generation Forecast",
         " Weather Intelligence",
         " DSM Intelligence",
-        " Sustainability Analytics",
         " Energy Market Intelligence",
         " Grid Intelligence",
         " MLOps Hub",
@@ -855,27 +854,6 @@ def render_forecasting():
     # 4. Commercial Trading Action Plan
     st.info(" **Trading Insight:** The XGBoost model predicts a 15% surge in wind generation over the next 48 hours due to incoming coastal fronts. Recommend increasing Day-Ahead Market (DAM) volume bids for the evening peak blocks.")
 
-def render_carbon_analytics():
-    st.title(" Carbon Analytics")
-    st.markdown("Sustainability tracking and environmental impact.")
-    
-    df_carb = filter_by_time_horizon(data['carbon'], global_time_horizon, custom_start_date, custom_end_date)
-    if not df_carb.empty:
-        total_co2 = df_carb['co2_avoided_tons'].sum()
-        total_coal = df_carb['coal_saved_tons'].sum()
-        total_trees = df_carb['trees_equivalent_million'].sum()
-        
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Total CO₂ Avoided", f"{safe_number(total_co2):,.2f} Tons")
-        col2.metric("Total Coal Saved", f"{safe_number(total_coal):,.2f} Tons")
-        col3.metric("Trees Equivalent", f"{safe_number(total_trees):,.2f} Million")
-        
-        fig = px.area(df_carb, x='date', y='co2_avoided_tons', title="CO₂ Avoided Over Time", color_discrete_sequence=['forestgreen'])
-        fig.update_traces(mode='lines+markers')
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("Carbon Analytics dataset is missing.")
-
 def render_weather_intelligence():
     st.title(" Weather Intelligence")
     st.markdown("Advanced atmospheric and PV physics tracking for predictive plant operations.")
@@ -1555,8 +1533,6 @@ elif selection == " Plant Performance":
     render_plant_performance()
 elif selection == " Generation Forecast":
     render_forecasting()
-elif selection == " Sustainability Analytics":
-    render_carbon_analytics()
 elif selection == " Weather Intelligence":
     render_weather_intelligence()
 elif selection == " DSM Intelligence":
