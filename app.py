@@ -1596,7 +1596,7 @@ elif selection == " Grid Intelligence":
 elif selection == " PVLib Model":
     try:
         from src.analytics.digital_twin import render_digital_twin
-        render_digital_twin(time_horizon, custom_start_date, custom_end_date)
+        render_digital_twin(global_time_horizon, custom_start_date, custom_end_date)
     except Exception as e:
         st.error(f"Failed to load module: {e}")
 elif selection == " MLOps Hub":
