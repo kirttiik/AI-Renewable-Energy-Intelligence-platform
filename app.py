@@ -353,6 +353,7 @@ def render_executive_overview():
     
     # ---- Live data extraction for KPIs ----
     today_forecast = None
+    daily_energy = None
     carbon_offset = None
     forecast_confidence = "N/A"
     weather_risk = "N/A"
@@ -376,6 +377,8 @@ def render_executive_overview():
                 cap_factor = df_gen_f['capacity_factor'].mean() * 100 if 'capacity_factor' in df_gen_f.columns else 28.4
                 if 'solar_generation_mw' in df_gen_f.columns:
                     today_forecast = df_gen_f['solar_generation_mw'].mean()
+                if 'daily_energy_mwh' in df_gen_f.columns:
+                    daily_energy = df_gen_f['daily_energy_mwh'].mean()
     except Exception:
         pass
 
@@ -434,7 +437,8 @@ def render_executive_overview():
         pass
 
     # Fallbacks for display
-    today_forecast_disp = f"{today_forecast:,.1f} MW" if today_forecast is not None else "N/A"
+    today_forecast_disp = f"{today_forecast:,.1f} MW @ 13:30" if today_forecast is not None else "N/A"
+    daily_energy_disp   = f"{daily_energy:,.0f} MWh" if daily_energy is not None else "N/A"
     carbon_disp         = f"{carbon_offset:,.2f} Tons" if carbon_offset is not None else "N/A"
 
     st.markdown("### Executive Summary")
@@ -442,7 +446,7 @@ def render_executive_overview():
     
     st.markdown("### Top-Level KPIs")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Latest Prediction", today_forecast_disp)
+    c1.metric("Peak Generation", today_forecast_disp)
     c2.metric("CO2 Avoided (Period)", carbon_disp)
     c3.metric("Forecast Confidence", forecast_confidence)
     c4.metric("Weather Risk Level", weather_risk)
@@ -451,7 +455,7 @@ def render_executive_overview():
     c5.metric("Pipeline Health", pipeline_health)
     c6.metric("Performance Ratio", f"{perf_ratio:.2f}")
     c7.metric("Capacity Factor", f"{cap_factor:.1f}%")
-    c8.empty()
+    c8.metric("24h Generation (Energy)", daily_energy_disp)
 
 
     st.markdown("---")
