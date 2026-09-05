@@ -1583,7 +1583,11 @@ elif selection == " DSM Intelligence":
 elif selection == " AI Explainability":
     render_explainability()
 elif selection == " Energy Market Intelligence":
-    render_iex_analytics()
+    try:
+        from src.analytics.energy_market import render_iex_analytics
+        render_iex_analytics()
+    except Exception as e:
+        st.error(f"Failed to load Energy Market Intelligence module: {e}")
 elif selection == " Grid Intelligence":
     render_grid_analytics()
 elif selection == " SHAP Analytics":
