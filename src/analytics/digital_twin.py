@@ -17,6 +17,7 @@ def render_digital_twin():
     if os.path.exists(gen_path):
         df = pd.read_csv(gen_path)
         df['date'] = pd.to_datetime(df['date'])
+        df = df.dropna(subset=['solar_generation_mw'])
         df = df.sort_values('date')
         
     if df.empty:
