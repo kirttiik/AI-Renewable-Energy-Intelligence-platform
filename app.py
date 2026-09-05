@@ -98,17 +98,8 @@ def safe_number(value):
 data = get_data_sources()
 
 # Compute a single, synchronized global 'today' for all time horizon filtering.
+# We anchor this to the actual system clock since the GitHub pipeline runs daily.
 GLOBAL_TODAY = pd.to_datetime('today').normalize()
-if not data.get('generation', pd.DataFrame()).empty:
-    _gen = data['generation']
-    if 'actual_solar_generation_mw' in _gen.columns:
-        _hist = _gen.dropna(subset=['actual_solar_generation_mw'])
-        if not _hist.empty:
-            GLOBAL_TODAY = pd.to_datetime(_hist['date']).max().normalize()
-    elif 'solar_generation_mw' in _gen.columns:
-        _hist = _gen[_gen['solar_generation_mw'] > 0]
-        if not _hist.empty:
-            GLOBAL_TODAY = pd.to_datetime(_hist['date']).max().normalize()
 
 # ==========================================
 # SIDEBAR NAVIGATION
