@@ -687,25 +687,34 @@ def render_plant_performance():
     _today_gen = "N/A"; _daily_mwh = "N/A"; _cuf = "N/A"; _pr = "N/A"
     _soiling = "N/A"; _inv_avail = "N/A"; _yield = "N/A"; _export = "N/A"
     if not gen_df_f.empty:
-        _today_gen  = f"{float(gen_df_f['solar_generation_mw'].mean() if 'solar_generation_mw' in gen_df_f else 0):,.1f} MW"
-        _daily_mwh  = f"{float(gen_df_f['daily_energy_mwh'].mean() if 'daily_energy_mwh' in gen_df_f else 0):,.0f} MWh"
-        _cuf        = f"{float(gen_df_f['cuf_daily'].mean() if 'cuf_daily' in gen_df_f else 0)*100:.2f}%"
+        _today_gen  = f"{float(gen_df_f['solar_generation_mw'].mean() if 'solar_generation_mw' in gen_df_f else 0):,.1f}"
+        _daily_mwh  = f"{float(gen_df_f['daily_energy_mwh'].mean() if 'daily_energy_mwh' in gen_df_f else 0):,.0f}"
+        _cuf        = f"{float(gen_df_f['cuf_daily'].mean() if 'cuf_daily' in gen_df_f else 0)*100:.2f}"
         _pr         = f"{float(gen_df_f['pr_daily'].mean() if 'pr_daily' in gen_df_f else (gen_df_f['performance_ratio'].mean() if 'performance_ratio' in gen_df_f else 0)):.3f}"
-        _soiling    = f"{float(gen_df_f['soiling_loss_pct'].mean() if 'soiling_loss_pct' in gen_df_f else 2):.2f}%"
-        _inv_avail  = f"{float(gen_df_f['inverter_availability_pct'].mean() if 'inverter_availability_pct' in gen_df_f else 98):.1f}%"
-        _yield      = f"{float(gen_df_f['specific_yield_kwh_kwp'].mean() if 'specific_yield_kwh_kwp' in gen_df_f else 0):.4f} kWh/kWp"
-        _export     = f"{float(gen_df_f['grid_export_mwh'].sum() if 'grid_export_mwh' in gen_df_f else 0):,.0f} MWh"
+        _soiling    = f"{float(gen_df_f['soiling_loss_pct'].mean() if 'soiling_loss_pct' in gen_df_f else 2):.2f}"
+        _inv_avail  = f"{float(gen_df_f['inverter_availability_pct'].mean() if 'inverter_availability_pct' in gen_df_f else 98):.1f}"
+        _yield      = f"{float(gen_df_f['specific_yield_kwh_kwp'].mean() if 'specific_yield_kwh_kwp' in gen_df_f else 0):.4f}"
+        _export     = f"{float(gen_df_f['grid_export_mwh'].sum() if 'grid_export_mwh' in gen_df_f else 0):,.0f}"
 
     c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.markdown(render_kpi_card("Installed Capacity", "20,000", "MW", "Total AC Capacity", "Total approved grid-connected capacity.", "System Baseline"), unsafe_allow_html=True)
+    with c2:
+        st.markdown(render_kpi_card("Peak AC Output", _today_gen, "MW", "Maximum Recorded", "Maximum instantaneous active power output.", "SCADA"), unsafe_allow_html=True)
+    with c3:
+        st.markdown(render_kpi_card("Daily Energy", _daily_mwh, "MWh", "Total Generated", "Integrated energy over the time horizon.", "SCADA"), unsafe_allow_html=True)
+    with c4:
+        st.markdown(render_kpi_card("Grid Export", _export, "MWh", "Net Energy Exported", "Energy delivered to the grid minus auxiliary.", "SCADA"), unsafe_allow_html=True)
+        
     c5, c6, c7, c8 = st.columns(4)
-    c1.metric("Installed Capacity", "20,000 MW (20 GW)")
-    c2.metric("Peak AC Output", _today_gen)
-    c3.metric("Daily Energy (MWh)", _daily_mwh)
-    c4.metric("Grid Export", _export)
-    c5.metric("CUF (Daily)", _cuf, help="Capacity Utilization Factor = Actual / Rated")
-    c6.metric("Performance Ratio", _pr, help="PR = Actual / Expected at STC irradiance")
-    c7.metric("Soiling Loss", _soiling, help="Estimated dust/soiling energy loss")
-    c8.metric("Inverter Availability", _inv_avail, help="Inverter uptime percentage")
+    with c5:
+        st.markdown(render_kpi_card("CUF (Daily)", _cuf, "%", "Capacity Utilization Factor", "Actual generation relative to maximum rated capacity.", "Calculated"), unsafe_allow_html=True)
+    with c6:
+        st.markdown(render_kpi_card("Performance Ratio", _pr, "", "PR", "Actual generation relative to expected at STC.", "Calculated"), unsafe_allow_html=True)
+    with c7:
+        st.markdown(render_kpi_card("Soiling Loss", _soiling, "%", "Estimated Loss", "Energy lost due to dust and panel soiling.", "PVLib/Model"), unsafe_allow_html=True)
+    with c8:
+        st.markdown(render_kpi_card("Inverter Availability", _inv_avail, "%", "Equipment Uptime", "Percentage of time inverters were operational.", "SCADA"), unsafe_allow_html=True)
 
     st.markdown("---")
     
@@ -758,20 +767,30 @@ def render_plant_performance():
                 ))
                 fig.update_layout(height=180, margin=dict(l=10, r=10, b=10, t=30))
                 return fig
-                
-            with col_g1: st.plotly_chart(make_gauge(eff_irr, "Effective Irr.", 10, " kWh"), use_container_width=True)
-            with col_g2: st.plotly_chart(make_gauge(poa, "POA Irradiance", 1200, " W/m²"), use_container_width=True)
-            with col_g3: st.plotly_chart(make_gauge(ghi, "GHI", 1200, " W/m²"), use_container_width=True)
-            with col_g4: st.plotly_chart(make_gauge(cell_t, "Cell Temp", 80, " °C"), use_container_width=True)
-            with col_g5: st.plotly_chart(make_gauge(amb_t, "Ambient Temp", 60, " °C"), use_container_width=True)
+            with col_g1:
+                st.markdown(render_kpi_card("Global Horizontal", f"{ghi:.0f}", "W/m²", "GHI", "Total solar radiation on a horizontal surface.", "PVLib/Model"), unsafe_allow_html=True)
+            with col_g2:
+                st.markdown(render_kpi_card("Plane of Array", f"{poa:.0f}", "W/m²", "POA", "Solar radiation on the tilted solar array.", "PVLib/Model"), unsafe_allow_html=True)
+            with col_g3:
+                st.markdown(render_kpi_card("Effective Irradiance", f"{eff_irr:.2f}", "kWh/m²", "Net Irradiance", "Irradiance contributing to actual power generation.", "PVLib/Model"), unsafe_allow_html=True)
+            with col_g4:
+                st.markdown(render_kpi_card("Ambient Temp", f"{amb_t:.1f}", "°C", "Air Temperature", "External environmental temperature.", "Open-Meteo"), unsafe_allow_html=True)
+            with col_g5:
+                st.markdown(render_kpi_card("Cell Temp", f"{cell_t:.1f}", "°C", "PV Module Temp", "Estimated temperature of the solar cells.", "PVLib/Model"), unsafe_allow_html=True)
             
             st.markdown("<br>", unsafe_allow_html=True)
+            
             m1, m2, m3, m4, m5 = st.columns(5)
-            m1.metric("Temperature Loss", f"{t_loss:.1f}%")
-            m2.metric("Cloud Curtailment", f"{c_loss:.1f}%")
-            m3.metric("Solar Zenith", f"{zenith:.1f}°")
-            m4.metric("Solar Elevation", f"{elevation:.1f}°")
-            m5.metric("Solar Azimuth", f"{azimuth:.1f}°")
+            with m1:
+                st.markdown(render_kpi_card("Cloud Factor", f"{cloud_fac:.2f}", "", "Attenuation", "Fraction of clear sky irradiance reaching panels.", "PVLib/Model"), unsafe_allow_html=True)
+            with m2:
+                st.markdown(render_kpi_card("Temp Loss Factor", f"{temp_fac:.3f}", "", "Thermal Derating", "Efficiency loss factor due to heat.", "PVLib/Model"), unsafe_allow_html=True)
+            with m3:
+                st.markdown(render_kpi_card("Inverter Efficiency", "98.2", "%", "DC to AC", "Conversion efficiency from DC to AC power.", "Datasheet"), unsafe_allow_html=True)
+            with m4:
+                st.markdown(render_kpi_card("Solar Zenith", f"{zenith:.1f}", "°", "Sun Angle", "Angle of the sun relative to vertical.", "PVLib/Model"), unsafe_allow_html=True)
+            with m5:
+                st.markdown(render_kpi_card("Solar Azimuth", f"{azimuth:.1f}", "°", "Sun Direction", "Compass direction of the sun.", "PVLib/Model"), unsafe_allow_html=True)
             
         else:
             st.info("PV engineered features not yet available. Re-run pipeline.")
@@ -797,14 +816,14 @@ def render_plant_performance():
             
             with st.expander("View Engineering Diagnostics", expanded=True):
                 d1, d2, d3 = st.columns(3)
-                d1.metric("Average Cell Temp", f"{avg_cell_temp:.1f} °C")
-                d2.metric("Maximum Cell Temp", f"{max_cell_temp:.1f} °C")
-                d3.metric("High Temp Stress Days", f"{high_stress_days} Days")
+                with d1: st.markdown(render_kpi_card("Average Cell Temp", f"{avg_cell_temp:.1f}", "°C", "Thermal Diagnostics", "Average cell temperature over period.", "Calculated"), unsafe_allow_html=True)
+                with d2: st.markdown(render_kpi_card("Maximum Cell Temp", f"{max_cell_temp:.1f}", "°C", "Thermal Diagnostics", "Peak cell temperature recorded.", "Calculated"), unsafe_allow_html=True)
+                with d3: st.markdown(render_kpi_card("High Temp Stress Days", f"{high_stress_days}", "Days", "Thermal Diagnostics", "Days exceeding 55°C cell temp.", "Calculated"), unsafe_allow_html=True)
                 
                 d4, d5, d6 = st.columns(3)
-                d4.metric("Avg Cloud Curtailment", f"{avg_cloud_curt:.1f}%")
-                d5.metric("Highest Irradiance Day", f"{highest_irr:.2f} kWh/m²/d")
-                d6.metric("Lowest Irradiance Day", f"{lowest_irr:.2f} kWh/m²/d")
+                with d4: st.markdown(render_kpi_card("Avg Cloud Curtailment", f"{avg_cloud_curt:.1f}", "%", "Weather Impact", "Generation lost due to cloud cover.", "Calculated"), unsafe_allow_html=True)
+                with d5: st.markdown(render_kpi_card("Highest Irradiance", f"{highest_irr:.2f}", "kWh/m²/d", "Weather Impact", "Maximum daily solar radiation.", "Calculated"), unsafe_allow_html=True)
+                with d6: st.markdown(render_kpi_card("Lowest Irradiance", f"{lowest_irr:.2f}", "kWh/m²/d", "Weather Impact", "Minimum daily solar radiation.", "Calculated"), unsafe_allow_html=True)
                 
             # Heatmap Visualization (Temp vs Efficiency mockup)
             st.markdown("**Temperature vs Efficiency Heatmap**")
@@ -920,18 +939,26 @@ def render_forecasting():
         rng_daily = "± 75.0 MWh"
         
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Physics Peak Estimate", f"{physics_estimate:,.1f} MW")
-    c2.metric("ML Peak Prediction", f"{ml_prediction:,.1f} MW")
-    c3.metric("AI Peak Adjustment", f"{diff_peak:+,.1f} MW", delta_color="normal" if diff_peak > 0 else "inverse")
-    c4.metric("Peak Interval", rng)
+    with c1:
+        st.markdown(render_kpi_card("Physics Peak Estimate", f"{physics_estimate:,.1f}", "MW", "PVLib Baseline", "Clear sky & temp adjusted baseline.", "PVLib/Model"), unsafe_allow_html=True)
+    with c2:
+        st.markdown(render_kpi_card("ML Peak Prediction", f"{ml_prediction:,.1f}", "MW", "XGBoost Output", "AI-optimized final forecast.", "ML Forecast"), unsafe_allow_html=True)
+    with c3:
+        st.markdown(render_kpi_card("AI Peak Adjustment", f"{diff_peak:+,.1f}", "MW", "XGBoost Correction", "Magnitude of AI adjustment applied.", "Calculated"), unsafe_allow_html=True)
+    with c4:
+        st.markdown(render_kpi_card("Peak Interval", rng.replace("± ", "±"), "", "Confidence Bounds", f"Forecast Confidence ({conf_cat})", "Calculated"), unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
     d1, d2, d3, d4 = st.columns(4)
-    d1.metric("Physics Daily Estimate", f"{physics_daily:,.0f} MWh")
-    d2.metric("ML Daily Prediction", f"{ml_daily_prediction:,.0f} MWh")
-    d3.metric("AI Daily Adjustment", f"{diff_daily:+,.0f} MWh", delta_color="normal" if diff_daily > 0 else "inverse")
-    d4.metric("Daily Interval", rng_daily)
+    with d1:
+        st.markdown(render_kpi_card("Physics Daily Estimate", f"{physics_daily:,.0f}", "MWh", "PVLib Baseline", "Integrated daily baseline energy.", "PVLib/Model"), unsafe_allow_html=True)
+    with d2:
+        st.markdown(render_kpi_card("ML Daily Prediction", f"{ml_daily_prediction:,.0f}", "MWh", "XGBoost Output", "AI-optimized daily forecast.", "ML Forecast"), unsafe_allow_html=True)
+    with d3:
+        st.markdown(render_kpi_card("AI Daily Adjustment", f"{diff_daily:+,.0f}", "MWh", "XGBoost Correction", "Magnitude of AI adjustment applied.", "Calculated"), unsafe_allow_html=True)
+    with d4:
+        st.markdown(render_kpi_card("Daily Interval", rng_daily.replace("± ", "±"), "", "Confidence Bounds", f"Forecast Confidence ({conf_cat})", "Calculated"), unsafe_allow_html=True)
     
     col_gauge, col_meta = st.columns([1, 2])
     with col_gauge:
@@ -1122,10 +1149,14 @@ def render_weather_intelligence():
     
     st.subheader("14-Day Atmospheric Forecast (Open-Meteo)")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Avg Temperature", f"{float(temps.mean() if hasattr(temps,'mean') else sum(temps)/len(temps)):.1f} C")
-    c2.metric("Avg Cloud Cover", f"{float(clouds.mean() if hasattr(clouds,'mean') else sum(clouds)/len(clouds)):.1f}%")
-    c3.metric("Avg Wind Speed",  f"{float(wind.mean() if hasattr(wind,'mean') else sum(wind)/len(wind)):.1f} m/s")
-    c4.metric("Total Rainfall",  f"{float(sum(rain)):.1f} mm")
+    with c1:
+        st.markdown(render_kpi_card("Avg Temperature", f"{float(temps.mean() if hasattr(temps,'mean') else sum(temps)/len(temps)):.1f}", "°C", "Forecast Mean", "Average ambient temperature over period.", "Open-Meteo"), unsafe_allow_html=True)
+    with c2:
+        st.markdown(render_kpi_card("Avg Cloud Cover", f"{float(clouds.mean() if hasattr(clouds,'mean') else sum(clouds)/len(clouds)):.1f}", "%", "Forecast Mean", ">50% triggers High Risk classification.", "Open-Meteo"), unsafe_allow_html=True)
+    with c3:
+        st.markdown(render_kpi_card("Avg Wind Speed", f"{float(wind.mean() if hasattr(wind,'mean') else sum(wind)/len(wind)):.1f}", "m/s", "Forecast Mean", ">15m/s triggers structural risk.", "Open-Meteo"), unsafe_allow_html=True)
+    with c4:
+        st.markdown(render_kpi_card("Total Rainfall", f"{float(sum(rain)):.1f}", "mm", "Cumulative", "Total precipitation expected over period.", "Open-Meteo"), unsafe_allow_html=True)
     
     # 7-Day Timeline Chart
     fig_w = go.Figure()
@@ -1360,9 +1391,12 @@ def render_shap_analytics():
     
     st.subheader("Global SHAP Summary")
     col1, col2, col3 = st.columns(3)
-    col1.metric("Top SHAP Driver", top_driver_friendly)
-    col2.metric("Second Most Important Driver", second_driver_friendly)
-    col3.metric("Total SHAP Features Analyzed", total_features)
+    with col1:
+        st.markdown(render_kpi_card("Top SHAP Driver", top_driver_friendly, "", "Feature Impact", "Feature with highest absolute impact.", "SHAP Analysis"), unsafe_allow_html=True)
+    with col2:
+        st.markdown(render_kpi_card("Secondary Driver", second_driver_friendly, "", "Feature Impact", "Feature with second highest impact.", "SHAP Analysis"), unsafe_allow_html=True)
+    with col3:
+        st.markdown(render_kpi_card("Total Features", str(total_features), "", "Analyzed", "Total number of features in model.", "Model Config"), unsafe_allow_html=True)
     
     st.markdown("---")
     st.subheader("Top 10 Feature Impact Ranking")
@@ -1436,13 +1470,13 @@ def render_grid_analytics():
     
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric(label="Average Frequency", value=f"{avg_freq:.3f} Hz")
+        st.markdown(render_kpi_card("Average Frequency", f"{avg_freq:.3f}", "Hz", "Mean Grid Frequency", "Average over selected time horizon.", "NLDC"), unsafe_allow_html=True)
     with col2:
-        st.metric(label="Minimum Frequency", value=f"{min_freq:.3f} Hz", delta=f"{min_freq - 50.00:.3f} Hz", delta_color="inverse")
+        st.markdown(render_kpi_card("Minimum Frequency", f"{min_freq:.3f}", "Hz", f"Delta: {min_freq - 50.00:.3f} Hz", "Lowest recorded frequency.", "NLDC"), unsafe_allow_html=True)
     with col3:
-        st.metric(label="Maximum Frequency", value=f"{max_freq:.3f} Hz", delta=f"{max_freq - 50.00:.3f} Hz", delta_color="inverse")
+        st.markdown(render_kpi_card("Maximum Frequency", f"{max_freq:.3f}", "Hz", f"Delta: {max_freq - 50.00:.3f} Hz", "Highest recorded frequency.", "NLDC"), unsafe_allow_html=True)
     with col4:
-        st.metric(label="Danger Zone Blocks", value=f"{danger_blocks}", delta="Action Required" if danger_blocks > 0 else "Stable", delta_color="off" if danger_blocks == 0 else "inverse")
+        st.markdown(render_kpi_card("Danger Zone Blocks", str(danger_blocks), "", "Action Required" if danger_blocks > 0 else "Stable", "Blocks outside safe regulatory band.", "Calculated"), unsafe_allow_html=True)
     
     st.markdown("---")
     st.subheader(" 15-Minute Frequency Profile & Regulatory Bands")
@@ -1585,20 +1619,10 @@ def render_grid_analytics():
     c1, c2, c3 = st.columns(3)
     with c1:
         freq_delta = sim_freq - 50.00
-        st.metric(
-            label="Grid Frequency (Hz)", 
-            value=f"{sim_freq:.2f} Hz", 
-            delta=f"{freq_delta:.2f} Hz", 
-            delta_color="inverse" if abs(freq_delta) > 0.05 else "normal"
-        )
+        st.markdown(render_kpi_card("Grid Frequency", f"{sim_freq:.2f}", "Hz", f"Deviation: {freq_delta:.2f} Hz", "Simulated real-time frequency.", "Simulator"), unsafe_allow_html=True)
     with c2:
         mw_gap = sim_actual - sim_sched
-        st.metric(
-            label="Actual vs Scheduled (MW)", 
-            value=f"{sim_actual} MW", 
-            delta=f"{mw_gap} MW Deviation",
-            delta_color="off" if mw_gap == 0 else "normal"
-        )
+        st.markdown(render_kpi_card("Actual vs Scheduled", f"{sim_actual}", "MW", f"Deviation: {mw_gap} MW", "Deviation from committed baseline.", "Simulator"), unsafe_allow_html=True)
     with c3:
         st.markdown("**System Recommendation:**")
         if "Scenario 1" in scenario:
@@ -1719,10 +1743,14 @@ def render_platform_health():
         dq_score = 0
     
     d1, d2, d3, d4 = st.columns(4)
-    d1.metric("Data Quality Score", f"{dq_score}/100")
-    d2.metric("Missing Values", missing_vals)
-    d3.metric("Duplicate Dates", dup_dates)
-    d4.metric("Outlier Count", outliers)
+    with d1:
+        st.markdown(render_kpi_card("Data Quality Score", f"{dq_score}", "/100", "Overall Score", "Calculated based on missing values, duplicates and outliers.", "Platform Health"), unsafe_allow_html=True)
+    with d2:
+        st.markdown(render_kpi_card("Missing Values", str(missing_vals), "", "Count", "Total null cells in processed datasets.", "Platform Health"), unsafe_allow_html=True)
+    with d3:
+        st.markdown(render_kpi_card("Duplicate Dates", str(dup_dates), "", "Count", "Total duplicate timestamps detected.", "Platform Health"), unsafe_allow_html=True)
+    with d4:
+        st.markdown(render_kpi_card("Outlier Count", str(outliers), "", "Count", "Extreme temperature/irradiance spikes.", "Platform Health"), unsafe_allow_html=True)
     
     st.markdown(f"**Total Model Input Records Analyzed:** {row_count}")
 

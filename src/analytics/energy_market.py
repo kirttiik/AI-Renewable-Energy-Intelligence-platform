@@ -5,6 +5,32 @@ import plotly.express as px
 import plotly.graph_objects as go
 import os
 
+def render_kpi_card(title, value_str, unit="", context_main="", context_sub="", source=""):
+    import html
+    def get_font_size(text):
+        length = len(text)
+        if length > 20: return "1.2rem"
+        if length > 15: return "1.5rem"
+        if length > 10: return "1.8rem"
+        return "2rem"
+
+    val_str = html.escape(str(value_str))
+    fs = get_font_size(val_str)
+    
+    html_str = f"""
+    <div style="background-color: #1E293B; border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 5px solid #3B82F6; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div style="color: #9CA3AF; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">{title}</div>
+        <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px;">
+            <div style="color: #F8FAFC; font-size: {fs}; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{val_str}">{val_str}</div>
+            <div style="color: #9CA3AF; font-size: 1rem; font-weight: 500;">{unit}</div>
+        </div>
+        <div style="color: #60A5FA; font-size: 0.85rem; font-weight: 600; margin-bottom: 2px;">{context_main}</div>
+        <div style="color: #6B7280; font-size: 0.75rem; font-style: italic; margin-bottom: 6px;">{context_sub}</div>
+        <div style="display: inline-block; background-color: #374151; color: #D1D5DB; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">Data Source: {source}</div>
+    </div>
+    """
+    return html_str
+
 def render_iex_analytics():
     st.title("📈 Energy Market Intelligence (IEX)")
     st.markdown("Analyze actual historical pricing trends from the Indian Energy Exchange (IEX).")
@@ -50,9 +76,12 @@ def render_iex_analytics():
     st.markdown(f"**Latest Data Received:** {latest_date} | **Total Historical Days:** {len(daily_df)}")
     
     col1, col2, col3 = st.columns(3)
-    col1.metric(f"Avg DAM Price ({latest_date})", f"₹ {latest_stats['avg_dam']:.2f}/kWh")
-    col2.metric(f"Peak DAM Price ({latest_date})", f"₹ {latest_stats['peak_dam']:.2f}/kWh")
-    col3.metric(f"Avg RTM Price ({latest_date})", f"₹ {latest_stats['avg_rtm']:.2f}/kWh")
+    with col1:
+        st.markdown(render_kpi_card(f"Avg DAM Price ({latest_date})", f"{latest_stats['avg_dam']:.2f}", "₹/kWh", "Day Ahead Market", "Average clearing price across all blocks.", "IEX Scraper"), unsafe_allow_html=True)
+    with col2:
+        st.markdown(render_kpi_card(f"Peak DAM Price ({latest_date})", f"{latest_stats['peak_dam']:.2f}", "₹/kWh", "Day Ahead Market", "Maximum clearing price recorded.", "IEX Scraper"), unsafe_allow_html=True)
+    with col3:
+        st.markdown(render_kpi_card(f"Avg RTM Price ({latest_date})", f"{latest_stats['avg_rtm']:.2f}", "₹/kWh", "Real Time Market", "Simulated RTM price estimate.", "Calculated (Sim)"), unsafe_allow_html=True)
     st.markdown("---")
     
     tab1, tab2 = st.tabs(["📊 Daily Historical Trends", "⏱️ Intraday 15-Min Profile"])

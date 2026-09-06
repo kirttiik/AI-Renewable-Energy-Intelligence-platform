@@ -78,6 +78,32 @@ def calculate_dsm_risk(df: pd.DataFrame, schedule_col: str = 'scheduled_generati
     
     return df
 
+def render_kpi_card(title, value_str, unit="", context_main="", context_sub="", source=""):
+    import html
+    def get_font_size(text):
+        length = len(text)
+        if length > 20: return "1.2rem"
+        if length > 15: return "1.5rem"
+        if length > 10: return "1.8rem"
+        return "2rem"
+
+    val_str = html.escape(str(value_str))
+    fs = get_font_size(val_str)
+    
+    html_str = f"""
+    <div style="background-color: #1E293B; border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 5px solid #3B82F6; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div style="color: #9CA3AF; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">{title}</div>
+        <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px;">
+            <div style="color: #F8FAFC; font-size: {fs}; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{val_str}">{val_str}</div>
+            <div style="color: #9CA3AF; font-size: 1rem; font-weight: 500;">{unit}</div>
+        </div>
+        <div style="color: #60A5FA; font-size: 0.85rem; font-weight: 600; margin-bottom: 2px;">{context_main}</div>
+        <div style="color: #6B7280; font-size: 0.75rem; font-style: italic; margin-bottom: 6px;">{context_sub}</div>
+        <div style="display: inline-block; background-color: #374151; color: #D1D5DB; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">Data Source: {source}</div>
+    </div>
+    """
+    return html_str
+
 def render_dsm_intelligence():
     st.title("⚖️ DSM Intelligence & Risk Optimizer")
     st.markdown("Optimize generation schedules to minimize Deviation Settlement Mechanism (DSM) penalties.")
@@ -129,9 +155,12 @@ def render_dsm_intelligence():
     
     dsm_title = "Est. DSM Penalty" if dsm_df['dsm_mode'].iloc[-1] == "ACTUAL_SETTLEMENT" else "Forecasted DSM Risk"
     
-    col1.metric(f"{dsm_title} (30 Days)", f"₹ {total_penalty:,.0f}", delta_color="inverse")
-    col2.metric("Avg Absolute Deviation", f"{avg_deviation:.1f}%", "-2.1% vs prev month")
-    col3.metric("Days Penalized", f"{days_penalized} / {len(latest_df)}", delta_color="inverse")
+    with col1:
+        st.markdown(render_kpi_card(f"{dsm_title} (30 Days)", f"{total_penalty:,.0f}", "₹", "Cumulative Risk", "Total estimated CERC penalty.", "Calculated"), unsafe_allow_html=True)
+    with col2:
+        st.markdown(render_kpi_card("Avg Absolute Deviation", f"{avg_deviation:.1f}", "%", "-2.1% vs prev month", "Mean deviation from committed schedule.", "Calculated"), unsafe_allow_html=True)
+    with col3:
+        st.markdown(render_kpi_card("Days Penalized", f"{days_penalized} / {len(latest_df)}", "", "Frequency", "Count of days incurring penalties.", "Calculated"), unsafe_allow_html=True)
     
     st.markdown("### Forecast vs. Schedule & Deviations")
     if 'scheduled_generation_mw' in latest_df.columns:
