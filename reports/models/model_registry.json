@@ -1,0 +1,61 @@
+{
+    "model_version": "v3.0.0-quartz-leakage-free",
+    "timestamp": "2026-09-06T10:50:55.826607",
+    "training_start": "2020-01-01",
+    "training_end": "2026-09-06",
+    "training_rows": 2441,
+    "target": "solar_generation_mw",
+    "feature_count": 27,
+    "features": [
+        "ghi_kwh_m2_day",
+        "direct_radiation_kwh_m2_day",
+        "dhi_kwh_m2_day",
+        "dni_kwh_m2_day",
+        "clearness_index",
+        "diffuse_fraction",
+        "direct_fraction",
+        "cloud_cover_pct",
+        "cloud_cover_low_pct",
+        "cloud_cover_mid_pct",
+        "cloud_cover_high_pct",
+        "temperature_c",
+        "temperature_max_c",
+        "temperature_min_c",
+        "humidity_pct",
+        "rainfall_mm",
+        "wind_speed_ms",
+        "visibility_km",
+        "month",
+        "day_of_year",
+        "week_of_year",
+        "is_monsoon",
+        "is_weekend",
+        "h_mean_7d",
+        "h_median_7d",
+        "h_max_7d",
+        "h_mean_30d"
+    ],
+    "xgboost_parameters": {
+        "n_estimators": 122,
+        "learning_rate": 0.05,
+        "max_depth": 6,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "min_child_weight": 5,
+        "gamma": 0.1,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "random_state": 42,
+        "n_jobs": -1
+    },
+    "test_metrics": {
+        "MAE": 542.9862008389485,
+        "RMSE": 710.4850975389809,
+        "R2_Score": 0.9822249719833477,
+        "MAPE": 11447287004.140194
+    },
+    "uncertainty_offsets": {
+        "p10_offset_mw": -769.4561044297421,
+        "p90_offset_mw": 898.2247411430334
+    }
+}

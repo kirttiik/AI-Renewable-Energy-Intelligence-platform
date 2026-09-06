@@ -442,13 +442,13 @@ def render_executive_overview():
     carbon_disp         = f"{carbon_offset:,.2f} Tons" if carbon_offset is not None else "N/A"
 
     st.markdown("### Executive Summary")
-    st.info(f"**Briefing:** Latest solar generation output prediction is **{today_forecast_disp}**. Current weather risk is **{weather_risk}**. Quartz-inspired ML forecast confidence is **{forecast_confidence}**.")
+    st.info(f"**Briefing:** Latest solar generation output prediction is **{today_forecast_disp}**. Current weather risk is **{weather_risk}**. Quartz-inspired ML Model R² is **{forecast_confidence}**.")
     
     st.markdown("### Top-Level KPIs")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Peak Generation", today_forecast_disp)
-    c2.metric("Daily Generation", daily_energy_disp)
-    c3.metric("Forecast Confidence", forecast_confidence)
+    c1.metric("Peak Generation (Simulated)", today_forecast_disp)
+    c2.metric("Daily Generation (Simulated)", daily_energy_disp)
+    c3.metric("Model R² Score", forecast_confidence)
     c4.metric("Weather Risk Level", weather_risk)
     
     c5, c6, c7, c8 = st.columns(4)
@@ -476,7 +476,7 @@ def render_executive_overview():
                 if pd.isna(peak): continue
                 table_data.append({
                     "Date": row['date'].strftime('%Y-%m-%d'),
-                    "Source": "Historical (Physics Engine)",
+                    "Source": "Historical (Physics-Simulated)",
                     "Peak Generation (MW)": f"{peak:,.1f}",
                     "Daily Generation (MWh)": f"{peak * 7.5:,.0f}"
                 })
@@ -523,7 +523,7 @@ def render_plant_performance():
     # ---------------------------------------------------------
     # A. Plant KPIs — SCADA Grade (live from generation CSV)
     # ---------------------------------------------------------
-    st.subheader("A. Plant KPIs — SCADA Live")
+    st.subheader("A. Plant KPIs — Physics-Simulated SCADA")
 
     gen_df = data.get('generation', pd.DataFrame())
     gen_df_f = filter_by_time_horizon(gen_df, global_time_horizon, custom_start_date, custom_end_date)

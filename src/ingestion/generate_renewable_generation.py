@@ -249,6 +249,10 @@ def calculate_solar_generation(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     df["specific_yield_kwh_kwp"]    = ((df["daily_energy_mwh"] * 1000) / (CAPACITY * 1000)).round(4)
     df["capacity_factor"]           = df["cuf_daily"]
 
+    # Red Flag #1: Explicitly label as simulated rather than actual SCADA
+    df["data_type"]                 = "SIMULATED"
+    df["generation_source"]         = "SIMULATED_PVLIB"
+
     # --- CRITICAL FIX: Target Leakage Prevention ---
     # The 'solar_generation_mw' column is our ML target. It cannot be known for future dates.
     # We must mask all synthetic SCADA target columns for dates > today so the ML model
@@ -317,7 +321,7 @@ def validate_generation_data(df: pd.DataFrame, cfg: dict) -> bool:
 # ---------------------------------------------------------------------------
 def save_generation_data(df: pd.DataFrame) -> None:
     output_cols = [
-        "date", "site_name",
+        "date", "site_name", "data_type", "generation_source",
         "solar_generation_mw", "total_generation_mw",
         "daily_energy_mwh", "grid_export_mwh",
         "physics_baseline_mw", "physics_baseline_mwh",
