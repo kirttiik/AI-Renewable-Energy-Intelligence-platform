@@ -57,7 +57,8 @@ def calculate_dsm_risk(df: pd.DataFrame, schedule_col: str = 'scheduled_generati
     df['dsm_penalty_inr'] = 0.0
     
     mask_valid = df['dsm_target_mw'].notna()
-    mask_outside_tolerance = (abs(df['dsm_deviation_pct']) > 10) & mask_valid
+    # Trigger penalty if deviation pct > 10%, OR if schedule is 0 but we generated > 0
+    mask_outside_tolerance = ((abs(df['dsm_deviation_pct']) > 10) | ((df[schedule_col] == 0) & (abs(df['dsm_deviation_mw']) > 0))) & mask_valid
     
     # Red Flag 15 & 17: Correct Dimensional Logic (MW -> MWh -> INR)
     # excess_deviation_mw = max(abs(dev) - allowed, 0)

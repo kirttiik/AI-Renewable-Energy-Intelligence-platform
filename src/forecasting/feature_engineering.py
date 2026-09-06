@@ -30,6 +30,10 @@ def _build_core_features(df: pd.DataFrame) -> pd.DataFrame:
     if 'date' in df.columns:
         if not pd.api.types.is_datetime64_any_dtype(df['date']):
             df['date'] = pd.to_datetime(df['date'])
+        
+        # Ensure strict chronological ordering for rolling features
+        df = df.sort_values('date').reset_index(drop=True)
+            
         df['month'] = df['date'].dt.month
         df['day_of_year'] = df['date'].dt.dayofyear
         df['week_of_year'] = df['date'].dt.isocalendar().week.astype(float)

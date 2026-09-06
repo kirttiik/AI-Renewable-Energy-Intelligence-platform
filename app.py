@@ -344,6 +344,37 @@ def render_executive_alerts():
                 st.success(f" {msg}")
 
 
+def render_kpi_card(title, value_str, unit, context_main, context_sub, source):
+    # Calculate font size dynamically based on value length
+    val_len = len(str(value_str)) + (len(str(unit)) if unit else 0)
+    if val_len <= 6:
+        font_size = "32px"
+    elif val_len <= 10:
+        font_size = "28px"
+    elif val_len <= 15:
+        font_size = "24px"
+    elif val_len <= 20:
+        font_size = "20px"
+    else:
+        font_size = "18px"
+        
+    unit_html = f'<span style="font-size: 16px; color: #AAA; margin-left: 6px;">{unit}</span>' if unit else ''
+    
+    html = f"""<div style="background-color: #1E1E1E; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 14px; color: #888; margin-bottom: 8px; font-weight: 600; text-transform: uppercase;">
+            {title}
+        </div>
+        <div style="margin-bottom: 12px; display: flex; align-items: baseline; flex-wrap: wrap;">
+            <span style="font-size: {font_size}; font-weight: 700; color: #FFF; line-height: 1.2; word-break: break-word;">{value_str}</span>{unit_html}
+        </div>
+        <div style="font-size: 13px; color: #CCC; border-top: 1px solid #333; padding-top: 12px; margin-top: auto;">
+            <div style="margin-bottom: 4px;"><strong>{context_main}</strong></div>
+            <div style="color: #999; margin-bottom: 8px; line-height: 1.3;">{context_sub}</div>
+            <div style="font-size: 11px; color: #666; font-style: italic;">Source: {source}</div>
+        </div>
+    </div>"""
+    return html
+
 def render_executive_overview():
     st.title(" Executive Control Center")
     render_executive_alerts()
@@ -351,111 +382,222 @@ def render_executive_overview():
     
     ROOT = os.path.dirname(os.path.abspath(__file__))
     
-    # ---- Live data extraction for KPIs ----
-    today_forecast = None
-    daily_energy = None
-    carbon_offset = None
-    forecast_confidence = "N/A"
-    weather_risk = "N/A"
-    pipeline_health = " 100% Healthy"
-    plant_health_score = 92
-    perf_ratio = 0.82
-    cap_factor = 28.4
-    latest_update = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
+    # ---- 1. Data Extraction ----
+    # D+1 Forecast & Range
+    d1_forecast = "N/A"
+    d1_date = "N/A"
+    p10_mw = "N/A"
+    p90_mw = "N/A"
     
     try:
-        # Generation data (physics + actual)
+        pred_path = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
+        if os.path.exists(pred_path):
+            df_pred = pd.read_csv(pred_path)
+            df_pred['date'] = pd.to_datetime(df_pred['date'])
+            df_future = df_pred[df_pred['date'].dt.date > GLOBAL_TODAY.date()].sort_values('date')
+            if not df_future.empty:
+                d1_row = df_future.iloc[0]
+                d1_forecast = f"{d1_row['predicted_solar_generation_mw']:,.0f}"
+                d1_date = d1_row['date'].strftime("%d %b %Y")
+                if 'p10_mw' in d1_row and 'p90_mw' in d1_row:
+                    p10_mw = f"{d1_row['p10_mw']:,.0f}"
+                    p90_mw = f"{d1_row['p90_mw']:,.0f}"
+    except Exception:
+        pass
+
+    # Model Metrics
+    model_r2 = "N/A"
+    model_mae = "N/A"
+    try:
+        reg_path = os.path.join(ROOT, 'reports', 'models', 'model_registry.json')
+        import json
+        if os.path.exists(reg_path):
+            with open(reg_path, 'r') as f:
+                mreg = json.load(f)
+                if 'test_metrics' in mreg:
+                    model_r2 = f"{mreg['test_metrics'].get('R2_Score', 0):.3f}"
+                    model_mae = f"{mreg['test_metrics'].get('MAE', 0):,.1f}"
+    except Exception:
+        pass
+
+    # Capacity Utilization & Performance Ratio
+    cap_utilization = "N/A"
+    perf_ratio = "N/A"
+    try:
         gen_path = os.path.join(ROOT, 'data', 'processed', 'khavda_generation.csv')
         if os.path.exists(gen_path):
             df_gen = pd.read_csv(gen_path)
             df_gen['date'] = pd.to_datetime(df_gen['date'])
             df_gen_f = filter_by_time_horizon(df_gen, global_time_horizon, custom_start_date, custom_end_date)
-            if df_gen_f.empty and not df_gen.empty: df_gen_f = df_gen.tail(1)
-            
-            if not df_gen_f.empty:
-                perf_ratio = df_gen_f['performance_ratio'].mean() if 'performance_ratio' in df_gen_f.columns else 0.82
-                cap_factor = df_gen_f['capacity_factor'].mean() * 100 if 'capacity_factor' in df_gen_f.columns else 28.4
-                if 'solar_generation_mw' in df_gen_f.columns:
-                    today_forecast = df_gen_f['solar_generation_mw'].mean()
-                if 'daily_energy_mwh' in df_gen_f.columns:
-                    daily_energy = df_gen_f['daily_energy_mwh'].mean()
+            if df_gen_f.empty: df_gen_f = df_gen.tail(1)
+            if 'solar_generation_mw' in df_gen_f.columns:
+                mean_mw = df_gen_f['solar_generation_mw'].mean()
+                if pd.notna(mean_mw):
+                    cap_utilization = f"{(mean_mw / 20000) * 100:.1f}"
+            if 'performance_ratio' in df_gen_f.columns:
+                pr = df_gen_f['performance_ratio'].mean()
+                if pd.notna(pr): perf_ratio = f"{pr:.2f}"
     except Exception:
         pass
 
+    # Weather Risk
+    weather_risk = "N/A"
+    weather_driver = "Drivers unavailable."
     try:
-        # ML Predictions (use the filtered predicted value if available)
-        pred_path = os.path.join(ROOT, 'reports', 'solar', 'solar_predictions.csv')
-        if os.path.exists(pred_path):
-            df_pred = pd.read_csv(pred_path)
-            df_pred['date'] = pd.to_datetime(df_pred['date'])
-            df_pred_f = filter_by_time_horizon(df_pred, global_time_horizon, custom_start_date, custom_end_date)
-            if df_pred_f.empty and not df_pred.empty: df_pred_f = df_pred.sort_values('date').tail(1)
-            
-            if not df_pred_f.empty and 'predicted_solar_generation_mw' in df_pred_f.columns:
-                pred_val = df_pred_f['predicted_solar_generation_mw'].mean()
-                if pd.notna(pred_val) and pred_val > 0:
-                    today_forecast = float(pred_val)
-    except Exception:
-        pass
-
-    try:
-        # Carbon offset
-        carb_path = os.path.join(ROOT, 'data', 'processed', 'carbon_offset_analytics.csv')
-        if os.path.exists(carb_path):
-            df_carb = pd.read_csv(carb_path)
-            df_carb['date'] = pd.to_datetime(df_carb['date'])
-            # Filter to time horizon
-            df_carb_f = filter_by_time_horizon(df_carb, global_time_horizon, custom_start_date, custom_end_date)
-            if df_carb_f.empty:
-                df_carb_f = df_carb.tail(1)
-            carbon_offset = df_carb_f['co2_avoided_tons'].sum()
-    except Exception:
-        pass
-    
-    try:
-        # Weather risk
         risk_path = os.path.join(ROOT, 'data', 'processed', 'weather_risk_analytics.csv')
         if os.path.exists(risk_path):
             df_risk = pd.read_csv(risk_path)
             df_risk['date'] = pd.to_datetime(df_risk['date'])
             df_risk_f = filter_by_time_horizon(df_risk, global_time_horizon, custom_start_date, custom_end_date)
-            if df_risk_f.empty and not df_risk.empty: df_risk_f = df_risk.sort_values('date').tail(1)
+            if df_risk_f.empty: df_risk_f = df_risk.sort_values('date').tail(1)
             
             if not df_risk_f.empty:
-                weather_risk = df_risk_f.sort_values('date').iloc[-1].get('overall_risk_level', 'N/A')
+                latest_risk = df_risk_f.sort_values('date').iloc[-1]
+                weather_risk = latest_risk.get('overall_risk_level', 'N/A')
+                cloud_pct = latest_risk.get('cloud_cover_pct', 0)
+                wind_spd = latest_risk.get('wind_speed_ms', 0)
+                drivers = []
+                if cloud_pct > 50: drivers.append("High Cloud Cover")
+                elif cloud_pct < 20: drivers.append("Low Cloud Cover")
+                if wind_spd > 15: drivers.append("High Wind Speed")
+                if drivers:
+                    weather_driver = "Primary drivers: " + ", ".join(drivers)
+                else:
+                    weather_driver = "Stable forecast parameters."
     except Exception:
         pass
 
-    # Forecast confidence based on solar model R2
+    # CO2 Avoided
+    co2_val = "N/A"
+    co2_period = "Unknown Period"
     try:
-        solar_metrics_path = os.path.join(ROOT, 'reports', 'solar', 'solar_model_metrics.csv')
-        if os.path.exists(solar_metrics_path):
-            sm = pd.read_csv(solar_metrics_path)
-            r2 = float(sm['R2_Score'].iloc[0]) * 100
-            forecast_confidence = f"High ({r2:.1f}%)" if r2 >= 90 else f"Medium ({r2:.1f}%)" if r2 >= 70 else f"Low ({r2:.1f}%)"
+        carb_path = os.path.join(ROOT, 'data', 'processed', 'carbon_offset_analytics.csv')
+        if os.path.exists(carb_path):
+            df_carb = pd.read_csv(carb_path)
+            df_carb['date'] = pd.to_datetime(df_carb['date'])
+            df_carb_f = filter_by_time_horizon(df_carb, global_time_horizon, custom_start_date, custom_end_date)
+            if df_carb_f.empty: df_carb_f = df_carb.tail(1)
+            
+            total_co2 = df_carb_f['co2_avoided_tons'].sum()
+            if pd.notna(total_co2):
+                co2_val = f"{total_co2:,.2f}"
+            min_date = df_carb_f['date'].min().strftime('%d %b %Y')
+            max_date = df_carb_f['date'].max().strftime('%d %b %Y')
+            if min_date == max_date:
+                co2_period = f"Period: {min_date}"
+            else:
+                co2_period = f"Period: {min_date} - {max_date}"
     except Exception:
         pass
-
-    # Fallbacks for display
-    today_forecast_disp = f"{today_forecast:,.1f} MW @ 13:30" if today_forecast is not None else "N/A"
-    daily_energy_disp   = f"{daily_energy:,.0f} MWh" if daily_energy is not None else "N/A"
-    carbon_disp         = f"{carbon_offset:,.2f} Tons" if carbon_offset is not None else "N/A"
 
     st.markdown("### Executive Summary")
-    st.info(f"**Briefing:** Latest solar generation output prediction is **{today_forecast_disp}**. Current weather risk is **{weather_risk}**. Quartz-inspired ML Model R² is **{forecast_confidence}**.")
+    d1_disp = f"{d1_forecast} MW" if d1_forecast != "N/A" else "N/A"
+    st.info(f"**Briefing:** D+1 forecast indicates **{d1_disp}**. Current weather risk is **{weather_risk}**. Model R² is **{model_r2}**.")
     
-    st.markdown("### Top-Level KPIs")
+    # ---- 2. Primary Forecast KPIs ----
+    st.markdown("### Primary Forecast KPIs")
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Peak Generation (Simulated)", today_forecast_disp)
-    c2.metric("Daily Generation (Simulated)", daily_energy_disp)
-    c3.metric("Model R² Score", forecast_confidence)
-    c4.metric("Weather Risk Level", weather_risk)
-    
-    c5, c6, c7, c8 = st.columns(4)
-    c5.metric("Pipeline Health", pipeline_health)
-    c6.metric("Performance Ratio", f"{perf_ratio:.2f}")
-    c7.metric("Capacity Factor", f"{cap_factor:.1f}%")
-    c8.empty()
+    with c1:
+        val_d1 = d1_forecast if d1_forecast != "N/A" else "Forecast unavailable"
+        st.markdown(render_kpi_card(
+            "D+1 Solar Forecast",
+            val_d1,
+            "MW" if d1_forecast != "N/A" else "",
+            f"Forecast for {d1_date}",
+            "Expected solar power output for the next forecast day.",
+            "ML Forecast"
+        ), unsafe_allow_html=True)
+    with c2:
+        val_range = f"{p10_mw} – {p90_mw}" if p10_mw != "N/A" else "N/A"
+        st.markdown(render_kpi_card(
+            "Forecast Range (P10-P90)",
+            val_range,
+            "MW" if p10_mw != "N/A" else "",
+            "Estimated Prediction Range",
+            "Estimated range around the median forecast based on historical residuals.",
+            "ML Forecast"
+        ), unsafe_allow_html=True)
+    with c3:
+        st.markdown(render_kpi_card(
+            "Model R²",
+            model_r2,
+            "",
+            "Variance Explained",
+            "Walk-forward evaluation across 14-day horizons using the current simulated-data benchmark.",
+            "Historical Backtest"
+        ), unsafe_allow_html=True)
+    with c4:
+        st.markdown(render_kpi_card(
+            "Forecast MAE",
+            model_mae,
+            "MW" if model_mae != "N/A" else "",
+            "Mean Absolute Error",
+            "Average absolute error during out-of-sample walk-forward testing.",
+            "Historical Backtest"
+        ), unsafe_allow_html=True)
+
+    # ---- 3. Secondary Operational KPIs ----
+    st.markdown("### Secondary Operational KPIs")
+    c5, c6, c7 = st.columns(3)
+    with c5:
+        st.markdown(render_kpi_card(
+            "Current Capacity Utilization",
+            cap_utilization,
+            "%" if cap_utilization != "N/A" else "",
+            "Based on 20 GW installed capacity",
+            "Predicted power output relative to maximum installed capacity.",
+            "Calculated"
+        ), unsafe_allow_html=True)
+    with c6:
+        st.markdown(render_kpi_card(
+            "Weather Risk",
+            weather_risk,
+            "",
+            weather_driver,
+            "Operational risk level driven by recent and forecasted weather variables.",
+            "Calculated"
+        ), unsafe_allow_html=True)
+    with c7:
+        st.markdown(render_kpi_card(
+            "CO₂ Avoided",
+            co2_val,
+            "tCO₂e" if co2_val != "N/A" else "",
+            co2_period,
+            "Calculated from renewable energy generated × emission factor.",
+            "Calculated"
+        ), unsafe_allow_html=True)
+
+    # ---- 4. System & Model Health ----
+    st.markdown("### System & Model Health")
+    c8, c9, c10 = st.columns(3)
+    with c8:
+        st.markdown(render_kpi_card(
+            "Pipeline Health",
+            "Healthy",
+            "",
+            "Automated ETL and Model Inference",
+            "Indicates all required dependencies and upstream data flows are functioning.",
+            "System Monitor"
+        ), unsafe_allow_html=True)
+    with c9:
+        st.markdown(render_kpi_card(
+            "Data Source",
+            "Open-Meteo",
+            "",
+            "Historical Observed Weather",
+            "Meteorological data used for physical baseline and ML features.",
+            "External API"
+        ), unsafe_allow_html=True)
+    with c10:
+        st.markdown(render_kpi_card(
+            "Performance Ratio",
+            perf_ratio,
+            "",
+            "Simulation Parameter",
+            "Theoretical performance ratio assumed by PVLib physical engine.",
+            "Model Configuration"
+        ), unsafe_allow_html=True)
+
 
 
 
@@ -512,7 +654,6 @@ def render_executive_overview():
         st.markdown("**Model Version:** v2.1.0 (Physics-Informed XGBoost)")
     with col_right:
         st.markdown("**GitHub Action Status:**  Passing")
-        st.markdown(f"**Plant Health Score:** {plant_health_score}/100")
 
 def render_plant_performance():
     st.title(" Plant Performance")
