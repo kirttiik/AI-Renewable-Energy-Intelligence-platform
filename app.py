@@ -385,6 +385,7 @@ def render_executive_overview():
     # ---- 1. Data Extraction ----
     # D+1 Forecast & Range
     d1_forecast = "N/A"
+    d1_energy = "N/A"
     d1_date = "N/A"
     p10_mw = "N/A"
     p90_mw = "N/A"
@@ -399,6 +400,8 @@ def render_executive_overview():
                 d1_row = df_future.iloc[0]
                 d1_forecast = f"{d1_row['predicted_solar_generation_mw']:,.0f}"
                 d1_date = d1_row['date'].strftime("%d %b %Y")
+                if 'predicted_daily_energy_mwh' in d1_row:
+                    d1_energy = f"{d1_row['predicted_daily_energy_mwh']:,.0f}"
                 if 'p10_mw' in d1_row and 'p90_mw' in d1_row:
                     p10_mw = f"{d1_row['p10_mw']:,.0f}"
                     p90_mw = f"{d1_row['p90_mw']:,.0f}"
@@ -496,18 +499,28 @@ def render_executive_overview():
     
     # ---- 2. Primary Forecast KPIs ----
     st.markdown("### Primary Forecast KPIs")
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
         val_d1 = d1_forecast if d1_forecast != "N/A" else "Forecast unavailable"
         st.markdown(render_kpi_card(
-            "D+1 Solar Forecast",
+            "D+1 Peak Solar Forecast",
             val_d1,
             "MW" if d1_forecast != "N/A" else "",
             f"Forecast for {d1_date}",
-            "Expected solar power output for the next forecast day.",
+            "Expected maximum (peak) solar power output for the next forecast day.",
             "ML Forecast"
         ), unsafe_allow_html=True)
     with c2:
+        val_e1 = d1_energy if d1_energy != "N/A" else "N/A"
+        st.markdown(render_kpi_card(
+            "D+1 Daily Energy",
+            val_e1,
+            "MWh" if d1_energy != "N/A" else "",
+            f"Forecast for {d1_date}",
+            "Expected total solar energy generation over the entire day.",
+            "ML Forecast"
+        ), unsafe_allow_html=True)
+    with c3:
         val_range = f"{p10_mw} – {p90_mw}" if p10_mw != "N/A" else "N/A"
         st.markdown(render_kpi_card(
             "Forecast Range (P10-P90)",
@@ -517,7 +530,7 @@ def render_executive_overview():
             "Estimated range around the median forecast based on historical residuals.",
             "ML Forecast"
         ), unsafe_allow_html=True)
-    with c3:
+    with c4:
         st.markdown(render_kpi_card(
             "Model R²",
             model_r2,
@@ -526,7 +539,7 @@ def render_executive_overview():
             "Walk-forward evaluation across 14-day horizons using the current simulated-data benchmark.",
             "Historical Backtest"
         ), unsafe_allow_html=True)
-    with c4:
+    with c5:
         st.markdown(render_kpi_card(
             "Forecast MAE",
             model_mae,
