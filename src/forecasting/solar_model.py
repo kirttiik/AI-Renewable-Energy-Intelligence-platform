@@ -159,17 +159,11 @@ def load_data() -> pd.DataFrame:
         df["et_radiation_kwh_m2"] = 6.5 + 1.0 * np.cos(2 * np.pi * (df["day_of_year"] - 172) / 365)
         df["clearness_index"] = (df["ghi_kwh_m2_day"] / df["et_radiation_kwh_m2"]).clip(0, 1)
 
-    # Add rolling autoregressive features (Quartz: h_mean, h_median, h_max)
-    df["h_mean_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).mean()
-    df["h_median_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).median()
-    df["h_max_7d"] = df[TARGET].shift(1).rolling(7, min_periods=1).max()
-    df["h_mean_30d"] = df[TARGET].shift(1).rolling(30, min_periods=7).mean()
-
-    # CRITICAL FIX: Future forecasts will have NaN targets, causing rolling features
-    # to become NaN. We forward-fill the rolling features so the forecast uses the 
-    # most recent known historical plant health.
-    roll_cols = ["h_mean_7d", "h_median_7d", "h_max_7d", "h_mean_30d"]
-    df[roll_cols] = df[roll_cols].ffill()
+    # Initialize rolling columns with NaN to pass feature availability check
+    df["h_mean_7d"] = np.nan
+    df["h_median_7d"] = np.nan
+    df["h_max_7d"] = np.nan
+    df["h_mean_30d"] = np.nan
 
     logger.info(f"Dataset: {len(df)} rows | {df['date'].min().date()} to {df['date'].max().date()}")
     return df
@@ -187,47 +181,82 @@ def select_features(df: pd.DataFrame) -> list:
 
 
 def train_model(df: pd.DataFrame):
-    """Chronological 80/20 split + Quartz-tuned XGBoost training."""
+    """Chronological split for validation, then full retrain for production."""
     logger.info("Training Quartz-tuned XGBoost model...")
 
     feature_cols = select_features(df)
 
     historical = df.dropna(subset=[TARGET]).copy()
     future = df[df[TARGET].isna()].copy()
+    
+    # 1. Leakage-free rolling feature calculation for all historical data
+    historical["h_mean_7d"] = historical[TARGET].shift(1).rolling(7, min_periods=1).mean()
+    historical["h_median_7d"] = historical[TARGET].shift(1).rolling(7, min_periods=1).median()
+    historical["h_max_7d"] = historical[TARGET].shift(1).rolling(7, min_periods=1).max()
+    historical["h_mean_30d"] = historical[TARGET].shift(1).rolling(30, min_periods=7).mean()
 
-    # CRITICAL FIX: Use a robust 365-day test set instead of 80/20 to properly
-    # evaluate the model's ability to forecast across all seasons.
+    # 2. Validation Split (Holdout)
     test_size = min(365, int(len(historical) * 0.2))
-    train_df = historical.iloc[:-test_size]
-    test_df = historical.iloc[-test_size:]
+    train_df = historical.iloc[:-test_size].copy()
+    test_df = historical.iloc[-test_size:].copy()
+    
+    # Prevent leakage into the validation set: forward-fill from the training boundary.
+    last_h_mean = train_df["h_mean_7d"].iloc[-1] if not train_df.empty else 0
+    last_h_median = train_df["h_median_7d"].iloc[-1] if not train_df.empty else 0
+    last_h_max = train_df["h_max_7d"].iloc[-1] if not train_df.empty else 0
+    last_h_mean_30 = train_df["h_mean_30d"].iloc[-1] if not train_df.empty else 0
+    
+    test_df["h_mean_7d"] = last_h_mean
+    test_df["h_median_7d"] = last_h_median
+    test_df["h_max_7d"] = last_h_max
+    test_df["h_mean_30d"] = last_h_mean_30
 
     X_train = train_df[feature_cols].fillna(0)
     y_train = train_df[TARGET]
     X_test = test_df[feature_cols].fillna(0)
     y_test = test_df[TARGET]
 
-    logger.info(f"Train: {len(X_train)} | Test: {len(X_test)} | Features: {len(feature_cols)}")
+    logger.info("--- Validation Phase ---")
+    logger.info(f"Val Train: {len(X_train)} | Val Test: {len(X_test)} | Features: {len(feature_cols)}")
 
     if HAS_XGB:
-        model = XGBRegressor(
-            **XGB_PARAMS,
-            early_stopping_rounds=30,
-            eval_metric="mae",
-        )
+        val_model = XGBRegressor(**XGB_PARAMS, early_stopping_rounds=30, eval_metric="mae")
         val_size = max(20, int(len(X_train) * 0.1))
         X_val = X_train.iloc[-val_size:]
         y_val = y_train.iloc[-val_size:]
         X_tr = X_train.iloc[:-val_size]
         y_tr = y_train.iloc[:-val_size]
-        model.fit(X_tr, y_tr, eval_set=[(X_val, y_val)], verbose=50)
-        logger.info(f"Best iteration: {model.best_iteration}")
+        val_model.fit(X_tr, y_tr, eval_set=[(X_val, y_val)], verbose=False)
+        best_iters = val_model.best_iteration
     else:
         from sklearn.ensemble import GradientBoostingRegressor
-        model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.05, max_depth=6, random_state=42)
-        model.fit(X_train, y_train)
+        val_model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.05, max_depth=6, random_state=42)
+        val_model.fit(X_train, y_train)
+        best_iters = 500
 
-    y_pred = model.predict(X_test)
+    y_pred = val_model.predict(X_test)
     y_pred = np.clip(y_pred, 0, None)
+
+    # 3. Production Retraining (100% of historical data)
+    logger.info("--- Production Phase (Full Retrain) ---")
+    X_full = historical[feature_cols].fillna(0)
+    y_full = historical[TARGET]
+    
+    if HAS_XGB:
+        prod_params = XGB_PARAMS.copy()
+        prod_params["n_estimators"] = best_iters
+        model = XGBRegressor(**prod_params)
+        model.fit(X_full, y_full)
+    else:
+        model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.05, max_depth=6, random_state=42)
+        model.fit(X_full, y_full)
+
+    # 4. Prepare Future Data
+    if not future.empty:
+        future["h_mean_7d"] = historical["h_mean_7d"].iloc[-1] if not historical.empty else 0
+        future["h_median_7d"] = historical["h_median_7d"].iloc[-1] if not historical.empty else 0
+        future["h_max_7d"] = historical["h_max_7d"].iloc[-1] if not historical.empty else 0
+        future["h_mean_30d"] = historical["h_mean_30d"].iloc[-1] if not historical.empty else 0
 
     return model, X_test, y_test, test_df["date"], future, feature_cols, y_pred
 

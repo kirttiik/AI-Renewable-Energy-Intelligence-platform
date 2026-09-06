@@ -1,4 +1,4 @@
-﻿"""
+"""
 Walk-Forward Backtesting Engine — Solar Generation Forecast
 ============================================================
 Performs rigorous out-of-sample backtesting from 2020-01-01 to today.
@@ -80,13 +80,6 @@ QUARTZ_FEATURE_COLS = [
     "h_median_7d",
     "h_max_7d",
     "h_mean_30d",
-    # Physics-informed features (from generation engine)
-    "effective_irradiance",
-    "cell_temperature_c",
-    "temperature_factor",
-    "cloud_factor",
-    "performance_ratio",
-    "capacity_factor",
 ]
 
 TARGET_COL = "solar_generation_mw"
@@ -133,11 +126,11 @@ def load_dataset() -> pd.DataFrame:
     df = wx_df.merge(gen_df, on="date", how="inner")
     df = df.sort_values("date").reset_index(drop=True)
 
-    # Add rolling autoregressive features (Quartz: h_mean, h_median, h_max)
-    df["h_mean_7d"] = df[TARGET_COL].shift(1).rolling(7, min_periods=1).mean()
-    df["h_median_7d"] = df[TARGET_COL].shift(1).rolling(7, min_periods=1).median()
-    df["h_max_7d"] = df[TARGET_COL].shift(1).rolling(7, min_periods=1).max()
-    df["h_mean_30d"] = df[TARGET_COL].shift(1).rolling(30, min_periods=7).mean()
+    # Initialize rolling columns with NaN to pass feature availability check
+    df["h_mean_7d"] = np.nan
+    df["h_median_7d"] = np.nan
+    df["h_max_7d"] = np.nan
+    df["h_mean_30d"] = np.nan
 
     logger.info(f"Combined dataset: {len(df)} rows ({df['date'].min().date()} to {df['date'].max().date()})")
     return df
@@ -179,16 +172,29 @@ def run_walk_forward_backtest(df: pd.DataFrame, feature_cols: list) -> tuple:
         test_start = train_end
         test_end = min(test_start + pd.Timedelta(days=fold_size_days), max_date)
 
-        train_df_raw = df[df["date"] < test_start].dropna(subset=[TARGET_COL])
-        train_df = train_df_raw.copy()
-        train_df[feature_cols] = train_df[feature_cols].fillna(0)
-        test_df_raw = df[(df["date"] >= test_start) & (df["date"] < test_end)]
-        test_df = test_df_raw.copy()
-        test_df[feature_cols] = test_df[feature_cols].fillna(0)
+        train_df_raw = df[df["date"] < test_start].dropna(subset=[TARGET_COL]).copy()
+        test_df_raw = df[(df["date"] >= test_start) & (df["date"] < test_end)].copy()
 
-        if len(train_df) < 100 or test_df.empty:
+        if len(train_df_raw) < 100 or test_df_raw.empty:
             train_end = test_end
             continue
+            
+        # 1. Leakage-free rolling feature calculation for Train
+        train_df_raw["h_mean_7d"] = train_df_raw[TARGET_COL].shift(1).rolling(7, min_periods=1).mean()
+        train_df_raw["h_median_7d"] = train_df_raw[TARGET_COL].shift(1).rolling(7, min_periods=1).median()
+        train_df_raw["h_max_7d"] = train_df_raw[TARGET_COL].shift(1).rolling(7, min_periods=1).max()
+        train_df_raw["h_mean_30d"] = train_df_raw[TARGET_COL].shift(1).rolling(30, min_periods=7).mean()
+        
+        # 2. Leakage-free forward-fill for Test (Multi-step forecast boundary)
+        test_df_raw["h_mean_7d"] = train_df_raw["h_mean_7d"].iloc[-1] if not train_df_raw.empty else 0
+        test_df_raw["h_median_7d"] = train_df_raw["h_median_7d"].iloc[-1] if not train_df_raw.empty else 0
+        test_df_raw["h_max_7d"] = train_df_raw["h_max_7d"].iloc[-1] if not train_df_raw.empty else 0
+        test_df_raw["h_mean_30d"] = train_df_raw["h_mean_30d"].iloc[-1] if not train_df_raw.empty else 0
+
+        train_df = train_df_raw.copy()
+        train_df[feature_cols] = train_df[feature_cols].fillna(0)
+        test_df = test_df_raw.copy()
+        test_df[feature_cols] = test_df[feature_cols].fillna(0)
 
         X_train = train_df[feature_cols]
         y_train = train_df[TARGET_COL]
