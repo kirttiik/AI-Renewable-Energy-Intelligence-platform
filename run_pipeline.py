@@ -14,6 +14,7 @@ cannot be produced, but analytics-layer failures don't kill the whole pipeline.
 import subprocess
 import sys
 import logging
+import os
 
 logging.basicConfig(
     level=logging.INFO,
@@ -50,7 +51,6 @@ PIPELINE_STEPS = [
 
     # ── Analytics Layer (Non-Critical — failures logged but continue) ──────
     ("src/analytics/pv_engine_analytics.py",            False),
-    ("src/analytics/carbon_offset.py",                  False),
     ("src/analytics/weather_risk.py",                   False),
     ("src/analytics/model_explainability.py",            False),
     ("src/analytics/shap_explainability.py",             False),
@@ -65,10 +65,15 @@ def run_script(script_path: str, is_critical: bool) -> bool:
     Raises SystemExit if the step is critical and fails.
     """
     logging.info(f" Running {'[CRITICAL]' if is_critical else '[optional]'} {script_path} ...")
+    
+    env = os.environ.copy()
+    env["PYTHONPATH"] = os.getcwd() + os.pathsep + env.get("PYTHONPATH", "")
+
     result = subprocess.run(
         [sys.executable, script_path],
         capture_output=True,
-        text=True
+        text=True,
+        env=env
     )
 
     if result.stdout:
