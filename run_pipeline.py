@@ -65,15 +65,13 @@ def run_script(script_path: str, is_critical: bool) -> bool:
     Raises SystemExit if the step is critical and fails.
     """
     logging.info(f" Running {'[CRITICAL]' if is_critical else '[optional]'} {script_path} ...")
+    # Convert script path to module name (e.g., src/forecasting/solar_model.py -> src.forecasting.solar_model)
+    module_name = script_path.replace(".py", "").replace("/", ".").replace("\\", ".")
     
-    env = os.environ.copy()
-    env["PYTHONPATH"] = os.getcwd() + os.pathsep + env.get("PYTHONPATH", "")
-
     result = subprocess.run(
-        [sys.executable, script_path],
+        [sys.executable, "-m", module_name],
         capture_output=True,
-        text=True,
-        env=env
+        text=True
     )
 
     if result.stdout:
