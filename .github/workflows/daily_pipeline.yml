@@ -43,6 +43,7 @@ jobs:
       - name: Run Master Data Pipeline
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PYTHONPATH: .
         run: python run_pipeline.py
         
       - name: Commit and Push Updated Data

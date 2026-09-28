@@ -42,6 +42,7 @@ jobs:
       - name: Run NLDC Grid Frequency Scraper
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PYTHONPATH: .
         run: python src/ingestion/nldc_grid_scraper.py
           
       - name: Commit Local CSV Fallbacks
