@@ -1,2 +1,2 @@
 Model,Top Driver,Importance %,Business Meaning,Top_Feature,Importance
-Solar,cloud_cover_pct,63.56%,Solar generation is highly predictable based on irradiance and cloud cover.,cloud_cover_pct,0.63558954
+Solar,cloud_cover_pct,63.51%,Solar generation is highly predictable based on irradiance and cloud cover.,cloud_cover_pct,0.6351013
