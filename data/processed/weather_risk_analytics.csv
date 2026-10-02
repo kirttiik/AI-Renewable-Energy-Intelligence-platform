@@ -2191,7 +2191,6 @@ date,site_name,heatwave_risk,cloud_curtailment_risk,heavy_rain_risk,dust_storm_r
 2025-12-29,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2025-12-30,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2025-12-31,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
-2026-10-01,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2026-10-02,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2026-10-03,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2026-10-04,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
@@ -2205,3 +2204,4 @@ date,site_name,heatwave_risk,cloud_curtailment_risk,heavy_rain_risk,dust_storm_r
 2026-10-12,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2026-10-13,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
 2026-10-14,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
+2026-10-15,Khavda Renewable Energy Park,LOW,LOW,LOW,LOW,1.0,LOW,NORMAL_OPERATIONS,NORMAL
