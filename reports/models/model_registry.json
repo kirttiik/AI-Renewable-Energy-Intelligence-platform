@@ -1,8 +1,8 @@
 {
     "model_version": "v3.0.0-quartz-leakage-free",
-    "timestamp": "2026-10-13T05:18:15.389739",
+    "timestamp": "2026-10-14T03:23:53.165534",
     "training_start": "2020-01-01",
-    "training_end": "2026-10-13",
+    "training_end": "2026-10-14",
     "training_rows": 2193,
     "target": "solar_generation_mw",
     "feature_count": 27,
@@ -49,10 +49,10 @@
         "n_jobs": -1
     },
     "test_metrics": {
-        "MAE": 505.5786222931007,
-        "RMSE": 679.7712722297006,
-        "R2_Score": 0.9886812624346509,
-        "MAPE": 66654085150.56716
+        "MAE": 504.9807227830073,
+        "RMSE": 679.2421482719765,
+        "R2_Score": 0.988699306114312,
+        "MAPE": 66654085150.563774
     },
     "uncertainty_offsets": {
         "p10_offset_mw": -963.1958830909119,
