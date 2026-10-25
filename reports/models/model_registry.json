@@ -1,9 +1,9 @@
 {
     "model_version": "v3.0.0-quartz-leakage-free",
-    "timestamp": "2026-10-24T03:08:35.984333",
+    "timestamp": "2026-10-25T03:02:40.208027",
     "training_start": "2020-01-01",
-    "training_end": "2026-10-24",
-    "training_rows": 2124,
+    "training_end": "2026-10-25",
+    "training_rows": 2125,
     "target": "solar_generation_mw",
     "feature_count": 27,
     "features": [
@@ -36,7 +36,7 @@
         "h_mean_30d"
     ],
     "xgboost_parameters": {
-        "n_estimators": 169,
+        "n_estimators": 152,
         "learning_rate": 0.05,
         "max_depth": 6,
         "subsample": 0.8,
@@ -49,13 +49,13 @@
         "n_jobs": -1
     },
     "test_metrics": {
-        "MAE": 542.6634956985708,
-        "RMSE": 676.2783699452962,
-        "R2_Score": 0.9797264340341805,
-        "MAPE": 5.265245697881983
+        "MAE": 547.9251946463769,
+        "RMSE": 683.9653540115074,
+        "R2_Score": 0.9792819371762366,
+        "MAPE": 6.2245884028908876
     },
     "uncertainty_offsets": {
-        "p10_offset_mw": -812.8775709116017,
-        "p90_offset_mw": 903.4509528078505
+        "p10_offset_mw": -809.748527207393,
+        "p90_offset_mw": 903.8536244056231
     }
 }
