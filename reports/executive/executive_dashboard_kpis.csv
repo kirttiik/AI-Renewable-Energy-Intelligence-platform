@@ -1,9 +1,9 @@
 KPI,Value,Unit
-Total Generation,8086048.55,MW
-Average Daily Generation,5710.49,MW
-Total CO2 Avoided,38457246.92,Tons
-Total Coal Saved,23449541.06,Tons
-Total Trees Equivalent,1748.08,Million
-High Risk Days,1,Days
-Critical Alert Days,1,Days
-Average Forecast Error,155.42%,%
+Total Generation,14116096.87,MW
+Average Daily Generation,6574.8,MW
+Total CO2 Avoided,67136156.79,Tons
+Total Coal Saved,40936681.35,Tons
+Total Trees Equivalent,3051.66,Million
+High Risk Days,2,Days
+Critical Alert Days,2,Days
+Average Forecast Error,136.78%,%
