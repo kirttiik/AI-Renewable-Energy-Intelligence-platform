@@ -1768,381 +1768,382 @@ date,site_name,solar_generation_mw,predicted_solar_generation_mw,co2_avoided_ton
 2025-11-02,Khavda Renewable Energy Park,0.0,0.0,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Favorable weather conditions. Revenue outlook remains favorable.
 2025-11-03,Khavda Renewable Energy Park,0.0,0.0,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Favorable weather conditions. Revenue outlook remains favorable.
 2025-11-04,Khavda Renewable Energy Park,0.0,0.0,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Favorable weather conditions. Revenue outlook remains favorable.
-2025-11-05,Khavda Renewable Energy Park,0.0,18618.744,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-06,Khavda Renewable Energy Park,0.0,18889.678,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-07,Khavda Renewable Energy Park,0.0,18861.666,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-08,Khavda Renewable Energy Park,0.0,18857.42,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-09,Khavda Renewable Energy Park,0.0,18711.78,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-10,Khavda Renewable Energy Park,0.0,18888.963,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-11,Khavda Renewable Energy Park,0.0,18796.557,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-12,Khavda Renewable Energy Park,0.0,18895.555,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-13,Khavda Renewable Energy Park,0.0,18810.322,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-14,Khavda Renewable Energy Park,0.0,18883.352,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-15,Khavda Renewable Energy Park,0.0,18811.998,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-16,Khavda Renewable Energy Park,0.0,18740.463,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-17,Khavda Renewable Energy Park,0.0,18895.371,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-18,Khavda Renewable Energy Park,0.0,18966.06,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-19,Khavda Renewable Energy Park,0.0,18911.307,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-20,Khavda Renewable Energy Park,0.0,18955.314,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-21,Khavda Renewable Energy Park,0.0,18978.617,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-22,Khavda Renewable Energy Park,0.0,18871.516,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-23,Khavda Renewable Energy Park,0.0,18809.072,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-24,Khavda Renewable Energy Park,0.0,18814.13,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-25,Khavda Renewable Energy Park,0.0,18937.44,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-26,Khavda Renewable Energy Park,0.0,18878.824,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-27,Khavda Renewable Energy Park,0.0,18907.03,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-28,Khavda Renewable Energy Park,0.0,19341.816,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-29,Khavda Renewable Energy Park,0.0,19193.553,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-11-30,Khavda Renewable Energy Park,0.0,18560.35,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-01,Khavda Renewable Energy Park,0.0,18880.803,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-02,Khavda Renewable Energy Park,0.0,18694.26,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-03,Khavda Renewable Energy Park,0.0,19103.084,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-04,Khavda Renewable Energy Park,0.0,19029.127,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-05,Khavda Renewable Energy Park,0.0,19020.242,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-06,Khavda Renewable Energy Park,0.0,9762.489,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-07,Khavda Renewable Energy Park,0.0,18734.959,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-08,Khavda Renewable Energy Park,0.0,19020.111,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-09,Khavda Renewable Energy Park,0.0,18681.3,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-10,Khavda Renewable Energy Park,0.0,18774.576,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-11,Khavda Renewable Energy Park,0.0,18816.184,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-12,Khavda Renewable Energy Park,0.0,18294.736,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-13,Khavda Renewable Energy Park,0.0,16728.977,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-14,Khavda Renewable Energy Park,0.0,16264.025,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-15,Khavda Renewable Energy Park,0.0,19302.113,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-16,Khavda Renewable Energy Park,0.0,19224.16,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-17,Khavda Renewable Energy Park,0.0,19027.518,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-18,Khavda Renewable Energy Park,0.0,18730.262,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-19,Khavda Renewable Energy Park,0.0,18927.637,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-20,Khavda Renewable Energy Park,0.0,18854.018,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-21,Khavda Renewable Energy Park,0.0,18784.877,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-22,Khavda Renewable Energy Park,0.0,18643.676,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-23,Khavda Renewable Energy Park,0.0,19217.184,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-24,Khavda Renewable Energy Park,0.0,18911.674,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-25,Khavda Renewable Energy Park,0.0,9926.867,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-26,Khavda Renewable Energy Park,0.0,19108.979,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-27,Khavda Renewable Energy Park,0.0,18960.002,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-28,Khavda Renewable Energy Park,0.0,19154.51,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-29,Khavda Renewable Energy Park,0.0,19108.746,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-30,Khavda Renewable Energy Park,0.0,17931.127,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2025-12-31,Khavda Renewable Energy Park,0.0,17954.41,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-01,Khavda Renewable Energy Park,9372.300474728509,18875.83,44574.66,27179.67,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-02,Khavda Renewable Energy Park,8964.386716018698,18721.447,42634.62,25996.72,1.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-03,Khavda Renewable Energy Park,9194.227323800533,18546.371,43727.75,26663.26,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-04,Khavda Renewable Energy Park,9749.14640874951,18558.682,46366.94,28272.52,2.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-05,Khavda Renewable Energy Park,9632.089512048804,18537.293,45810.22,27933.06,2.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-06,Khavda Renewable Energy Park,9366.60886154707,18837.42,44547.59,27163.16,2.02,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-07,Khavda Renewable Energy Park,9951.087156368252,18918.697,47327.37,28858.16,2.15,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-08,Khavda Renewable Energy Park,9642.580520697606,19033.375,45860.12,27963.48,2.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-09,Khavda Renewable Energy Park,10028.0909018291,18989.965,47693.6,29081.46,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-10,Khavda Renewable Energy Park,10095.497085377438,19057.36,48014.18,29276.94,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-11,Khavda Renewable Energy Park,10205.525488400745,19065.453,48537.48,29596.02,2.21,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-12,Khavda Renewable Energy Park,10680.04652572374,19020.604,50794.3,30972.14,2.31,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-13,Khavda Renewable Energy Park,9824.049232494715,18951.994,46723.18,28489.74,2.12,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-14,Khavda Renewable Energy Park,9538.401356585024,18669.45,45364.64,27661.36,2.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-15,Khavda Renewable Energy Park,8263.72104567946,18690.084,39302.26,23964.79,1.79,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-16,Khavda Renewable Energy Park,7082.439759614569,18463.957,33684.08,20539.08,1.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-17,Khavda Renewable Energy Park,6428.682472855099,18004.908,30574.82,18643.18,1.39,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-18,Khavda Renewable Energy Park,8754.806557279142,18551.424,41637.86,25388.94,1.89,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-19,Khavda Renewable Energy Park,9403.127371399498,18514.945,44721.27,27269.07,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-20,Khavda Renewable Energy Park,10039.8712653538,18638.09,47749.62,29115.62,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-21,Khavda Renewable Energy Park,9825.077965618031,18562.477,46728.07,28492.72,2.12,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-22,Khavda Renewable Energy Park,8105.134566109022,18998.994,38548.02,23504.89,1.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-23,Khavda Renewable Energy Park,10096.58288862526,19117.916,48019.35,29280.09,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-24,Khavda Renewable Energy Park,5011.203624028632,17585.287,23833.28,14532.49,1.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-25,Khavda Renewable Energy Park,1635.315463383281,5419.155,7777.56,4742.42,0.35,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-01-26,Khavda Renewable Energy Park,4918.819629723502,17800.996,23393.9,14264.58,1.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-27,Khavda Renewable Energy Park,10485.123436463608,18951.451,49867.25,30406.86,2.27,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-28,Khavda Renewable Energy Park,9005.219654773779,18798.133,42828.82,26115.14,1.95,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-29,Khavda Renewable Energy Park,2014.2661834386856,6642.167,9579.85,5841.37,0.44,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-01-30,Khavda Renewable Energy Park,4628.43688265956,16638.09,22012.84,13422.46,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-01-31,Khavda Renewable Energy Park,10701.463192380392,18607.512,50896.16,31034.24,2.31,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-01,Khavda Renewable Energy Park,10576.596879451528,18497.236,50302.29,30672.13,2.29,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-02,Khavda Renewable Energy Park,10039.286305777789,18734.344,47746.85,29113.93,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-03,Khavda Renewable Energy Park,10954.030739572265,18744.91,52097.37,31766.69,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-04,Khavda Renewable Energy Park,10757.353939180995,18673.543,51161.97,31196.32,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-05,Khavda Renewable Energy Park,11332.29470939837,18599.535,53896.39,32863.66,2.45,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-06,Khavda Renewable Energy Park,9282.816556176129,18474.629,44149.08,26920.17,2.01,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-07,Khavda Renewable Energy Park,5114.41185420368,16732.316,24324.14,14831.8,1.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-08,Khavda Renewable Energy Park,11104.976663019444,18125.2,52815.27,32204.43,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-09,Khavda Renewable Energy Park,10981.246519524027,18721.371,52226.81,31845.62,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-10,Khavda Renewable Energy Park,9046.172192746748,18275.389,43023.6,26233.9,1.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-11,Khavda Renewable Energy Park,10553.520199191078,18576.041,50192.54,30605.21,2.28,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-12,Khavda Renewable Energy Park,6805.988241616984,18609.56,32369.28,19737.37,1.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-13,Khavda Renewable Energy Park,6973.035306201974,18257.84,33163.75,20221.8,1.51,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-14,Khavda Renewable Energy Park,11168.227903597086,18180.98,53116.09,32387.86,2.41,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-15,Khavda Renewable Energy Park,8807.145872503628,18248.656,41886.79,25540.72,1.9,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-16,Khavda Renewable Energy Park,8686.645596405007,18180.994,41313.68,25191.27,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-17,Khavda Renewable Energy Park,10379.436941139846,18026.844,49364.6,30100.36,2.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-18,Khavda Renewable Energy Park,10161.074210618764,17988.83,48326.07,29467.12,2.2,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-19,Khavda Renewable Energy Park,11872.646141534717,18457.424,56466.31,34430.68,2.57,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-20,Khavda Renewable Energy Park,12804.909324671851,18437.426,60900.15,37134.24,2.77,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-21,Khavda Renewable Energy Park,12638.068875267028,18079.006,60106.66,36650.4,2.73,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-22,Khavda Renewable Energy Park,11578.50848918513,18465.324,55067.39,33577.68,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-23,Khavda Renewable Energy Park,11746.73308110988,18137.691,55867.46,34065.52,2.54,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-24,Khavda Renewable Energy Park,3998.1058756422126,12651.71,19014.99,11594.5,0.86,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-25,Khavda Renewable Energy Park,7665.066110721331,17749.783,36455.05,22228.69,1.66,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-26,Khavda Renewable Energy Park,11514.57375916623,18354.113,54763.31,33392.26,2.49,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-27,Khavda Renewable Energy Park,11593.341513335548,18485.51,55137.93,33620.69,2.51,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-02-28,Khavda Renewable Energy Park,12235.366026551148,18236.91,58191.4,35482.56,2.65,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-01,Khavda Renewable Energy Park,9839.66444931886,18060.914,46797.44,28535.02,2.13,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-02,Khavda Renewable Energy Park,10080.938488957598,17933.695,47944.94,29234.72,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-03,Khavda Renewable Energy Park,10796.102784722916,17608.307,51346.27,31308.7,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-04,Khavda Renewable Energy Park,11546.885161855009,17542.693,54916.98,33485.96,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-05,Khavda Renewable Energy Park,13267.10807706296,18011.176,63098.37,38474.62,2.87,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-06,Khavda Renewable Energy Park,12446.751741295053,18088.125,59196.75,36095.58,2.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-07,Khavda Renewable Energy Park,11788.670003200285,17750.256,56066.92,34187.14,2.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-08,Khavda Renewable Energy Park,8390.446717714112,17439.557,39904.96,24332.3,1.81,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-09,Khavda Renewable Energy Park,8974.705773255802,17948.832,42683.7,26026.64,1.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-10,Khavda Renewable Energy Park,12253.631533225212,16950.67,58278.27,35535.53,2.65,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-11,Khavda Renewable Energy Park,10091.081735375596,17601.27,47993.18,29264.14,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-12,Khavda Renewable Energy Park,11571.983041657491,17780.38,55036.35,33558.75,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-13,Khavda Renewable Energy Park,12371.695585305384,17800.752,58839.78,35877.92,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-14,Khavda Renewable Energy Park,12097.486515582172,17779.96,57535.64,35082.71,2.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-15,Khavda Renewable Energy Park,10904.52823770907,17679.025,51861.93,31623.13,2.36,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-16,Khavda Renewable Energy Park,12688.947423618976,17888.19,60348.64,36797.95,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-17,Khavda Renewable Energy Park,8690.048289414352,18097.236,41329.87,25201.14,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-18,Khavda Renewable Energy Park,3861.450960757998,13691.281,18365.06,11198.21,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-19,Khavda Renewable Energy Park,2847.671725850559,9926.599,13543.53,8258.25,0.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-20,Khavda Renewable Energy Park,11555.7905283727,17724.545,54959.34,33511.8,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-21,Khavda Renewable Energy Park,5433.114658690663,16924.299,25839.9,15756.04,1.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-22,Khavda Renewable Energy Park,5537.519449890608,17672.814,26336.44,16058.8,1.2,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-23,Khavda Renewable Energy Park,6170.760347770348,17702.182,29348.14,17895.21,1.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-24,Khavda Renewable Energy Park,2159.993758745694,7430.391,10272.93,6263.98,0.47,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-03-25,Khavda Renewable Energy Park,3930.465265919904,13773.361,18693.29,11398.35,0.85,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-26,Khavda Renewable Energy Park,5965.247674708707,17860.705,28370.72,17299.22,1.29,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-27,Khavda Renewable Energy Park,11367.116902769225,18093.14,54062.01,32964.64,2.46,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-28,Khavda Renewable Energy Park,8938.336440252713,18283.025,42510.73,25921.18,1.93,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-29,Khavda Renewable Energy Park,2007.7482703332455,6727.0796,9548.85,5822.47,0.43,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-03-30,Khavda Renewable Energy Park,8275.04583380295,18130.479,39356.12,23997.64,1.79,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-03-31,Khavda Renewable Energy Park,1255.056048512172,4143.46,5969.05,3639.66,0.27,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-04-01,Khavda Renewable Energy Park,831.5144288203029,2516.3862,3954.68,2411.39,0.18,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-04-02,Khavda Renewable Energy Park,980.3036450716994,3807.073,4662.32,2842.88,0.21,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-04-03,Khavda Renewable Energy Park,2561.3013014272547,9754.484,12181.55,7427.78,0.55,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-04-04,Khavda Renewable Energy Park,10048.549286303947,17608.312,47790.9,29140.8,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-05,Khavda Renewable Energy Park,6572.328006031788,17716.975,31257.99,19059.75,1.42,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-06,Khavda Renewable Energy Park,11443.557067155632,18286.867,54425.56,33186.32,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-07,Khavda Renewable Energy Park,12503.013784286226,18325.584,59464.33,36258.74,2.7,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-08,Khavda Renewable Energy Park,12845.5431848209,17745.477,61093.4,37252.07,2.78,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-09,Khavda Renewable Energy Park,12729.816469710684,17175.826,60543.01,36916.47,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-10,Khavda Renewable Energy Park,12729.50404249473,16937.816,60541.52,36915.56,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-11,Khavda Renewable Energy Park,12829.358917281186,17511.588,61016.43,37205.14,2.77,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-12,Khavda Renewable Energy Park,13064.350618764807,16771.389,62134.05,37886.62,2.82,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-13,Khavda Renewable Energy Park,12026.722856831406,17683.89,57199.09,34877.5,2.6,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-14,Khavda Renewable Energy Park,11138.416221709149,17719.594,52974.3,32301.4,2.41,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-15,Khavda Renewable Energy Park,10765.406051476575,17788.166,51200.28,31219.68,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-16,Khavda Renewable Energy Park,3057.5721217295118,10383.245,14541.81,8866.96,0.66,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-04-17,Khavda Renewable Energy Park,9370.192712234291,17949.123,44564.64,27173.56,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-18,Khavda Renewable Energy Park,5641.440758223948,18057.24,26830.7,16360.18,1.22,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-19,Khavda Renewable Energy Park,14508.439778381546,17594.172,69002.14,42074.48,3.14,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-20,Khavda Renewable Energy Park,13516.64626557038,17742.379,64285.17,39198.28,2.92,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-21,Khavda Renewable Energy Park,11085.271661823976,17770.283,52721.56,32147.29,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-22,Khavda Renewable Energy Park,10466.015336294624,18011.152,49776.37,30351.44,2.26,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-23,Khavda Renewable Energy Park,11114.391051860026,17896.326,52860.05,32231.74,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-24,Khavda Renewable Energy Park,9273.77389860126,18129.475,44106.07,26893.94,2.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-25,Khavda Renewable Energy Park,11581.930359085796,17859.137,55083.66,33587.6,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-26,Khavda Renewable Energy Park,12653.9444270412,17466.842,60182.16,36696.44,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-27,Khavda Renewable Energy Park,12336.828162660471,17533.148,58673.95,35776.8,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-28,Khavda Renewable Energy Park,13009.694845114678,17740.604,61874.11,37728.12,2.81,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-29,Khavda Renewable Energy Park,12329.216868577796,17790.426,58637.76,35754.73,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-04-30,Khavda Renewable Energy Park,12672.716263034954,17677.088,60271.44,36750.88,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-01,Khavda Renewable Energy Park,12548.054697451687,17281.13,59678.55,36389.36,2.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-02,Khavda Renewable Energy Park,12462.953774335563,17284.016,59273.81,36142.56,2.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-03,Khavda Renewable Energy Park,13094.741382755605,17674.451,62278.59,37974.75,2.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-04,Khavda Renewable Energy Park,13758.982075037493,17937.08,65437.72,39901.05,2.97,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-05,Khavda Renewable Energy Park,13735.90712596991,17715.34,65327.97,39834.13,2.97,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-06,Khavda Renewable Energy Park,11359.424768233856,17688.865,54025.42,32942.33,2.46,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-07,Khavda Renewable Energy Park,13302.884045375258,18077.467,63268.52,38578.36,2.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-08,Khavda Renewable Energy Park,13443.102019101148,18117.29,63935.39,38985.0,2.91,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-09,Khavda Renewable Energy Park,12759.659777779018,18138.57,60684.94,37003.02,2.76,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-10,Khavda Renewable Energy Park,13603.499416922892,17991.613,64698.25,39450.15,2.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-11,Khavda Renewable Energy Park,12711.815328844736,18165.883,60457.39,36864.26,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-12,Khavda Renewable Energy Park,12572.353672113764,17502.338,59794.11,36459.82,2.72,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-13,Khavda Renewable Energy Park,12728.487053916302,17488.822,60536.68,36912.61,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-14,Khavda Renewable Energy Park,13115.415087659045,17547.785,62376.92,38034.7,2.84,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-15,Khavda Renewable Energy Park,11404.833613625457,17853.516,54241.38,33074.02,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-16,Khavda Renewable Energy Park,11913.19295900506,17949.197,56659.15,34548.26,2.58,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-17,Khavda Renewable Energy Park,12543.751888437277,17925.428,59658.08,36376.88,2.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-18,Khavda Renewable Energy Park,10934.77619676363,18147.021,52005.79,31710.85,2.36,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-19,Khavda Renewable Energy Park,14178.08720589552,17780.523,67430.99,41116.46,3.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-20,Khavda Renewable Energy Park,13671.892008371562,17885.105,65023.52,39648.48,2.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-21,Khavda Renewable Energy Park,13611.790571277144,17843.762,64737.68,39474.2,2.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-22,Khavda Renewable Energy Park,13332.535613676311,17984.734,63409.54,38664.36,2.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-23,Khavda Renewable Energy Park,11763.61312178818,17714.021,55947.75,34114.48,2.54,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-24,Khavda Renewable Energy Park,12069.647400436555,17903.85,57403.24,35001.98,2.61,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-25,Khavda Renewable Energy Park,9592.931279501574,18124.145,45623.98,27819.5,2.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-26,Khavda Renewable Energy Park,11772.544284295836,17966.838,55990.22,34140.38,2.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-27,Khavda Renewable Energy Park,13174.728654487404,18049.68,62659.01,38206.71,2.85,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-28,Khavda Renewable Energy Park,11422.419827754047,18083.957,54325.03,33125.02,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-29,Khavda Renewable Energy Park,12023.214402960077,18372.13,57182.4,34867.32,2.6,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-30,Khavda Renewable Energy Park,8605.194144500372,18524.188,40926.31,24955.06,1.86,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-05-31,Khavda Renewable Energy Park,10330.620424575436,18371.627,49132.43,29958.8,2.23,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-01,Khavda Renewable Energy Park,10381.801123891652,19204.76,49375.85,30107.22,2.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-02,Khavda Renewable Energy Park,10298.217843441797,18967.967,48978.32,29864.83,2.23,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-03,Khavda Renewable Energy Park,13885.084890104014,18939.332,66037.46,40266.75,3.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-04,Khavda Renewable Energy Park,10513.699144762835,19066.617,50003.16,30489.73,2.27,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-05,Khavda Renewable Energy Park,9888.090070453023,19348.574,47027.75,28675.46,2.14,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-06,Khavda Renewable Energy Park,11702.976962492565,19101.945,55659.36,33938.64,2.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-07,Khavda Renewable Energy Park,11843.36584020682,19000.67,56327.05,34345.76,2.56,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-08,Khavda Renewable Energy Park,11713.655409728612,19034.854,55710.14,33969.6,2.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-09,Khavda Renewable Energy Park,10991.411820048688,19160.514,52275.16,31875.1,2.38,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-10,Khavda Renewable Energy Park,12092.12265124569,19082.184,57510.13,35067.16,2.61,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-11,Khavda Renewable Energy Park,13815.829339243077,19150.898,65708.08,40065.9,2.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-12,Khavda Renewable Energy Park,13422.88034211927,19182.885,63839.22,38926.36,2.9,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-13,Khavda Renewable Energy Park,10661.17406376941,19171.807,50704.54,30917.4,2.3,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-14,Khavda Renewable Energy Park,7180.1379742612025,19495.504,34148.74,20822.4,1.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-15,Khavda Renewable Energy Park,5766.849099647386,18348.469,27427.13,16723.86,1.25,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-16,Khavda Renewable Energy Park,7188.587446298665,19264.479,34188.92,20846.9,1.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-17,Khavda Renewable Energy Park,10142.116378448807,19247.895,48235.9,29412.14,2.19,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-18,Khavda Renewable Energy Park,8881.24412009685,19288.379,42239.2,25755.61,1.92,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-19,Khavda Renewable Energy Park,9183.15048832072,19395.328,43675.06,26631.14,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-20,Khavda Renewable Energy Park,9752.037836971393,19256.207,46380.69,28280.91,2.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-21,Khavda Renewable Energy Park,8750.307690416212,19260.44,41616.46,25375.89,1.89,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-22,Khavda Renewable Energy Park,10219.13862591702,19194.596,48602.22,29635.5,2.21,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-23,Khavda Renewable Energy Park,8121.137082220845,19329.244,38624.13,23551.3,1.76,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-24,Khavda Renewable Energy Park,7531.271199393809,19095.139,35818.72,21840.68,1.63,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-25,Khavda Renewable Energy Park,7940.866349537139,19189.51,37766.76,23028.51,1.72,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-26,Khavda Renewable Energy Park,8679.914987543842,18772.928,41281.68,25171.76,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-27,Khavda Renewable Energy Park,9850.096964848792,18704.527,46847.06,28565.28,2.13,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-28,Khavda Renewable Energy Park,10471.49684128029,19069.973,49802.44,30367.34,2.26,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-29,Khavda Renewable Energy Park,7923.295259896859,19462.803,37683.19,22977.56,1.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-06-30,Khavda Renewable Energy Park,9184.581155207065,19275.902,43681.87,26635.28,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-01,Khavda Renewable Energy Park,7901.996172088274,19445.375,37581.9,22915.79,1.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-02,Khavda Renewable Energy Park,7865.882485857131,19220.117,37410.14,22811.06,1.7,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-03,Khavda Renewable Energy Park,8305.505116701392,19481.201,39500.98,24085.96,1.8,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-04,Khavda Renewable Energy Park,2979.2228763801672,9234.838,14169.18,8639.75,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-05,Khavda Renewable Energy Park,1462.9790458436569,5196.51,6957.93,4242.64,0.32,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-06,Khavda Renewable Energy Park,5346.684339334559,16775.639,25428.83,15505.38,1.16,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-07,Khavda Renewable Energy Park,268.4503978379841,707.63525,1276.75,778.5,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-08,Khavda Renewable Energy Park,6666.116238971844,19299.438,31704.05,19331.74,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-09,Khavda Renewable Energy Park,6952.641701590744,19615.021,33066.76,20162.66,1.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-10,Khavda Renewable Energy Park,2767.5975573537257,9578.716,13162.7,8026.04,0.6,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-11,Khavda Renewable Energy Park,5289.266228951279,16631.266,25155.75,15338.87,1.14,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
-2026-07-12,Khavda Renewable Energy Park,7105.923965031678,19272.854,33795.78,20607.18,1.54,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
-2026-07-13,Khavda Renewable Energy Park,5670.124801413896,17682.557,26967.11,16443.36,1.23,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
-2026-07-14,Khavda Renewable Energy Park,3822.312382942444,12634.5,18178.92,11084.7,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-15,Khavda Renewable Energy Park,3554.6846324254707,12031.003,16906.08,10308.58,0.77,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-16,Khavda Renewable Energy Park,10979.877341282036,18816.791,52220.3,31841.64,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-17,Khavda Renewable Energy Park,7478.849562928469,18710.043,35569.41,21688.66,1.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-18,Khavda Renewable Energy Park,4706.759160972319,17096.863,22385.34,13649.6,1.02,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-19,Khavda Renewable Energy Park,3431.1092313051686,10573.95,16318.35,9950.22,0.74,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-20,Khavda Renewable Energy Park,1286.163473855254,4900.8667,6117.0,3729.88,0.28,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-21,Khavda Renewable Energy Park,1184.8227860172278,4540.216,5635.02,3435.98,0.26,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-22,Khavda Renewable Energy Park,565.9830044369388,1789.3539,2691.81,1641.35,0.12,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-23,Khavda Renewable Energy Park,287.635666357897,793.23737,1368.0,834.14,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-24,Khavda Renewable Energy Park,8.79444352747275,60.835884,41.83,25.5,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-25,Khavda Renewable Energy Park,0.0,32.012318,0.0,0.0,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-26,Khavda Renewable Energy Park,152.53667304972112,616.64813,725.46,442.36,0.03,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-27,Khavda Renewable Energy Park,2669.413058295745,9493.462,12695.73,7741.3,0.58,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-28,Khavda Renewable Energy Park,5005.525225440279,16630.531,23806.28,14516.02,1.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-07-29,Khavda Renewable Energy Park,1694.5921819296148,6840.209,8059.48,4914.31,0.37,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-30,Khavda Renewable Energy Park,860.7768990439808,2657.4128,4093.86,2496.26,0.19,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-07-31,Khavda Renewable Energy Park,1311.6848288176984,4133.46,6238.37,3803.88,0.28,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-01,Khavda Renewable Energy Park,2.922790271884945,54.431488,13.9,8.48,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-02,Khavda Renewable Energy Park,83.84889510707448,174.41081,398.78,243.16,0.02,MEDIUM,WEATHER_WARNING,CLOUD_CURTAILMENT|HEAVY_RAIN,Cloud cover and rainfall may reduce solar generation.
-2026-08-03,Khavda Renewable Energy Park,2025.692462176249,6481.3994,9634.2,5874.51,0.44,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-04,Khavda Renewable Energy Park,2080.2187888494186,6942.9106,9893.52,6032.64,0.45,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-05,Khavda Renewable Energy Park,2950.140602382792,10862.547,14030.87,8555.41,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-06,Khavda Renewable Energy Park,4742.219216727232,15871.67,22553.99,13752.44,1.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-07,Khavda Renewable Energy Park,6136.643636844631,19063.398,29185.87,17796.26,1.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-08,Khavda Renewable Energy Park,4954.416883755506,15630.604,23563.21,14367.81,1.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-09,Khavda Renewable Energy Park,9168.197059499127,19154.588,43603.94,26587.77,1.98,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-10,Khavda Renewable Energy Park,4637.366909393987,16581.766,22055.32,13448.36,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-11,Khavda Renewable Energy Park,979.5285676946444,3361.796,4658.64,2840.64,0.21,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-12,Khavda Renewable Energy Park,279.6125403499228,782.84973,1329.84,810.88,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-13,Khavda Renewable Energy Park,4662.549032378806,16512.11,22175.08,13521.39,1.01,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-14,Khavda Renewable Energy Park,4943.475302700348,15693.886,23511.17,14336.08,1.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-15,Khavda Renewable Energy Park,7090.219167887115,18966.93,33721.08,20561.63,1.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-16,Khavda Renewable Energy Park,2958.848563250116,9407.457,14072.28,8580.66,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-17,Khavda Renewable Energy Park,4611.366769987867,14691.32,21931.66,13372.96,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-18,Khavda Renewable Energy Park,842.2440270703132,2511.4429,4005.72,2442.51,0.18,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-19,Khavda Renewable Energy Park,3173.6932356981592,11639.792,15094.08,9203.71,0.69,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-20,Khavda Renewable Energy Park,5767.269634458619,18282.982,27429.13,16725.08,1.25,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-21,Khavda Renewable Energy Park,4194.335458480786,14064.986,19948.26,12163.58,0.91,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-22,Khavda Renewable Energy Park,3206.784853455075,11768.659,15251.47,9299.67,0.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-23,Khavda Renewable Energy Park,4422.584934287929,14444.91,21033.81,12825.5,0.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-24,Khavda Renewable Energy Park,6660.749269479987,18633.229,31678.53,19316.18,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-25,Khavda Renewable Energy Park,9951.119544723986,19279.742,47327.52,28858.24,2.15,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-26,Khavda Renewable Energy Park,6123.347470852615,19173.232,29122.64,17757.71,1.32,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-27,Khavda Renewable Energy Park,2844.4115284367317,9762.129,13528.02,8248.8,0.61,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-28,Khavda Renewable Energy Park,2652.6516556559823,8470.131,12616.01,7692.69,0.57,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-08-29,Khavda Renewable Energy Park,4634.590748597403,15336.246,22042.12,13440.32,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-30,Khavda Renewable Energy Park,3614.912474957309,11693.656,17192.52,10483.25,0.78,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-08-31,Khavda Renewable Energy Park,2197.97026645758,7327.894,10453.55,6374.12,0.48,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-01,Khavda Renewable Energy Park,4388.262460479971,13769.103,20870.57,12725.96,0.95,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-02,Khavda Renewable Energy Park,863.4541448580653,3371.8218,4106.58,2504.02,0.19,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-03,Khavda Renewable Energy Park,3857.5065123908353,13417.589,18346.3,11186.77,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-04,Khavda Renewable Energy Park,2369.7222417574453,8712.958,11270.4,6872.2,0.51,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-05,Khavda Renewable Energy Park,5726.450746637848,13791.158,27235.0,16606.71,1.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-06,Khavda Renewable Energy Park,6655.6016,17390.59,31654.04,19301.24,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-07,Khavda Renewable Energy Park,9386.134,18900.277,44640.45,27219.79,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-08,Khavda Renewable Energy Park,4924.086,19354.783,23418.95,14279.85,1.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-09,Khavda Renewable Energy Park,5475.0728,18636.385,26039.45,15877.71,1.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-10,Khavda Renewable Energy Park,7594.1187,19025.918,36117.63,22022.94,1.64,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-11,Khavda Renewable Energy Park,8078.924,16390.781,38423.36,23428.88,1.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-12,Khavda Renewable Energy Park,4583.595,14172.993,21799.58,13292.43,0.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-13,Khavda Renewable Energy Park,5310.828,9783.794,25258.3,15401.4,1.15,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-14,Khavda Renewable Energy Park,377.2611,2944.3335,1794.25,1094.06,0.08,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2025-11-05,Khavda Renewable Energy Park,0.0,0.0,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Favorable weather conditions. Revenue outlook remains favorable.
+2025-11-06,Khavda Renewable Energy Park,0.0,18912.215,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-07,Khavda Renewable Energy Park,0.0,18960.154,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-08,Khavda Renewable Energy Park,0.0,18899.26,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-09,Khavda Renewable Energy Park,0.0,19023.574,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-10,Khavda Renewable Energy Park,0.0,19066.2,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-11,Khavda Renewable Energy Park,0.0,19029.035,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-12,Khavda Renewable Energy Park,0.0,19206.178,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-13,Khavda Renewable Energy Park,0.0,19185.297,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-14,Khavda Renewable Energy Park,0.0,19278.129,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-15,Khavda Renewable Energy Park,0.0,19342.48,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-16,Khavda Renewable Energy Park,0.0,19288.764,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-17,Khavda Renewable Energy Park,0.0,19323.148,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-18,Khavda Renewable Energy Park,0.0,19295.795,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-19,Khavda Renewable Energy Park,0.0,19263.45,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-20,Khavda Renewable Energy Park,0.0,19222.676,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-21,Khavda Renewable Energy Park,0.0,19332.564,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-22,Khavda Renewable Energy Park,0.0,19249.158,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-23,Khavda Renewable Energy Park,0.0,19246.111,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-24,Khavda Renewable Energy Park,0.0,19122.344,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-25,Khavda Renewable Energy Park,0.0,19362.53,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-26,Khavda Renewable Energy Park,0.0,19299.105,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-27,Khavda Renewable Energy Park,0.0,19383.082,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-28,Khavda Renewable Energy Park,0.0,19462.11,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-29,Khavda Renewable Energy Park,0.0,19615.713,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-11-30,Khavda Renewable Energy Park,0.0,18913.557,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-01,Khavda Renewable Energy Park,0.0,19322.31,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-02,Khavda Renewable Energy Park,0.0,19313.803,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-03,Khavda Renewable Energy Park,0.0,19528.168,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-04,Khavda Renewable Energy Park,0.0,19402.768,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-05,Khavda Renewable Energy Park,0.0,19538.578,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-06,Khavda Renewable Energy Park,0.0,9719.259,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-07,Khavda Renewable Energy Park,0.0,19420.836,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-08,Khavda Renewable Energy Park,0.0,19245.703,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-09,Khavda Renewable Energy Park,0.0,19254.074,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-10,Khavda Renewable Energy Park,0.0,19358.586,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-11,Khavda Renewable Energy Park,0.0,19304.773,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-12,Khavda Renewable Energy Park,0.0,18898.08,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-13,Khavda Renewable Energy Park,0.0,17385.258,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-14,Khavda Renewable Energy Park,0.0,15763.535,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-15,Khavda Renewable Energy Park,0.0,19561.688,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-16,Khavda Renewable Energy Park,0.0,19473.752,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-17,Khavda Renewable Energy Park,0.0,19440.004,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-18,Khavda Renewable Energy Park,0.0,18928.941,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-19,Khavda Renewable Energy Park,0.0,19345.184,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-20,Khavda Renewable Energy Park,0.0,19273.871,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-21,Khavda Renewable Energy Park,0.0,19277.191,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-22,Khavda Renewable Energy Park,0.0,19035.297,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-23,Khavda Renewable Energy Park,0.0,19471.996,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-24,Khavda Renewable Energy Park,0.0,19273.74,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-25,Khavda Renewable Energy Park,0.0,9992.634,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-26,Khavda Renewable Energy Park,0.0,19438.828,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-27,Khavda Renewable Energy Park,0.0,19681.557,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-28,Khavda Renewable Energy Park,0.0,19535.742,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-29,Khavda Renewable Energy Park,0.0,19351.559,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-30,Khavda Renewable Energy Park,0.0,18929.66,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2025-12-31,Khavda Renewable Energy Park,0.0,18953.586,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-01,Khavda Renewable Energy Park,9372.300474728509,19738.865,44574.66,27179.67,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-02,Khavda Renewable Energy Park,8964.386716018698,19553.404,42634.62,25996.72,1.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-03,Khavda Renewable Energy Park,9194.227323800533,19529.809,43727.75,26663.26,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-04,Khavda Renewable Energy Park,9749.14640874951,19604.016,46366.94,28272.52,2.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-05,Khavda Renewable Energy Park,9632.089512048804,19528.072,45810.22,27933.06,2.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-06,Khavda Renewable Energy Park,9366.60886154707,19676.56,44547.59,27163.16,2.02,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-07,Khavda Renewable Energy Park,9951.087156368252,19642.822,47327.37,28858.16,2.15,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-08,Khavda Renewable Energy Park,9642.580520697606,19783.701,45860.12,27963.48,2.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-09,Khavda Renewable Energy Park,10028.0909018291,19777.576,47693.6,29081.46,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-10,Khavda Renewable Energy Park,10095.497085377438,19794.416,48014.18,29276.94,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-11,Khavda Renewable Energy Park,10205.525488400745,19798.377,48537.48,29596.02,2.21,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-12,Khavda Renewable Energy Park,10680.04652572374,19725.13,50794.3,30972.14,2.31,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-13,Khavda Renewable Energy Park,9824.049232494715,19714.256,46723.18,28489.74,2.12,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-14,Khavda Renewable Energy Park,9538.401356585024,19614.1,45364.64,27661.36,2.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-15,Khavda Renewable Energy Park,8263.72104567946,19520.701,39302.26,23964.79,1.79,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-16,Khavda Renewable Energy Park,7082.439759614569,19508.84,33684.08,20539.08,1.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-17,Khavda Renewable Energy Park,6428.682472855099,18805.393,30574.82,18643.18,1.39,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-18,Khavda Renewable Energy Park,8754.806557279142,19602.537,41637.86,25388.94,1.89,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-19,Khavda Renewable Energy Park,9403.127371399498,19345.584,44721.27,27269.07,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-20,Khavda Renewable Energy Park,10039.8712653538,19394.479,47749.62,29115.62,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-21,Khavda Renewable Energy Park,9825.077965618031,19434.37,46728.07,28492.72,2.12,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-22,Khavda Renewable Energy Park,8105.134566109022,19675.578,38548.02,23504.89,1.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-23,Khavda Renewable Energy Park,10096.58288862526,19860.06,48019.35,29280.09,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-24,Khavda Renewable Energy Park,5011.203624028632,17736.146,23833.28,14532.49,1.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-25,Khavda Renewable Energy Park,1635.315463383281,5477.955,7777.56,4742.42,0.35,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-01-26,Khavda Renewable Energy Park,4918.819629723502,18008.072,23393.9,14264.58,1.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-27,Khavda Renewable Energy Park,10485.123436463608,19705.824,49867.25,30406.86,2.27,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-28,Khavda Renewable Energy Park,9005.219654773779,19662.535,42828.82,26115.14,1.95,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-29,Khavda Renewable Energy Park,2014.2661834386856,6732.3125,9579.85,5841.37,0.44,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-01-30,Khavda Renewable Energy Park,4628.43688265956,16569.697,22012.84,13422.46,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-01-31,Khavda Renewable Energy Park,10701.463192380392,19551.277,50896.16,31034.24,2.31,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-01,Khavda Renewable Energy Park,10576.596879451528,19498.908,50302.29,30672.13,2.29,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-02,Khavda Renewable Energy Park,10039.286305777789,19485.908,47746.85,29113.93,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-03,Khavda Renewable Energy Park,10954.030739572265,19432.537,52097.37,31766.69,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-04,Khavda Renewable Energy Park,10757.353939180995,19361.676,51161.97,31196.32,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-05,Khavda Renewable Energy Park,11332.29470939837,19301.229,53896.39,32863.66,2.45,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-06,Khavda Renewable Energy Park,9282.816556176129,19357.771,44149.08,26920.17,2.01,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-07,Khavda Renewable Energy Park,5114.41185420368,16862.803,24324.14,14831.8,1.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-08,Khavda Renewable Energy Park,11104.976663019444,19021.71,52815.27,32204.43,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-09,Khavda Renewable Energy Park,10981.246519524027,19623.129,52226.81,31845.62,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-10,Khavda Renewable Energy Park,9046.172192746748,19132.412,43023.6,26233.9,1.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-11,Khavda Renewable Energy Park,10553.520199191078,19332.451,50192.54,30605.21,2.28,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-12,Khavda Renewable Energy Park,6805.988241616984,18972.32,32369.28,19737.37,1.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-13,Khavda Renewable Energy Park,6973.035306201974,18792.836,33163.75,20221.8,1.51,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-14,Khavda Renewable Energy Park,11168.227903597086,18998.746,53116.09,32387.86,2.41,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-15,Khavda Renewable Energy Park,8807.145872503628,19138.072,41886.79,25540.72,1.9,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-16,Khavda Renewable Energy Park,8686.645596405007,19183.553,41313.68,25191.27,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-17,Khavda Renewable Energy Park,10379.436941139846,19156.553,49364.6,30100.36,2.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-18,Khavda Renewable Energy Park,10161.074210618764,18984.037,48326.07,29467.12,2.2,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-19,Khavda Renewable Energy Park,11872.646141534717,19071.822,56466.31,34430.68,2.57,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-20,Khavda Renewable Energy Park,12804.909324671851,19162.678,60900.15,37134.24,2.77,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-21,Khavda Renewable Energy Park,12638.068875267028,18837.24,60106.66,36650.4,2.73,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-22,Khavda Renewable Energy Park,11578.50848918513,19170.814,55067.39,33577.68,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-23,Khavda Renewable Energy Park,11746.73308110988,18979.697,55867.46,34065.52,2.54,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-24,Khavda Renewable Energy Park,3998.1058756422126,12695.3,19014.99,11594.5,0.86,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-25,Khavda Renewable Energy Park,7665.066110721331,18403.314,36455.05,22228.69,1.66,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-26,Khavda Renewable Energy Park,11514.57375916623,19059.166,54763.31,33392.26,2.49,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-27,Khavda Renewable Energy Park,11593.341513335548,19148.062,55137.93,33620.69,2.51,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-02-28,Khavda Renewable Energy Park,12235.366026551148,19012.498,58191.4,35482.56,2.65,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-01,Khavda Renewable Energy Park,9839.66444931886,18818.258,46797.44,28535.02,2.13,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-02,Khavda Renewable Energy Park,10080.938488957598,18649.314,47944.94,29234.72,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-03,Khavda Renewable Energy Park,10796.102784722916,18081.008,51346.27,31308.7,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-04,Khavda Renewable Energy Park,11546.885161855009,18253.344,54916.98,33485.96,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-05,Khavda Renewable Energy Park,13267.10807706296,18770.717,63098.37,38474.62,2.87,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-06,Khavda Renewable Energy Park,12446.751741295053,18795.086,59196.75,36095.58,2.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-07,Khavda Renewable Energy Park,11788.670003200285,18551.025,56066.92,34187.14,2.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-08,Khavda Renewable Energy Park,8390.446717714112,17864.617,39904.96,24332.3,1.81,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-09,Khavda Renewable Energy Park,8974.705773255802,18468.459,42683.7,26026.64,1.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-10,Khavda Renewable Energy Park,12253.631533225212,17720.555,58278.27,35535.53,2.65,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-11,Khavda Renewable Energy Park,10091.081735375596,18181.908,47993.18,29264.14,2.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-12,Khavda Renewable Energy Park,11571.983041657491,18331.822,55036.35,33558.75,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-13,Khavda Renewable Energy Park,12371.695585305384,18343.38,58839.78,35877.92,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-14,Khavda Renewable Energy Park,12097.486515582172,18162.947,57535.64,35082.71,2.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-15,Khavda Renewable Energy Park,10904.52823770907,18218.564,51861.93,31623.13,2.36,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-16,Khavda Renewable Energy Park,12688.947423618976,18326.959,60348.64,36797.95,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-17,Khavda Renewable Energy Park,8690.048289414352,18537.236,41329.87,25201.14,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-18,Khavda Renewable Energy Park,3861.450960757998,13847.074,18365.06,11198.21,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-19,Khavda Renewable Energy Park,2847.671725850559,10243.498,13543.53,8258.25,0.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-20,Khavda Renewable Energy Park,11555.7905283727,18352.297,54959.34,33511.8,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-21,Khavda Renewable Energy Park,5433.114658690663,17691.24,25839.9,15756.04,1.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-22,Khavda Renewable Energy Park,5537.519449890608,17818.293,26336.44,16058.8,1.2,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-23,Khavda Renewable Energy Park,6170.760347770348,18191.375,29348.14,17895.21,1.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-24,Khavda Renewable Energy Park,2159.993758745694,7668.481,10272.93,6263.98,0.47,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-03-25,Khavda Renewable Energy Park,3930.465265919904,14341.329,18693.29,11398.35,0.85,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-26,Khavda Renewable Energy Park,5965.247674708707,18106.973,28370.72,17299.22,1.29,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-27,Khavda Renewable Energy Park,11367.116902769225,18522.346,54062.01,32964.64,2.46,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-28,Khavda Renewable Energy Park,8938.336440252713,18845.81,42510.73,25921.18,1.93,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-29,Khavda Renewable Energy Park,2007.7482703332455,6836.7305,9548.85,5822.47,0.43,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-03-30,Khavda Renewable Energy Park,8275.04583380295,18444.396,39356.12,23997.64,1.79,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-03-31,Khavda Renewable Energy Park,1255.056048512172,4306.779,5969.05,3639.66,0.27,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-04-01,Khavda Renewable Energy Park,831.5144288203029,2812.1992,3954.68,2411.39,0.18,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-04-02,Khavda Renewable Energy Park,980.3036450716994,3883.022,4662.32,2842.88,0.21,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-04-03,Khavda Renewable Energy Park,2561.3013014272547,9690.873,12181.55,7427.78,0.55,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-04-04,Khavda Renewable Energy Park,10048.549286303947,18307.246,47790.9,29140.8,2.17,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-05,Khavda Renewable Energy Park,6572.328006031788,18221.299,31257.99,19059.75,1.42,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-06,Khavda Renewable Energy Park,11443.557067155632,18884.223,54425.56,33186.32,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-07,Khavda Renewable Energy Park,12503.013784286226,18976.447,59464.33,36258.74,2.7,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-08,Khavda Renewable Energy Park,12845.5431848209,18488.287,61093.4,37252.07,2.78,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-09,Khavda Renewable Energy Park,12729.816469710684,17859.988,60543.01,36916.47,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-10,Khavda Renewable Energy Park,12729.50404249473,17598.611,60541.52,36915.56,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-11,Khavda Renewable Energy Park,12829.358917281186,18092.383,61016.43,37205.14,2.77,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-12,Khavda Renewable Energy Park,13064.350618764807,17453.658,62134.05,37886.62,2.82,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-13,Khavda Renewable Energy Park,12026.722856831406,18231.738,57199.09,34877.5,2.6,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-14,Khavda Renewable Energy Park,11138.416221709149,18294.307,52974.3,32301.4,2.41,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-15,Khavda Renewable Energy Park,10765.406051476575,18168.178,51200.28,31219.68,2.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-16,Khavda Renewable Energy Park,3057.5721217295118,10652.807,14541.81,8866.96,0.66,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-04-17,Khavda Renewable Energy Park,9370.192712234291,18364.69,44564.64,27173.56,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-18,Khavda Renewable Energy Park,5641.440758223948,18269.648,26830.7,16360.18,1.22,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-19,Khavda Renewable Energy Park,14508.439778381546,18174.451,69002.14,42074.48,3.14,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-20,Khavda Renewable Energy Park,13516.64626557038,18198.396,64285.17,39198.28,2.92,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-21,Khavda Renewable Energy Park,11085.271661823976,18240.662,52721.56,32147.29,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-22,Khavda Renewable Energy Park,10466.015336294624,18411.941,49776.37,30351.44,2.26,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-23,Khavda Renewable Energy Park,11114.391051860026,18306.01,52860.05,32231.74,2.4,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-24,Khavda Renewable Energy Park,9273.77389860126,18338.297,44106.07,26893.94,2.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-25,Khavda Renewable Energy Park,11581.930359085796,18300.713,55083.66,33587.6,2.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-26,Khavda Renewable Energy Park,12653.9444270412,17931.785,60182.16,36696.44,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-27,Khavda Renewable Energy Park,12336.828162660471,17878.49,58673.95,35776.8,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-28,Khavda Renewable Energy Park,13009.694845114678,18112.71,61874.11,37728.12,2.81,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-29,Khavda Renewable Energy Park,12329.216868577796,18248.852,58637.76,35754.73,2.67,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-04-30,Khavda Renewable Energy Park,12672.716263034954,18102.943,60271.44,36750.88,2.74,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-01,Khavda Renewable Energy Park,12548.054697451687,17705.482,59678.55,36389.36,2.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-02,Khavda Renewable Energy Park,12462.953774335563,17742.342,59273.81,36142.56,2.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-03,Khavda Renewable Energy Park,13094.741382755605,18088.082,62278.59,37974.75,2.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-04,Khavda Renewable Energy Park,13758.982075037493,18214.613,65437.72,39901.05,2.97,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-05,Khavda Renewable Energy Park,13735.90712596991,18140.973,65327.97,39834.13,2.97,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-06,Khavda Renewable Energy Park,11359.424768233856,18279.18,54025.42,32942.33,2.46,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-07,Khavda Renewable Energy Park,13302.884045375258,18458.719,63268.52,38578.36,2.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-08,Khavda Renewable Energy Park,13443.102019101148,18380.66,63935.39,38985.0,2.91,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-09,Khavda Renewable Energy Park,12759.659777779018,18478.457,60684.94,37003.02,2.76,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-10,Khavda Renewable Energy Park,13603.499416922892,18377.068,64698.25,39450.15,2.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-11,Khavda Renewable Energy Park,12711.815328844736,18473.83,60457.39,36864.26,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-12,Khavda Renewable Energy Park,12572.353672113764,17792.76,59794.11,36459.82,2.72,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-13,Khavda Renewable Energy Park,12728.487053916302,17695.254,60536.68,36912.61,2.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-14,Khavda Renewable Energy Park,13115.415087659045,17947.326,62376.92,38034.7,2.84,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-15,Khavda Renewable Energy Park,11404.833613625457,18363.51,54241.38,33074.02,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-16,Khavda Renewable Energy Park,11913.19295900506,18580.348,56659.15,34548.26,2.58,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-17,Khavda Renewable Energy Park,12543.751888437277,18190.852,59658.08,36376.88,2.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-18,Khavda Renewable Energy Park,10934.77619676363,18299.82,52005.79,31710.85,2.36,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-19,Khavda Renewable Energy Park,14178.08720589552,18158.953,67430.99,41116.46,3.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-20,Khavda Renewable Energy Park,13671.892008371562,18026.008,65023.52,39648.48,2.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-21,Khavda Renewable Energy Park,13611.790571277144,18050.58,64737.68,39474.2,2.94,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-22,Khavda Renewable Energy Park,13332.535613676311,18142.098,63409.54,38664.36,2.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-23,Khavda Renewable Energy Park,11763.61312178818,17939.17,55947.75,34114.48,2.54,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-24,Khavda Renewable Energy Park,12069.647400436555,18440.85,57403.24,35001.98,2.61,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-25,Khavda Renewable Energy Park,9592.931279501574,18629.932,45623.98,27819.5,2.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-26,Khavda Renewable Energy Park,11772.544284295836,18370.584,55990.22,34140.38,2.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-27,Khavda Renewable Energy Park,13174.728654487404,18545.3,62659.01,38206.71,2.85,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-28,Khavda Renewable Energy Park,11422.419827754047,18457.844,54325.03,33125.02,2.47,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-29,Khavda Renewable Energy Park,12023.214402960077,18557.463,57182.4,34867.32,2.6,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-30,Khavda Renewable Energy Park,8605.194144500372,18909.576,40926.31,24955.06,1.86,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-05-31,Khavda Renewable Energy Park,10330.620424575436,18767.82,49132.43,29958.8,2.23,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-01,Khavda Renewable Energy Park,10381.801123891652,19189.861,49375.85,30107.22,2.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-02,Khavda Renewable Energy Park,10298.217843441797,19199.188,48978.32,29864.83,2.23,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-03,Khavda Renewable Energy Park,13885.084890104014,19017.645,66037.46,40266.75,3.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-04,Khavda Renewable Energy Park,10513.699144762835,19098.408,50003.16,30489.73,2.27,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-05,Khavda Renewable Energy Park,9888.090070453023,19391.12,47027.75,28675.46,2.14,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-06,Khavda Renewable Energy Park,11702.976962492565,19099.617,55659.36,33938.64,2.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-07,Khavda Renewable Energy Park,11843.36584020682,19099.604,56327.05,34345.76,2.56,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-08,Khavda Renewable Energy Park,11713.655409728612,19162.748,55710.14,33969.6,2.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-09,Khavda Renewable Energy Park,10991.411820048688,19209.266,52275.16,31875.1,2.38,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-10,Khavda Renewable Energy Park,12092.12265124569,19160.57,57510.13,35067.16,2.61,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-11,Khavda Renewable Energy Park,13815.829339243077,19073.734,65708.08,40065.9,2.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-12,Khavda Renewable Energy Park,13422.88034211927,19140.246,63839.22,38926.36,2.9,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-13,Khavda Renewable Energy Park,10661.17406376941,19300.482,50704.54,30917.4,2.3,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-14,Khavda Renewable Energy Park,7180.1379742612025,19766.742,34148.74,20822.4,1.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-15,Khavda Renewable Energy Park,5766.849099647386,18764.352,27427.13,16723.86,1.25,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-16,Khavda Renewable Energy Park,7188.587446298665,19466.424,34188.92,20846.9,1.55,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-17,Khavda Renewable Energy Park,10142.116378448807,19271.443,48235.9,29412.14,2.19,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-18,Khavda Renewable Energy Park,8881.24412009685,19387.36,42239.2,25755.61,1.92,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-19,Khavda Renewable Energy Park,9183.15048832072,19261.045,43675.06,26631.14,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-20,Khavda Renewable Energy Park,9752.037836971393,19311.746,46380.69,28280.91,2.11,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-21,Khavda Renewable Energy Park,8750.307690416212,19323.48,41616.46,25375.89,1.89,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-22,Khavda Renewable Energy Park,10219.13862591702,19192.988,48602.22,29635.5,2.21,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-23,Khavda Renewable Energy Park,8121.137082220845,19399.697,38624.13,23551.3,1.76,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-24,Khavda Renewable Energy Park,7531.271199393809,19250.244,35818.72,21840.68,1.63,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-25,Khavda Renewable Energy Park,7940.866349537139,19429.707,37766.76,23028.51,1.72,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-26,Khavda Renewable Energy Park,8679.914987543842,19058.346,41281.68,25171.76,1.88,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-27,Khavda Renewable Energy Park,9850.096964848792,19010.238,46847.06,28565.28,2.13,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-28,Khavda Renewable Energy Park,10471.49684128029,19294.195,49802.44,30367.34,2.26,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-29,Khavda Renewable Energy Park,7923.295259896859,19584.111,37683.19,22977.56,1.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-06-30,Khavda Renewable Energy Park,9184.581155207065,19478.816,43681.87,26635.28,1.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-01,Khavda Renewable Energy Park,7901.996172088274,19511.014,37581.9,22915.79,1.71,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-02,Khavda Renewable Energy Park,7865.882485857131,19377.27,37410.14,22811.06,1.7,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-03,Khavda Renewable Energy Park,8305.505116701392,19335.258,39500.98,24085.96,1.8,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-04,Khavda Renewable Energy Park,2979.2228763801672,9542.489,14169.18,8639.75,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-05,Khavda Renewable Energy Park,1462.9790458436569,5306.7666,6957.93,4242.64,0.32,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-06,Khavda Renewable Energy Park,5346.684339334559,17014.955,25428.83,15505.38,1.16,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-07,Khavda Renewable Energy Park,268.4503978379841,763.18494,1276.75,778.5,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-08,Khavda Renewable Energy Park,6666.116238971844,19339.371,31704.05,19331.74,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-09,Khavda Renewable Energy Park,6952.641701590744,19464.348,33066.76,20162.66,1.5,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-10,Khavda Renewable Energy Park,2767.5975573537257,9599.123,13162.7,8026.04,0.6,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-11,Khavda Renewable Energy Park,5289.266228951279,16828.777,25155.75,15338.87,1.14,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
+2026-07-12,Khavda Renewable Energy Park,7105.923965031678,19412.887,33795.78,20607.18,1.54,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
+2026-07-13,Khavda Renewable Energy Park,5670.124801413896,17687.105,26967.11,16443.36,1.23,MEDIUM,NORMAL_OPERATIONS,NORMAL,Moderate weather patterns observed. Monitor generation closely.
+2026-07-14,Khavda Renewable Energy Park,3822.312382942444,12868.072,18178.92,11084.7,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-15,Khavda Renewable Energy Park,3554.6846324254707,11750.803,16906.08,10308.58,0.77,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-16,Khavda Renewable Energy Park,10979.877341282036,19007.768,52220.3,31841.64,2.37,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-17,Khavda Renewable Energy Park,7478.849562928469,19248.12,35569.41,21688.66,1.62,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-18,Khavda Renewable Energy Park,4706.759160972319,17329.107,22385.34,13649.6,1.02,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-19,Khavda Renewable Energy Park,3431.1092313051686,10863.726,16318.35,9950.22,0.74,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-20,Khavda Renewable Energy Park,1286.163473855254,5017.719,6117.0,3729.88,0.28,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-21,Khavda Renewable Energy Park,1184.8227860172278,4546.9346,5635.02,3435.98,0.26,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-22,Khavda Renewable Energy Park,565.9830044369388,1879.5242,2691.81,1641.35,0.12,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-23,Khavda Renewable Energy Park,287.635666357897,799.1762,1368.0,834.14,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-24,Khavda Renewable Energy Park,8.79444352747275,63.502438,41.83,25.5,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-25,Khavda Renewable Energy Park,0.0,0.0,0.0,0.0,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-26,Khavda Renewable Energy Park,152.53667304972112,563.52545,725.46,442.36,0.03,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-27,Khavda Renewable Energy Park,2669.413058295745,9385.7,12695.73,7741.3,0.58,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-28,Khavda Renewable Energy Park,5005.525225440279,16355.955,23806.28,14516.02,1.08,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-07-29,Khavda Renewable Energy Park,1694.5921819296148,6638.723,8059.48,4914.31,0.37,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-30,Khavda Renewable Energy Park,860.7768990439808,2759.251,4093.86,2496.26,0.19,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-07-31,Khavda Renewable Energy Park,1311.6848288176984,4040.78,6238.37,3803.88,0.28,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-01,Khavda Renewable Energy Park,2.922790271884945,93.08171,13.9,8.48,0.0,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-02,Khavda Renewable Energy Park,83.84889510707448,157.88416,398.78,243.16,0.02,MEDIUM,WEATHER_WARNING,CLOUD_CURTAILMENT|HEAVY_RAIN,Cloud cover and rainfall may reduce solar generation.
+2026-08-03,Khavda Renewable Energy Park,2025.692462176249,6592.834,9634.2,5874.51,0.44,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-04,Khavda Renewable Energy Park,2080.2187888494186,6921.2974,9893.52,6032.64,0.45,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-05,Khavda Renewable Energy Park,2950.140602382792,10603.855,14030.87,8555.41,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-06,Khavda Renewable Energy Park,4742.219216727232,15830.402,22553.99,13752.44,1.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-07,Khavda Renewable Energy Park,6136.643636844631,19452.5,29185.87,17796.26,1.33,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-08,Khavda Renewable Energy Park,4954.416883755506,15894.581,23563.21,14367.81,1.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-09,Khavda Renewable Energy Park,9168.197059499127,19462.383,43603.94,26587.77,1.98,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-10,Khavda Renewable Energy Park,4637.366909393987,16396.42,22055.32,13448.36,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-11,Khavda Renewable Energy Park,979.5285676946444,3562.54,4658.64,2840.64,0.21,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-12,Khavda Renewable Energy Park,279.6125403499228,897.8154,1329.84,810.88,0.06,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-13,Khavda Renewable Energy Park,4662.549032378806,16580.922,22175.08,13521.39,1.01,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-14,Khavda Renewable Energy Park,4943.475302700348,15714.506,23511.17,14336.08,1.07,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-15,Khavda Renewable Energy Park,7090.219167887115,19152.66,33721.08,20561.63,1.53,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-16,Khavda Renewable Energy Park,2958.848563250116,9743.855,14072.28,8580.66,0.64,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-17,Khavda Renewable Energy Park,4611.366769987867,14968.403,21931.66,13372.96,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-18,Khavda Renewable Energy Park,842.2440270703132,2648.1711,4005.72,2442.51,0.18,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-19,Khavda Renewable Energy Park,3173.6932356981592,11451.654,15094.08,9203.71,0.69,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-20,Khavda Renewable Energy Park,5767.269634458619,18598.654,27429.13,16725.08,1.25,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-21,Khavda Renewable Energy Park,4194.335458480786,14088.87,19948.26,12163.58,0.91,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-22,Khavda Renewable Energy Park,3206.784853455075,11688.033,15251.47,9299.67,0.69,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-23,Khavda Renewable Energy Park,4422.584934287929,14431.742,21033.81,12825.5,0.96,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-24,Khavda Renewable Energy Park,6660.749269479987,19150.154,31678.53,19316.18,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-25,Khavda Renewable Energy Park,9951.119544723986,19550.791,47327.52,28858.24,2.15,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-26,Khavda Renewable Energy Park,6123.347470852615,19429.13,29122.64,17757.71,1.32,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-27,Khavda Renewable Energy Park,2844.4115284367317,9813.87,13528.02,8248.8,0.61,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-28,Khavda Renewable Energy Park,2652.6516556559823,8512.77,12616.01,7692.69,0.57,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-08-29,Khavda Renewable Energy Park,4634.590748597403,15443.42,22042.12,13440.32,1.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-30,Khavda Renewable Energy Park,3614.912474957309,11740.232,17192.52,10483.25,0.78,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-08-31,Khavda Renewable Energy Park,2197.97026645758,7469.618,10453.55,6374.12,0.48,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-01,Khavda Renewable Energy Park,4388.262460479971,13633.794,20870.57,12725.96,0.95,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-02,Khavda Renewable Energy Park,863.4541448580653,3317.507,4106.58,2504.02,0.19,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-03,Khavda Renewable Energy Park,3857.5065123908353,13520.142,18346.3,11186.77,0.83,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-04,Khavda Renewable Energy Park,2369.7222417574453,8832.185,11270.4,6872.2,0.51,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-05,Khavda Renewable Energy Park,5726.450746637848,13645.447,27235.0,16606.71,1.24,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-06,Khavda Renewable Energy Park,6655.6016,17626.668,31654.04,19301.24,1.44,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-07,Khavda Renewable Energy Park,9386.134,19332.84,44640.45,27219.79,2.03,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-08,Khavda Renewable Energy Park,4924.086,19591.936,23418.95,14279.85,1.06,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-09,Khavda Renewable Energy Park,5475.0728,19041.018,26039.45,15877.71,1.18,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-10,Khavda Renewable Energy Park,7594.1187,19198.908,36117.63,22022.94,1.64,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-11,Khavda Renewable Energy Park,8078.924,16552.81,38423.36,23428.88,1.75,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-12,Khavda Renewable Energy Park,4583.595,14478.104,21799.58,13292.43,0.99,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-13,Khavda Renewable Energy Park,5310.828,9754.792,25258.3,15401.4,1.15,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-14,Khavda Renewable Energy Park,377.2611,3232.0496,1794.25,1094.06,0.08,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
 2026-09-15,Khavda Renewable Energy Park,5011.7725,0.0,23835.99,14534.14,1.08,MEDIUM,WEATHER_WARNING,CLOUD_CURTAILMENT|HEAVY_RAIN,Cloud cover and rainfall may reduce solar generation.
-2026-09-16,Khavda Renewable Energy Park,6522.0654,5139.4277,31018.94,18913.99,1.41,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-17,Khavda Renewable Energy Park,10673.868,4956.394,50764.92,30954.22,2.31,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
-2026-09-18,Khavda Renewable Energy Park,10841.603,19324.451,51562.66,31440.65,2.34,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-19,Khavda Renewable Energy Park,0.0,18808.39,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-20,Khavda Renewable Energy Park,0.0,18754.576,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-21,Khavda Renewable Energy Park,0.0,18438.365,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-22,Khavda Renewable Energy Park,0.0,18428.055,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-23,Khavda Renewable Energy Park,0.0,18863.137,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-24,Khavda Renewable Energy Park,0.0,18879.184,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-25,Khavda Renewable Energy Park,0.0,18970.92,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-26,Khavda Renewable Energy Park,0.0,19333.438,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-27,Khavda Renewable Energy Park,0.0,19438.375,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-28,Khavda Renewable Energy Park,0.0,19096.234,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-29,Khavda Renewable Energy Park,0.0,18820.684,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-09-30,Khavda Renewable Energy Park,0.0,18996.172,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-01,Khavda Renewable Energy Park,0.0,18420.602,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-02,Khavda Renewable Energy Park,0.0,18198.486,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-03,Khavda Renewable Energy Park,0.0,18578.361,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-04,Khavda Renewable Energy Park,0.0,18566.47,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-05,Khavda Renewable Energy Park,0.0,18748.65,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-06,Khavda Renewable Energy Park,0.0,18728.033,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-07,Khavda Renewable Energy Park,0.0,18419.576,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-08,Khavda Renewable Energy Park,0.0,18480.934,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-09,Khavda Renewable Energy Park,0.0,18588.766,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-10,Khavda Renewable Energy Park,0.0,18674.146,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-11,Khavda Renewable Energy Park,0.0,18834.049,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-12,Khavda Renewable Energy Park,0.0,18367.307,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-13,Khavda Renewable Energy Park,0.0,17852.56,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-14,Khavda Renewable Energy Park,0.0,18049.531,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-15,Khavda Renewable Energy Park,0.0,18428.617,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-16,Khavda Renewable Energy Park,0.0,18379.998,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-17,Khavda Renewable Energy Park,0.0,18193.045,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-18,Khavda Renewable Energy Park,0.0,17732.482,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-19,Khavda Renewable Energy Park,0.0,17894.809,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-20,Khavda Renewable Energy Park,0.0,17901.725,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-21,Khavda Renewable Energy Park,0.0,17756.047,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-22,Khavda Renewable Energy Park,0.0,17925.584,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-23,Khavda Renewable Energy Park,0.0,18345.73,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-24,Khavda Renewable Energy Park,0.0,18684.752,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-25,Khavda Renewable Energy Park,0.0,17771.115,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-26,Khavda Renewable Energy Park,0.0,18150.39,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-27,Khavda Renewable Energy Park,0.0,18317.562,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-28,Khavda Renewable Energy Park,0.0,18480.248,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-29,Khavda Renewable Energy Park,0.0,18665.248,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-30,Khavda Renewable Energy Park,0.0,18380.605,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-10-31,Khavda Renewable Energy Park,0.0,18621.688,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-01,Khavda Renewable Energy Park,0.0,17964.3,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-02,Khavda Renewable Energy Park,0.0,18222.701,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-03,Khavda Renewable Energy Park,0.0,18307.79,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-04,Khavda Renewable Energy Park,0.0,18406.242,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-05,Khavda Renewable Energy Park,0.0,18713.168,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-06,Khavda Renewable Energy Park,0.0,18665.89,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-07,Khavda Renewable Energy Park,0.0,18750.746,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-08,Khavda Renewable Energy Park,0.0,18780.535,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-09,Khavda Renewable Energy Park,0.0,18821.23,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-10,Khavda Renewable Energy Park,0.0,18642.457,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-11,Khavda Renewable Energy Park,0.0,18582.863,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-12,Khavda Renewable Energy Park,0.0,18799.428,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-13,Khavda Renewable Energy Park,0.0,18709.36,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-14,Khavda Renewable Energy Park,0.0,18637.045,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-15,Khavda Renewable Energy Park,0.0,18603.86,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-16,Khavda Renewable Energy Park,0.0,18879.355,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
-2026-11-17,Khavda Renewable Energy Park,0.0,13456.155,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-16,Khavda Renewable Energy Park,6522.0654,5398.5747,31018.94,18913.99,1.41,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-17,Khavda Renewable Energy Park,10673.868,5025.7466,50764.92,30954.22,2.31,MEDIUM,NORMAL_OPERATIONS,CLOUD_CURTAILMENT,Cloud cover and rainfall may reduce solar generation.
+2026-09-18,Khavda Renewable Energy Park,10841.603,19492.309,51562.66,31440.65,2.34,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-19,Khavda Renewable Energy Park,0.0,19193.848,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-20,Khavda Renewable Energy Park,0.0,18841.094,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-21,Khavda Renewable Energy Park,0.0,18707.709,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-22,Khavda Renewable Energy Park,0.0,18542.484,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-23,Khavda Renewable Energy Park,0.0,19006.492,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-24,Khavda Renewable Energy Park,0.0,18711.588,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-25,Khavda Renewable Energy Park,0.0,19031.191,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-26,Khavda Renewable Energy Park,0.0,19447.201,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-27,Khavda Renewable Energy Park,0.0,19662.938,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-28,Khavda Renewable Energy Park,0.0,19416.797,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-29,Khavda Renewable Energy Park,0.0,19302.963,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-09-30,Khavda Renewable Energy Park,0.0,19221.418,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-01,Khavda Renewable Energy Park,0.0,18679.357,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-02,Khavda Renewable Energy Park,0.0,18495.092,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-03,Khavda Renewable Energy Park,0.0,18878.322,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-04,Khavda Renewable Energy Park,0.0,19133.764,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-05,Khavda Renewable Energy Park,0.0,19023.047,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-06,Khavda Renewable Energy Park,0.0,18974.408,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-07,Khavda Renewable Energy Park,0.0,18589.703,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-08,Khavda Renewable Energy Park,0.0,18713.842,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-09,Khavda Renewable Energy Park,0.0,19066.404,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-10,Khavda Renewable Energy Park,0.0,19047.154,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-11,Khavda Renewable Energy Park,0.0,19053.598,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-12,Khavda Renewable Energy Park,0.0,18712.225,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-13,Khavda Renewable Energy Park,0.0,18261.717,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-14,Khavda Renewable Energy Park,0.0,18343.578,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-15,Khavda Renewable Energy Park,0.0,18721.707,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-16,Khavda Renewable Energy Park,0.0,18536.984,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-17,Khavda Renewable Energy Park,0.0,18574.553,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-18,Khavda Renewable Energy Park,0.0,18362.809,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-19,Khavda Renewable Energy Park,0.0,18282.299,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-20,Khavda Renewable Energy Park,0.0,18343.326,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-21,Khavda Renewable Energy Park,0.0,18225.137,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-22,Khavda Renewable Energy Park,0.0,18407.092,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-23,Khavda Renewable Energy Park,0.0,18599.943,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-24,Khavda Renewable Energy Park,0.0,18845.97,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-25,Khavda Renewable Energy Park,0.0,18449.586,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-26,Khavda Renewable Energy Park,0.0,18544.889,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-27,Khavda Renewable Energy Park,0.0,18577.355,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-28,Khavda Renewable Energy Park,0.0,18574.633,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-29,Khavda Renewable Energy Park,0.0,18662.92,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-30,Khavda Renewable Energy Park,0.0,18608.264,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-10-31,Khavda Renewable Energy Park,0.0,18885.285,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-01,Khavda Renewable Energy Park,0.0,18684.012,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-02,Khavda Renewable Energy Park,0.0,18635.816,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-03,Khavda Renewable Energy Park,0.0,18612.004,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-04,Khavda Renewable Energy Park,0.0,18775.492,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-05,Khavda Renewable Energy Park,0.0,18811.914,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-06,Khavda Renewable Energy Park,0.0,18586.176,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-07,Khavda Renewable Energy Park,0.0,18713.725,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-08,Khavda Renewable Energy Park,0.0,18740.299,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-09,Khavda Renewable Energy Park,0.0,18735.062,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-10,Khavda Renewable Energy Park,0.0,18662.273,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-11,Khavda Renewable Energy Park,0.0,18541.0,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-12,Khavda Renewable Energy Park,0.0,18722.281,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-13,Khavda Renewable Energy Park,0.0,18730.58,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-14,Khavda Renewable Energy Park,0.0,18424.736,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-15,Khavda Renewable Energy Park,0.0,18463.236,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-16,Khavda Renewable Energy Park,0.0,18670.295,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-17,Khavda Renewable Energy Park,0.0,18864.594,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
+2026-11-18,Khavda Renewable Energy Park,0.0,18765.334,0.0,0.0,0.0,LOW,NORMAL_OPERATIONS,NORMAL,Forecast indicates strong renewable output expected. Weather risks remain low.
