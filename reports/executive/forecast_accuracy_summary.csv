@@ -1,4 +1,4 @@
 Metric,Value,Description
-MAE,7889.32,Mean Absolute Error (MW)
-RMSE,8448.23,Root Mean Squared Error (MW)
-MAPE,152.74,Mean Absolute Percentage Error (%)
+MAE,8283.55,Mean Absolute Error (MW)
+RMSE,8807.25,Root Mean Squared Error (MW)
+MAPE,149.0,Mean Absolute Percentage Error (%)
